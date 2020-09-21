@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class Board extends JPanel {
 
     private final int OFFSET = 30;
-    private final int SPACE = 20;
+    private final int SPACE = 64;
     private final int LEFT_COLLISION = 1;
     private final int RIGHT_COLLISION = 2;
     private final int TOP_COLLISION = 3;
@@ -19,6 +19,7 @@ public class Board extends JPanel {
     private ArrayList<Wall> walls;
     private ArrayList<Baggage> baggs;
     private ArrayList<Area> areas;
+    private ArrayList<Ground> grounds;
     
     private Player soko;
     private int w = 0;
@@ -27,17 +28,17 @@ public class Board extends JPanel {
     private boolean isCompleted = false;
 
     private String level
-            = "    ######\n"
-            + "    ##   #\n"
-            + "    ##$  #\n"
-            + "  ####  $##\n"
-            + "  ##  $ $ #\n"
-            + "#### # ## #   ######\n"
-            + "##   # ## #####  ..#\n"
-            + "## $  $          ..#\n"
-            + "###### ### #@##  ..#\n"
-            + "    ##     #########\n"
-            + "    ########\n";
+            = "     #####\n"
+            + "     #^^^#\n"
+            + "     #$^^#\n"
+            + "   ###^^$##\n"
+            + "   #^^$^$^#\n"
+            + " ###^#^##^#   ######\n"
+            + " #^^^#^##^#####^^..#\n"
+            + " #^$^^$^^^^^^^^^^..#\n"
+            + " #####^###^#@##^^..#\n"
+            + "     #^^^^^#########\n"
+            + "     #######\n";
 
     public Board() {
 
@@ -64,6 +65,7 @@ public class Board extends JPanel {
         walls = new ArrayList<>();
         baggs = new ArrayList<>();
         areas = new ArrayList<>();
+        grounds = new ArrayList<>();
 
         int x = OFFSET;
         int y = OFFSET;
@@ -71,6 +73,7 @@ public class Board extends JPanel {
         Wall wall;
         Baggage b;
         Area a;
+        Ground g;
 
         for (int i = 0; i < level.length(); i++) {
 
@@ -89,31 +92,45 @@ public class Board extends JPanel {
                     break;
 
                 case '#':
+                	g = new Ground(x, y);
+                	grounds.add(g);
                     wall = new Wall(x, y);
                     walls.add(wall);
                     x += SPACE;
                     break;
 
                 case '$':
+                	g = new Ground(x, y);
+                	grounds.add(g);
                     b = new Baggage(x, y);
                     baggs.add(b);
                     x += SPACE;
                     break;
 
                 case '.':
+                	g = new Ground(x, y);
+                	grounds.add(g);
                     a = new Area(x, y);
                     areas.add(a);
                     x += SPACE;
                     break;
 
                 case '@':
+                	g = new Ground(x, y);
+                	grounds.add(g);
                     soko = new Player(x, y);
                     x += SPACE;
                     break;
+                    
+                case '^':
+                	g = new Ground(x, y);
+                	grounds.add(g);
+                	x += SPACE;
+                	break;
 
                 case ' ':
                     x += SPACE;
-                    break;
+                    break;	
 
                 default:
                     break;
@@ -125,11 +142,12 @@ public class Board extends JPanel {
 
     private void buildWorld(Graphics g) {
 
-        g.setColor(new Color(250, 240, 170));
+        g.setColor(new Color(85, 85, 85));
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         ArrayList<Actor> world = new ArrayList<>();
 
+        world.addAll(grounds);
         world.addAll(walls);
         world.addAll(areas);
         world.addAll(baggs);
@@ -139,16 +157,9 @@ public class Board extends JPanel {
 
             Actor item = world.get(i);
 
-            if (item instanceof Player || item instanceof Baggage) {
-                
-                g.drawImage(item.getImage(), item.x() + 2, item.y() + 2, this);
-            } else {
-                
-                g.drawImage(item.getImage(), item.x(), item.y(), this);
-            }
+            g.drawImage(item.getImage(), item.x(), item.y(), this);
 
             if (isCompleted) {
-                
                 g.setColor(new Color(0, 0, 0));
                 g.drawString("Completed", 25, 20);
             }
