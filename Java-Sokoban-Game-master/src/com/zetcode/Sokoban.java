@@ -1,12 +1,14 @@
 package com.zetcode;
 
-import java.awt.Color;
+// import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 public class Sokoban extends JFrame {
 
-    private final int OFFSET = 30;
+	private static final long serialVersionUID = 9173696879006592846L;
+	
+	private final int OFFSET = 64;
 
     public Sokoban() {
 
@@ -15,7 +17,7 @@ public class Sokoban extends JFrame {
 
     private void initUI() {
         
-        Board board = new Board();
+        Panel_Board board = new Panel_Board();
         add(board);
 
         setTitle("Sokoban");

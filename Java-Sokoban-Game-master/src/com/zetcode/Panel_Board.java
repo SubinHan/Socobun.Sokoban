@@ -7,21 +7,23 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-public class Board extends JPanel {
+public class Panel_Board extends JPanel {
 
-    private final int OFFSET = 30;
+	private static final long serialVersionUID = 6877713473902207903L;
+	
+	private final int OFFSET = 64;
     private final int SPACE = 64;
     private final int LEFT_COLLISION = 1;
     private final int RIGHT_COLLISION = 2;
     private final int TOP_COLLISION = 3;
     private final int BOTTOM_COLLISION = 4;
 
-    private ArrayList<Wall> walls;
-    private ArrayList<Baggage> baggs;
-    private ArrayList<Area> areas;
-    private ArrayList<Ground> grounds;
+    private ArrayList<Actor_Wall> walls;
+    private ArrayList<Actor_Baggage> baggs;
+    private ArrayList<Actor_Area> areas;
+    private ArrayList<Actor_Ground> grounds;
     
-    private Player soko;
+    private Actor_Player soko;
     private int w = 0;
     private int h = 0;
     
@@ -40,7 +42,7 @@ public class Board extends JPanel {
             + "     #^^^^^#########\n"
             + "     #######\n";
 
-    public Board() {
+    public Panel_Board() {
 
         initBoard();
     }
@@ -70,10 +72,10 @@ public class Board extends JPanel {
         int x = OFFSET;
         int y = OFFSET;
 
-        Wall wall;
-        Baggage b;
-        Area a;
-        Ground g;
+        Actor_Wall wall;
+        Actor_Baggage b;
+        Actor_Area a;
+        Actor_Ground g;
 
         for (int i = 0; i < level.length(); i++) {
 
@@ -92,38 +94,38 @@ public class Board extends JPanel {
                     break;
 
                 case '#':
-                	g = new Ground(x, y);
+                	g = new Actor_Ground(x, y);
                 	grounds.add(g);
-                    wall = new Wall(x, y);
+                    wall = new Actor_Wall(x, y);
                     walls.add(wall);
                     x += SPACE;
                     break;
 
                 case '$':
-                	g = new Ground(x, y);
+                	g = new Actor_Ground(x, y);
                 	grounds.add(g);
-                    b = new Baggage(x, y);
+                    b = new Actor_Baggage(x, y);
                     baggs.add(b);
                     x += SPACE;
                     break;
 
                 case '.':
-                	g = new Ground(x, y);
+                	g = new Actor_Ground(x, y);
                 	grounds.add(g);
-                    a = new Area(x, y);
+                    a = new Actor_Area(x, y);
                     areas.add(a);
                     x += SPACE;
                     break;
 
                 case '@':
-                	g = new Ground(x, y);
+                	g = new Actor_Ground(x, y);
                 	grounds.add(g);
-                    soko = new Player(x, y);
+                    soko = new Actor_Player(x, y);
                     x += SPACE;
                     break;
                     
                 case '^':
-                	g = new Ground(x, y);
+                	g = new Actor_Ground(x, y);
                 	grounds.add(g);
                 	x += SPACE;
                 	break;
@@ -266,7 +268,7 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < walls.size(); i++) {
                     
-                    Wall wall = walls.get(i);
+                    Actor_Wall wall = walls.get(i);
                     
                     if (actor.isLeftCollision(wall)) {
                         
@@ -280,7 +282,7 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < walls.size(); i++) {
                     
-                    Wall wall = walls.get(i);
+                    Actor_Wall wall = walls.get(i);
                     
                     if (actor.isRightCollision(wall)) {
                         return true;
@@ -293,7 +295,7 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < walls.size(); i++) {
                     
-                    Wall wall = walls.get(i);
+                    Actor_Wall wall = walls.get(i);
                     
                     if (actor.isTopCollision(wall)) {
                         
@@ -307,7 +309,7 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < walls.size(); i++) {
                     
-                    Wall wall = walls.get(i);
+                    Actor_Wall wall = walls.get(i);
                     
                     if (actor.isBottomCollision(wall)) {
                         
@@ -332,13 +334,13 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < baggs.size(); i++) {
 
-                    Baggage bag = baggs.get(i);
+                    Actor_Baggage bag = baggs.get(i);
 
                     if (soko.isLeftCollision(bag)) {
 
                         for (int j = 0; j < baggs.size(); j++) {
                             
-                            Baggage item = baggs.get(j);
+                            Actor_Baggage item = baggs.get(j);
                             
                             if (!bag.equals(item)) {
                                 
@@ -363,13 +365,13 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < baggs.size(); i++) {
 
-                    Baggage bag = baggs.get(i);
+                    Actor_Baggage bag = baggs.get(i);
                     
                     if (soko.isRightCollision(bag)) {
                         
                         for (int j = 0; j < baggs.size(); j++) {
 
-                            Baggage item = baggs.get(j);
+                            Actor_Baggage item = baggs.get(j);
                             
                             if (!bag.equals(item)) {
                                 
@@ -393,13 +395,13 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < baggs.size(); i++) {
 
-                    Baggage bag = baggs.get(i);
+                    Actor_Baggage bag = baggs.get(i);
                     
                     if (soko.isTopCollision(bag)) {
                         
                         for (int j = 0; j < baggs.size(); j++) {
 
-                            Baggage item = baggs.get(j);
+                            Actor_Baggage item = baggs.get(j);
 
                             if (!bag.equals(item)) {
                                 
@@ -424,13 +426,13 @@ public class Board extends JPanel {
                 
                 for (int i = 0; i < baggs.size(); i++) {
 
-                    Baggage bag = baggs.get(i);
+                    Actor_Baggage bag = baggs.get(i);
                     
                     if (soko.isBottomCollision(bag)) {
                         
                         for (int j = 0; j < baggs.size(); j++) {
 
-                            Baggage item = baggs.get(j);
+                            Actor_Baggage item = baggs.get(j);
                             
                             if (!bag.equals(item)) {
                                 
@@ -466,11 +468,11 @@ public class Board extends JPanel {
 
         for (int i = 0; i < nOfBags; i++) {
             
-            Baggage bag = baggs.get(i);
+            Actor_Baggage bag = baggs.get(i);
             
             for (int j = 0; j < nOfBags; j++) {
                 
-                Area area =  areas.get(j);
+                Actor_Area area =  areas.get(j);
                 
                 if (bag.x() == area.x() && bag.y() == area.y()) {
                     

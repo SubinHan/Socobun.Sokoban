@@ -4,9 +4,9 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Ground extends Actor {
+public class Actor_Ground extends Actor {
 
-	public Ground(int x, int y) {
+	public Actor_Ground(int x, int y) {
 		super(x, y);
 
 		initGround();

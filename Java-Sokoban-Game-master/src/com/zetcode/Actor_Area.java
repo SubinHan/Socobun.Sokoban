@@ -3,9 +3,9 @@ package com.zetcode;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Area extends Actor {
+public class Actor_Area extends Actor {
 
-    public Area(int x, int y) {
+    public Actor_Area(int x, int y) {
         super(x, y);
         
         initArea();

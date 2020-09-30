@@ -3,11 +3,11 @@ package com.zetcode;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Player extends Actor {
+public class Actor_Player extends Actor {
 	
 	ImageIcon upImage, downImage, leftImage, rightImage;
 
-    public Player(int x, int y) {
+    public Actor_Player(int x, int y) {
         super(x, y);
 
         initPlayer();
@@ -25,7 +25,7 @@ public class Player extends Actor {
     	rightImage = new ImageIcon("src/resources/player_17.png");
 
         Image image = downImage.getImage();
-        setImage(image.getScaledInstance(64, 64, image.SCALE_DEFAULT));
+        setImage(image.getScaledInstance(64, 64, Image.SCALE_DEFAULT));
     }
 
     public void move(int x, int y) {

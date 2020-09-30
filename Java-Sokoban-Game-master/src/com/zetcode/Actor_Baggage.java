@@ -3,9 +3,9 @@ package com.zetcode;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Baggage extends Actor {
+public class Actor_Baggage extends Actor {
 
-    public Baggage(int x, int y) {
+    public Actor_Baggage(int x, int y) {
         super(x, y);
         
         initBaggage();
