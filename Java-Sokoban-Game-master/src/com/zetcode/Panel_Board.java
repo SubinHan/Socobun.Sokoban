@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Panel_Board extends JPanel {
@@ -27,41 +29,47 @@ public class Panel_Board extends JPanel {
     private int w = 0;
     private int h = 0;
     
+    private Frame_Sokoban frame = null;
+    
     private boolean isCompleted = false;
+	private boolean maximized = false;
 
     private String level
-            = "     #####\n"
-            + "     #^^^#\n"
-            + "     #$^^#\n"
-            + "   ###^^$##\n"
-            + "   #^^$^$^#\n"
-            + " ###^#^##^#   ######\n"
-            + " #^^^#^##^#####^^..#\n"
-            + " #^$^^$^^^^^^^^^^..#\n"
-            + " #####^###^#@##^^..#\n"
-            + "     #^^^^^#########\n"
-            + "     #######\n";
+            = "    #####\n"
+            + "    #^^^#\n"
+            + "    #$^^#\n"
+            + "  ###^^$##\n"
+            + "  #^^$^$^#\n"
+            + "###^#^##^#   ######\n"
+            + "#^^^#^##^#####^^..#\n"
+            + "#^$^^$^^^^^^^^^^..#\n"
+            + "#####^###^#@##^^..#\n"
+            + "    #^^^^^#########\n"
+            + "    #######\n";
 
-    public Panel_Board() {
-
+    public Panel_Board(Frame_Sokoban f) {
+        this.frame = f;
         initBoard();
     }
 
     private void initBoard() {
-
-        addKeyListener(new TAdapter());
+    	TAdapter listener = new TAdapter();
+        frame.setSize(getBoardWidth() + 24, getBoardHeight() + 39);
+        addKeyListener(listener);
+        
         setFocusable(true);
         initWorld();
+        
     }
-
+    
     public int getBoardWidth() {
-        return this.w;
+    	return this.w;
     }
-
+    
     public int getBoardHeight() {
-        return this.h;
+    	return this.h;
     }
-
+    
     private void initWorld() {
         
         walls = new ArrayList<>();
@@ -87,7 +95,7 @@ public class Panel_Board extends JPanel {
                     y += SPACE;
 
                     if (this.w < x) {
-                        this.w = x;
+                        this.w = x + SPACE;
                     }
 
                     x = OFFSET;
@@ -138,7 +146,7 @@ public class Panel_Board extends JPanel {
                     break;
             }
 
-            h = y;
+            h = y + SPACE;
         }
     }
 
@@ -180,10 +188,10 @@ public class Panel_Board extends JPanel {
 
         @Override
         public void keyPressed(KeyEvent e) {
-
-            if (isCompleted) {
-                return;
-            }
+//
+//            if (isCompleted) {
+//                return;
+//            }
 
             int key = e.getKeyCode();
 
@@ -191,14 +199,11 @@ public class Panel_Board extends JPanel {
                 
                 case KeyEvent.VK_LEFT:
                     
-                    if (checkWallCollision(soko,
-                            LEFT_COLLISION)) {
-                        return;
-                    }
+                    if (checkWallCollision(soko, LEFT_COLLISION)) return;
                     
-                    if (checkBagCollision(LEFT_COLLISION)) {
-                        return;
-                    }
+                    if (checkBagCollision(LEFT_COLLISION)) return;
+                    
+                    if (isCompleted) return;
                     
                     soko.move(-SPACE, 0);
                     
@@ -213,6 +218,8 @@ public class Panel_Board extends JPanel {
                     if (checkBagCollision(RIGHT_COLLISION)) {
                         return;
                     }
+
+                    if (isCompleted) return;
                     
                     soko.move(SPACE, 0);
                     
@@ -227,6 +234,8 @@ public class Panel_Board extends JPanel {
                     if (checkBagCollision(TOP_COLLISION)) {
                         return;
                     }
+
+                    if (isCompleted) return;
                     
                     soko.move(0, -SPACE);
                     
@@ -241,6 +250,8 @@ public class Panel_Board extends JPanel {
                     if (checkBagCollision(BOTTOM_COLLISION)) {
                         return;
                     }
+
+                    if (isCompleted) return;
                     
                     soko.move(0, SPACE);
                     
@@ -252,6 +263,20 @@ public class Panel_Board extends JPanel {
                     
                     break;
                     
+                case KeyEvent.VK_F:
+                    if(maximized) {
+                    	frame.setExtendedState(JFrame.NORMAL);
+                    	maximized = false;
+                    }
+                    else {
+                    	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    	maximized = true;
+                    }
+                    break;
+                    
+                case KeyEvent.VK_T :
+                	frame.changePanel(0);
+                	
                 default:
                     break;
             }
