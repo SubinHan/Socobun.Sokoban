@@ -51,6 +51,13 @@ public class Panel_Board extends JPanel {
         this.frame = f;
         initBoard();
     }
+    
+    public Panel_Board(Frame_Sokoban f, String level) {
+    	System.out.println("level: " + level);
+    	this.level = level;
+    	this.frame = f;
+    	initBoard();
+    }
 
     private void initBoard() {
     	TAdapter listener = new TAdapter();
@@ -173,7 +180,6 @@ public class Panel_Board extends JPanel {
                 g.setColor(new Color(0, 0, 0));
                 g.drawString("Completed", 25, 20);
             }
-
         }
     }
 
@@ -510,6 +516,7 @@ public class Panel_Board extends JPanel {
             
             isCompleted = true;
             repaint();
+            frame.changePanel(3);
         }
     }
 

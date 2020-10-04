@@ -14,6 +14,7 @@ public class Frame_Sokoban extends JFrame {
 	Panel_Endless board_endless = null; // 2 : 무한모드
 	Panel_Custom board_custom = null; // 3 : 커스텀
 	Panel_Ranking rankingScene = null; // 4 : 랭킹
+	Panel_CustomTool board_customTool = null; // 5 커스텀 툴
 	
     public Frame_Sokoban() {
 
@@ -24,13 +25,16 @@ public class Frame_Sokoban extends JFrame {
         
     	mainScene = new Panel_MainScene(this);
     	board_normal = new Panel_Board(this);
-        add(mainScene);
-        setSize(1000,700);
+    	board_custom = new Panel_Custom(this);
+    	board_customTool = new Panel_CustomTool(this);
+        add(board_custom);
+        setSize(1600, 900);
         setTitle("Sokoban");
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setUndecorated(false);
+        setResizable(false);
         setExtendedState(JFrame.NORMAL);
         
     }
@@ -47,12 +51,14 @@ public class Frame_Sokoban extends JFrame {
 	    		add(mainScene);
 	    		setSize(1000, 700); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
+	            mainScene.requestFocusInWindow();
 	    		break;
 	    		
 	    	case 1 : 
 	    		add(board_normal);
 	            setSize(new Dimension(board_normal.getBoardWidth() + 16, board_normal.getBoardHeight() + 39));
 	            setLocationRelativeTo(null);
+	            board_normal.requestFocusInWindow();
 	        	break;
 
 	    	case 2 :
@@ -63,14 +69,23 @@ public class Frame_Sokoban extends JFrame {
 	    		
 	    	case 3 :
 	    		add(board_custom);
-	    		setSize(1000, 700); // 사이즈
+	    		setSize(1600, 900); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
+	            board_custom.requestFocusInWindow();
 	    		break;
 	    		
 	    	case 4 :
 	    		add(rankingScene);
 	    		setSize(1000, 700); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
+	            rankingScene.requestFocusInWindow();
+	    		break;
+	    		
+	    	case 5 :
+	    		add(board_customTool);
+	    		setSize(1600, 900); // 사이즈
+	            setLocationRelativeTo(null); // 중앙으로
+	            board_customTool.requestFocusInWindow();
 	    		break;
 	        	
 	    	default :
@@ -79,7 +94,5 @@ public class Frame_Sokoban extends JFrame {
     	}
     	revalidate();
 		repaint();
-    	
-		
     }
 }
