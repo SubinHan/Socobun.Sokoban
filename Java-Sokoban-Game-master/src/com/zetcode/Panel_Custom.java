@@ -22,10 +22,11 @@ import javax.swing.JPanel;
  * @author ÇÑ¼öºó
  *
  */
-public class Panel_Custom extends JPanel {
+public class Panel_Custom extends JPanel implements ILevelSelectorListener {
 
 	private static final long serialVersionUID = 4962034188446655988L;
 	Frame_Sokoban frame = null;
+	private static final String directory = "src/CustomMaps";
 
 	public Panel_Custom(Frame_Sokoban f) {
 
@@ -55,44 +56,58 @@ public class Panel_Custom extends JPanel {
 		JPanel panelEast = new JPanel();
 		panelEast.setPreferredSize(new Dimension(400, 0));
 		this.add(panelEast, BorderLayout.EAST);
-
-		JPanel panelCenter = new JPanel(new GridLayout(10, 1));
+		
+		JPanel panelCenter;
+		panelCenter = new JPanel(new BorderLayout());
 		JButton buttonNew = new JButton("New Custom Map..");
 		buttonNew.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		buttonNew.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
-				frame.changePanel(5);
+				frame.changePanel(SokobanUtilities.PANEL_CUSTOMTOOL);
 			}
 		});
-		panelCenter.add(buttonNew);
-		File file = new File("Sample");
-		if(file.exists()) {
-			JButton buttonCustomMap = new JButton(file.getName());
-			buttonCustomMap.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					String level = "";
-					
-					level = SokobanUtilities.fileToString(file);
-					if(frame.getContentPane() == null) return;
-
-					// ÀÓ½Ã·Î ¸¸µê.
-			    	frame.getContentPane().removeAll();
-					Panel_Board board = new Panel_Board(frame, level);
-					frame.add(board);
-		    		frame.setSize(1600, 900);
-		            frame.setLocationRelativeTo(null);
-		            board.requestFocusInWindow();
-		            revalidate();
-		            repaint();
-				}
-				
-			});
-			panelCenter.add(buttonCustomMap);
-		}
+		panelCenter.add(buttonNew, BorderLayout.NORTH);
+		JPanel panelList;
+		panelList = new Panel_LevelSelector(frame, this, directory);
+		panelCenter.add(panelList, BorderLayout.CENTER);
 		
+//		JPanel panelCenter = new JPanel(new GridLayout(10, 1));
+//		JButton buttonNew = new JButton("New Custom Map..");
+//		buttonNew.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
+//		buttonNew.addActionListener(new ActionListener() {
+//
+//			public void actionPerformed(ActionEvent e) {
+//				frame.changePanel(5);
+//			}
+//		});
+//		panelCenter.add(buttonNew);
+//		File file = new File("Sample");
+//		if(file.exists()) {
+//			JButton buttonCustomMap = new JButton(file.getName());
+//			buttonCustomMap.addActionListener(new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					String level = "";
+//					
+//					level = SokobanUtilities.fileToString(file);
+//					if(frame.getContentPane() == null) return;
+//
+//					// ÀÓ½Ã·Î ¸¸µê.
+//			    	frame.getContentPane().removeAll();
+//					Panel_Board board = new Panel_Board(frame, level);
+//					frame.add(board);
+//		    		frame.setSize(1600, 900);
+//		            frame.setLocationRelativeTo(null);
+//		            board.requestFocusInWindow();
+//		            revalidate();
+//		            repaint();
+//				}
+//				
+//			});
+//			panelCenter.add(buttonCustomMap);
+//		}
+//		
 		this.add(panelCenter, BorderLayout.CENTER);
 
 		JPanel panelSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -119,7 +134,7 @@ public class Panel_Custom extends JPanel {
 			switch (key) {
 
 			case KeyEvent.VK_ESCAPE:
-				frame.changePanel(0);
+				frame.changePanel(SokobanUtilities.PANEL_MAIN);
 
 			default:
 				break;
@@ -127,6 +142,11 @@ public class Panel_Custom extends JPanel {
 
 			repaint();
 		}
+	}
+
+	@Override
+	public void levelSelected(char[][] level) {
+		frame.changePanel(new Panel_Normal(frame, this, level));
 	}
 
 }

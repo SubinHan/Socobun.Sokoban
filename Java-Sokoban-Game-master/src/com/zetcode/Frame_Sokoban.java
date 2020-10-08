@@ -4,10 +4,22 @@ import java.awt.Dimension;
 
 // import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Frame_Sokoban extends JFrame {
 
 	private static final long serialVersionUID = 9173696879006592846L;
+	
+	private final int MAX_RESOLUTION_WIDTH = SokobanUtilities.MAX_RESOLUTION_WIDTH;
+	private final int MAX_RESOLUTION_HEIGHT = SokobanUtilities.MAX_RESOLUTION_HEIGHT;
+	
+	private final int PANEL_MAIN = SokobanUtilities.PANEL_MAIN;
+	private final int PANEL_NORMAL = SokobanUtilities.PANEL_NORMAL;
+	private final int PANEL_ENDLESS = SokobanUtilities.PANEL_ENDLESS;
+	private final int PANEL_CUSTOM = SokobanUtilities.PANEL_CUSTOM;
+	private final int PANEL_RANKING = SokobanUtilities.PANEL_RANKING;
+	private final int PANEL_CUSTOMTOOL = SokobanUtilities.PANEL_CUSTOMTOOL;
+	private final int PANEL_LEVELLIST = SokobanUtilities.PANEL_LEVELLIST;
 	
 	Panel_MainScene mainScene = null; // 0 : 메인
 	Panel_Board board_normal = null; // 1 : 일반모드
@@ -15,6 +27,7 @@ public class Frame_Sokoban extends JFrame {
 	Panel_Custom board_custom = null; // 3 : 커스텀
 	Panel_Ranking rankingScene = null; // 4 : 랭킹
 	Panel_CustomTool board_customTool = null; // 5 커스텀 툴
+	Panel_LevelList board_levelList = null;
 	
     public Frame_Sokoban() {
 
@@ -27,8 +40,9 @@ public class Frame_Sokoban extends JFrame {
     	board_normal = new Panel_Board(this);
     	board_custom = new Panel_Custom(this);
     	board_customTool = new Panel_CustomTool(this);
-        add(board_custom);
-        setSize(1600, 900);
+    	board_levelList = new Panel_LevelList(this);
+        add(mainScene);
+        setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT);
         setTitle("Sokoban");
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,43 +61,50 @@ public class Frame_Sokoban extends JFrame {
     	
     	switch (panelCode) {
     	
-	    	case 0 :
+	    	case PANEL_MAIN :
 	    		add(mainScene);
-	    		setSize(1000, 700); // 사이즈
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
 	            mainScene.requestFocusInWindow();
 	    		break;
 	    		
-	    	case 1 : 
+	    	case PANEL_NORMAL : 
 	    		add(board_normal);
-	            setSize(new Dimension(board_normal.getBoardWidth() + 16, board_normal.getBoardHeight() + 39));
+	            setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT);
 	            setLocationRelativeTo(null);
 	            board_normal.requestFocusInWindow();
 	        	break;
 
-	    	case 2 :
+	    	case PANEL_ENDLESS :
 	    		add(board_endless);
-	    		setSize(1000, 700); // 사이즈
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
 	    		break;
 	    		
-	    	case 3 :
+	    	case PANEL_CUSTOM :
 	    		add(board_custom);
-	    		setSize(1600, 900); // 사이즈
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
 	            board_custom.requestFocusInWindow();
 	    		break;
 	    		
-	    	case 4 :
+	    	case PANEL_RANKING :
 	    		add(rankingScene);
-	    		setSize(1000, 700); // 사이즈
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
 	            rankingScene.requestFocusInWindow();
 	    		break;
 	    		
-	    	case 5 :
+	    	case PANEL_CUSTOMTOOL :
 	    		add(board_customTool);
-	    		setSize(1600, 900); // 사이즈
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
+	            setLocationRelativeTo(null); // 중앙으로
+	            board_customTool.requestFocusInWindow();
+	    		break;
+	    		
+	    	case PANEL_LEVELLIST :
+	    		add(board_levelList);
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
 	            setLocationRelativeTo(null); // 중앙으로
 	            board_customTool.requestFocusInWindow();
 	    		break;
@@ -94,5 +115,17 @@ public class Frame_Sokoban extends JFrame {
     	}
     	revalidate();
 		repaint();
+    }
+    
+    public void changePanel(JPanel panel) {
+    	if(getContentPane() == null) return;
+
+    	getContentPane().removeAll();
+    	add(panel);
+		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
+        setLocationRelativeTo(null); // 중앙으로
+        panel.requestFocusInWindow();
+        revalidate();
+        repaint();
     }
 }

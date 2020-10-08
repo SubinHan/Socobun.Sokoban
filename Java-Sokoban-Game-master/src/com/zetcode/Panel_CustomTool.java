@@ -37,7 +37,7 @@ public class Panel_CustomTool extends JPanel {
 			switch (key) {
 
 			case KeyEvent.VK_ESCAPE:
-				frame.changePanel(3);
+				frame.changePanel(new Panel_Custom(frame));
 				break;
 
 			default:
@@ -63,6 +63,7 @@ public class Panel_CustomTool extends JPanel {
 	private final String IMAGE_AREA = "src/resources/environment_ground.png";
 	private final String IMAGE_BAGGAGE = "src/resources/crate_02.png";
 	private final String IMAGE_PLAYER = "src/resources/player_ground.png";
+	private final String IMAGE_SPACE = "src/resources/null.png";
 	private boolean isChanged;
 	private boolean isConfirmed;
 	private boolean isPlaying;
@@ -291,11 +292,22 @@ public class Panel_CustomTool extends JPanel {
 				brush = ACTOR_PLAYER;
 			}
 		});
+		JButton buttonSpace = new JButton();
+		buttonSpace.setPreferredSize(new Dimension(50, 50));
+		buttonSpace.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				brush = ACTOR_SPACE;
+				System.out.println("BRUSH_ACTOR_SPACE");
+			}
+		});
 		panelEast.add(buttonWall);
 		panelEast.add(buttonGround);
 		panelEast.add(buttonBaggage);
 		panelEast.add(buttonArea);
 		panelEast.add(buttonPlayer);
+		panelEast.add(buttonSpace);
 
 		this.add(panelEast, BorderLayout.EAST);
 	}
@@ -346,7 +358,7 @@ public class Panel_CustomTool extends JPanel {
 		buttonBack.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 20));
 		buttonBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.changePanel(3);
+				frame.changePanel(new Panel_Custom(frame));
 			}
 		});
 		labelStatus = new JLabel(" ");
@@ -390,7 +402,7 @@ public class Panel_CustomTool extends JPanel {
 	 * ∏ ¿ª file∑Œ ¿˙¿Â.
 	 */
 	protected void saveMap() {
-		SokobanUtilities.charArrayToFile("Sample", level);
+		SokobanUtilities.charArrayToFile("src/CustomMaps/Custom Map " + (FileSearcher.getFiles("src/customMaps").length + 1), level);
 
 		isChanged = false;
 	}
@@ -444,6 +456,8 @@ public class Panel_CustomTool extends JPanel {
 			return new ImageIcon(IMAGE_AREA);
 		case ACTOR_PLAYER:
 			return new ImageIcon(IMAGE_PLAYER);
+		case ACTOR_SPACE:
+			return new ImageIcon(IMAGE_SPACE);
 		default:
 			return null;
 		}
@@ -472,6 +486,7 @@ public class Panel_CustomTool extends JPanel {
 			}
 		}
 		level[x][y] = brush;
+		System.out.println(brush);
 		levelImages[x][y] = new JLabel(parseImage(brush));
 
 	}
