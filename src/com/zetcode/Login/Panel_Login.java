@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.zetcode.Login;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -7,46 +7,28 @@ import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.zetcode.Frame_Sokoban;
+import com.zetcode.SokobanUtilities;
 
 public class Panel_Login extends JPanel {
 	
 	private static final long serialVersionUID = -6842563827077598904L;
 
-	JFrame frame;
+	Frame_Sokoban frame;
 	
-	DatabaseReference refDB;
-	final FirebaseDatabase database;
-	
-	public Panel_Login(Frame_Sokoban f) throws IOException {
-		
-		
-		FileInputStream serviceAccount = new FileInputStream("socobun-sokoban-firebase-adminsdk-85opg-25021480dd.json");
+	public Panel_Login(Frame_Sokoban f) {
 
-		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-				.setDatabaseUrl("https://socobun-sokoban.firebaseio.com").build();
-
-		FirebaseApp app = FirebaseApp.initializeApp(options);
-
-		database = FirebaseDatabase.getInstance(app);
-		refDB = database.getReference("server");
-		
 		frame = f;
 		initUI();
 	}
@@ -68,38 +50,44 @@ public class Panel_Login extends JPanel {
 		
 		JTextField field_ID = new JTextField(20);
 		JTextField field_PW = new JTextField(20);
+		JButton signUpBtn = new JButton("Sign Up");
 		
-		panelCenter.add(new JLabel("ID : "));
+		signUpBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.changePanel(SokobanUtilities.PANEL_SIGNUP);
+			}
+		});
+		
+		panelCenter.add(new JLabel("        ID : "));
 		panelCenter.add(field_ID);
-		panelCenter.add(new JLabel("PW : "));
+		panelCenter.add(new JLabel("  Password : "));
 		panelCenter.add(field_PW);
+		panelCenter.add(signUpBtn);
 		
-		field_ID.addActionListener(new ActionListener() {
+		
+		field_ID.addActionListener(new ActionListener() { // ID 입력란
 			public void actionPerformed(ActionEvent e) {
 				KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+				
 		        manager.getFocusOwner().transferFocus();
 			}
 		});
 		
-		field_PW.addActionListener(new ActionListener() {
+		field_PW.addActionListener(new ActionListener() { // PW 입력란
 			public void actionPerformed(ActionEvent e) {
 				
 				KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 				
-				DatabaseReference usersRef = refDB.child("users"); 
-				String inputID = field_ID.getText();
-
-				Map<String, String> userInfoMap = new HashMap<>(); 
+				DatabaseReference usersRef = FirebaseClass.rootReference.child("users");
+				UserInfo info = new UserInfo(field_ID.getText(), field_PW.getText(), "ss");
 				
-					userInfoMap.put(field_ID.getText(), field_ID.getText());
-					usersRef.setValueAsync(userInfoMap);
-					field_ID.setText("성공");
-					field_PW.setText("성공");
-					
+				usersRef.child(field_ID.getText()).setValueAsync(info);
+				
 		        manager.getFocusOwner().transferFocusBackward();
 				 
 			}
 		});
 		
 	}
+	
 }

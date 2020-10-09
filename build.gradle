@@ -31,3 +31,5 @@ dependencies {
     // For Firebase
     implementation 'com.google.firebase:firebase-admin:6.8.1'
 }
+
+sourceSets.main.java.srcDirs = ['build/generated-sources/xjc','src']

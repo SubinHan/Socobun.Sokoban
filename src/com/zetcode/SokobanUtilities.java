@@ -32,6 +32,8 @@ public class SokobanUtilities {
 	public final static int PANEL_RANKING = 4;
 	public final static int PANEL_CUSTOMTOOL = 5;
 	public final static int PANEL_LEVELLIST = 6;
+	public final static int PANEL_LOGIN = 7;
+	public final static int PANEL_SIGNUP = 8;
 	/**
 	 * 
 	 * @param levelFile		

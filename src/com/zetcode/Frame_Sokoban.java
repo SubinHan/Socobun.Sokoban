@@ -1,10 +1,11 @@
 package com.zetcode;
 
-import java.awt.Dimension;
-
 // import java.awt.Color;
-import javax.swing.JFrame;
+import javax.swing.JFrame; 
 import javax.swing.JPanel;
+
+import com.zetcode.Login.Panel_Login;
+import com.zetcode.Login.Panel_SignUp;
 
 public class Frame_Sokoban extends JFrame {
 
@@ -20,6 +21,8 @@ public class Frame_Sokoban extends JFrame {
 	private final int PANEL_RANKING = SokobanUtilities.PANEL_RANKING;
 	private final int PANEL_CUSTOMTOOL = SokobanUtilities.PANEL_CUSTOMTOOL;
 	private final int PANEL_LEVELLIST = SokobanUtilities.PANEL_LEVELLIST;
+	private final int PANEL_LOGIN = SokobanUtilities.PANEL_LOGIN;
+	private final int PANEL_SIGNUP = SokobanUtilities.PANEL_SIGNUP;
 	
 	Panel_MainScene mainScene = null; // 0 : 메인
 	Panel_Board board_normal = null; // 1 : 일반모드
@@ -28,6 +31,9 @@ public class Frame_Sokoban extends JFrame {
 	Panel_Ranking rankingScene = null; // 4 : 랭킹
 	Panel_CustomTool board_customTool = null; // 5 커스텀 툴
 	Panel_LevelList board_levelList = null;
+	Panel_Login loginScene = null;
+	Panel_SignUp signupScene = null;
+	
 	
     public Frame_Sokoban() {
 
@@ -41,7 +47,10 @@ public class Frame_Sokoban extends JFrame {
     	board_custom = new Panel_Custom(this);
     	board_customTool = new Panel_CustomTool(this);
     	board_levelList = new Panel_LevelList(this);
-        add(mainScene);
+    	loginScene = new Panel_Login(this);
+    	signupScene = new Panel_SignUp(this);
+    	
+        add(loginScene);
         setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT);
         setTitle("Sokoban");
         
@@ -108,7 +117,20 @@ public class Frame_Sokoban extends JFrame {
 	            setLocationRelativeTo(null); // 중앙으로
 	            board_customTool.requestFocusInWindow();
 	    		break;
-	        	
+
+	    	case PANEL_LOGIN :
+	    		add(loginScene);
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
+	            setLocationRelativeTo(null); // 중앙으로
+	            board_customTool.requestFocusInWindow();
+	    		break;
+	    		
+	    	case PANEL_SIGNUP :
+	    		add(signupScene);
+	    		setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT); // 사이즈
+	            setLocationRelativeTo(null); // 중앙으로
+	            board_customTool.requestFocusInWindow();
+	            
 	    	default :
 	    		break;
 	    		
