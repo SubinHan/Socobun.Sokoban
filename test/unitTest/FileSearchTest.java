@@ -1,7 +1,6 @@
-package test;
+package unitTest;
 
-import java.io.File;
-
+import java.io.File; 
 import com.zetcode.FileSearcher;
 
 import junit.framework.TestCase;
@@ -16,7 +15,7 @@ public class FileSearchTest extends TestCase {
 	
 	public void testFileSearch() {
 		File[] files;
-		files = searcher.getFiles(path);
+		files = FileSearcher.getFiles(path);
 		for(int i = 0; i < files.length; i++) {
 			assertTrue(files[i].getName().equals(String.valueOf(i)));
 		}

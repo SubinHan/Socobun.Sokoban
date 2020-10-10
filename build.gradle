@@ -5,16 +5,30 @@
  * For more details take a look at the Java Libraries chapter in the Gradle
  * User Manual available at https://docs.gradle.org/6.6.1/userguide/java_library_plugin.html
  */
+ 
 
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
+
+version = '1.2.1'
+
+// JUnit 5 Test
+
+test { useJUnitPlatform() }
+
 repositories {
     // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    // You can declare any Maven/Ivy/file repository here.
     google()
 }
 
@@ -30,4 +44,27 @@ dependencies {
     
     // For Firebase
     implementation 'com.google.firebase:firebase-admin:6.8.1'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 }
+
+sourceSets {
+    main {
+         java {
+            srcDirs = ['src']
+         }
+    }
+
+    test {
+        java {
+            srcDirs = ['test']
+        }
+    }
+}
+
+apply plugin: "java"
+apply plugin: "war"
+apply plugin: "eclipse"
+apply plugin: "eclipse-wtp"
