@@ -1,4 +1,4 @@
-package test.unitTest;
+package unitTest;
 
 import java.io.File; 
 import com.zetcode.FileSearcher;

@@ -1,7 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="1.5.0">
-	<wb-module deploy-name="socobun_sokoban">
-		<property name="context-root" value="socobun_sokoban"/>
-		<wb-resource deploy-path="/WEB-INF/classes" source-path="src"/>
-	</wb-module>
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    	
+    <wb-module deploy-name="Socobun.Sokoban">
+        		
+        <property name="context-root" value="Socobun.Sokoban"/>
+        		
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/test"/>
+        	
+    </wb-module>
+    
 </project-modules>
