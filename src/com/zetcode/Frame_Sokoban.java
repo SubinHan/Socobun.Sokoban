@@ -1,7 +1,7 @@
 package com.zetcode;
 
 // import java.awt.Color;
-import javax.swing.JFrame; 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.zetcode.Login.Panel_Login;
@@ -50,7 +50,7 @@ public class Frame_Sokoban extends JFrame {
     	loginScene = new Panel_Login(this);
     	signupScene = new Panel_SignUp(this);
     	
-        add(loginScene);
+        add(board_levelList);
         setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT);
         setTitle("Sokoban");
         
