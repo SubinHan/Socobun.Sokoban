@@ -1,34 +1,28 @@
 package com.zetcode.Login;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class UserInfo {
 	
-	String id, pw, nickname;
+	public String id, nickname, pw;
 	int score;
 	
 	public UserInfo() {
-        // Default constructor required for calls to DataSnapshot.getValue(UserInfo.class)
     }
 	
-	public UserInfo(String nickname, String id, String pw) {
+	public UserInfo(String nickname, String id, char[] pw) {
 		this.nickname = nickname;
 		this.id = id;
-		this.pw = pw;
-	}
-	
-	public String getNickname() {
-		return this.nickname;
-	}
-	
-	public String getID() {
-		return this.id;
+		this.pw = passwordToString(pw);
 	}
 
-	public String getPW() {
-		return this.pw;
-	}
-	
-	public int getScore() {
-		return this.score;
+	public static String passwordToString(char[] ch) {
+		int len = ch.length;
+		String result = "";
+		for(int i=0 ; i<len ; ++i) {
+			result += ch[i];
+		}
+		return result;
 	}
 	
 	public void setScore(int newscore) {

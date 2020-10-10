@@ -7,8 +7,4 @@
  * in the user manual at https://docs.gradle.org/6.6.1/userguide/multi_project_builds.html
  */
 
-<<<<<<< HEAD
-rootProject.name = 'socobun.sokoban'
-=======
-rootProject.name = 'Socobun.Sokoban'
->>>>>>> 067cadc508c77469008fbd9850dcf154e25b2f4a
+rootProject.name = 'socobun_sokoban'

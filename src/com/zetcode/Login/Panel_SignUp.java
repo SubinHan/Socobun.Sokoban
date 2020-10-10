@@ -107,26 +107,17 @@ public class Panel_SignUp extends JPanel {
 		available_PW.setForeground(new Color(255, 0, 0));
 		
 
-		JLabel label_PWconfirm = new JLabel("Password Confirm");
-		JPasswordField field_PWconfirm = new JPasswordField(20);
-		JLabel available_PWconfirm = new JLabel("");
+		label_PWconfirm = new JLabel("Password Confirm");
+		field_PWconfirm = new JPasswordField(20);
+		available_PWconfirm = new JLabel("");
 		label_PWconfirm.setHorizontalAlignment(SwingConstants.RIGHT);
 		field_PWconfirm.setEchoChar('◆');
 		available_PWconfirm.setForeground(new Color(255, 0, 0));
 		
+		InputListener inputListener = new InputListener();
 		JButton okBtn = new JButton("OK");
-		okBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(nicknameAvailable);
-				System.out.println(idAvailable);
-				System.out.println(pwAvailable);
-				System.out.println(pwconfirmAvailable);
-				if(nicknameAvailable && idAvailable && pwAvailable && pwconfirmAvailable) {
-					FirebaseClass.putUser(new UserInfo(field_Nickname.getText(), field_ID.getText(), field_PW.getPassword().toString()));
-					frame.changePanel(SokobanUtilities.PANEL_LOGIN);
-				}
-			}
-		});
+		okBtn.addActionListener(inputListener);
+		field_PWconfirm.addActionListener(inputListener);
 		
 		panelCenter.add(label_Nickname);
 		panelCenter.add(field_Nickname);
@@ -183,7 +174,7 @@ public class Panel_SignUp extends JPanel {
 				if(field_Nickname.getText().length() < 2) {
 					available_Nickname.setText("두 자 이상 입력해주세요.");
 				} else {
-					FirebaseClass.callExists("nickname", field_Nickname.getText(), panel);
+					FirebaseClass.checkSignupForm("nickname", field_Nickname.getText(), panel);
 				}
 			}
 
@@ -207,10 +198,10 @@ public class Panel_SignUp extends JPanel {
 			
 			private void whenChanged() {
 				
-				if(field_Nickname.getText().length() < 2) {
+				if(field_ID.getText().length() < 2) {
 					available_ID.setText("두 자 이상 입력해주세요.");
 				} else {
-					FirebaseClass.callExists("id", field_ID.getText(), panel);
+					FirebaseClass.checkSignupForm("id", field_ID.getText(), panel);
 				}
 			}
 
@@ -316,6 +307,17 @@ public class Panel_SignUp extends JPanel {
 		}
 	}
 	
+	private class InputListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if(nicknameAvailable && idAvailable && pwAvailable && pwconfirmAvailable) {
+				FirebaseClass.putUser(new UserInfo(field_Nickname.getText(), field_ID.getText(), field_PW.getPassword()));
+				field_Nickname.setText("");field_ID.setText("");field_PW.setText("");field_PWconfirm.setText("");
+				nicknameAvailable = false;idAvailable = false;pwAvailable = false;pwconfirmAvailable = false;
+				available_Nickname.setText("");available_ID.setText("");available_PW.setText("");available_PWconfirm.setText("");
+				frame.changePanel(SokobanUtilities.PANEL_LOGIN);
+			}
+		}
+	}
 	
 	private class EnterListener implements ActionListener { // 엔터누르면 커서 다음으로 이동
 		public void actionPerformed(ActionEvent e) {

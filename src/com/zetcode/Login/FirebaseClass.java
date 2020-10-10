@@ -10,7 +10,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseClass {
@@ -41,7 +40,7 @@ public class FirebaseClass {
 
 	static boolean exists = false;
 	
-	public static void callExists(String searchingCat, String fieldText, Panel_SignUp pane) {
+	public static void checkSignupForm(String searchingCat, String fieldText, Panel_SignUp pane) {
 		
 		rootReference.child("users").orderByChild(searchingCat).equalTo(fieldText).addValueEventListener(new ValueEventListener() {
 
@@ -60,9 +59,52 @@ public class FirebaseClass {
 
 		});
 	}
+
+	public static void checkLoginForm(String searchingCat, String fieldText, Panel_Login pane) {
+		
+		rootReference.child("users").orderByChild(searchingCat).equalTo(fieldText).addValueEventListener(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				if(searchingCat.contentEquals("id")) {
+					pane.setIDAvailabilityLabel(snapshot.exists());
+				}
+			}
+			
+			@Override
+			public void onCancelled(DatabaseError error) {
+				System.out.println("cancelled");
+			}
+
+		});
+	}
+
+	public static void checkIDPW(String inputID, String inputPW, Panel_Login pane) {
+		
+		rootReference.child("users").orderByChild("id").equalTo(inputID).addValueEventListener(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot snapshot) {
+				pane.setPWAvailabilityLabel(getPasswordOnDB(snapshot).contentEquals(inputPW)); // PW 맞는지 아닌지 반환
+			}
+			
+			private String getPasswordOnDB(DataSnapshot snapshot) { // 파이어베이스 DB 스냅샷에서 비번 추출
+				String json = snapshot.toString();
+				int pwStartIndex = json.indexOf("={pw=") + 5;
+				int pwEndIndex = json.indexOf(", nickname=");
+				return json.substring(pwStartIndex, pwEndIndex);
+			}
+			
+			@Override
+			public void onCancelled(DatabaseError error) {
+				System.out.println("cancelled");
+			}
+
+		});
+	}
 	
 	public static void putUser(UserInfo info) {
-		rootReference.child("users").child(info.getID()).setValueAsync(info);
+		rootReference.child("users").child(info.id).setValueAsync(info);
 	}
 
 }
