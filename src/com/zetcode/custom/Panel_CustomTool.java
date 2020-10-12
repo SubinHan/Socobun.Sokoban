@@ -46,33 +46,12 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 			int key = e.getKeyCode();
 
 			switch (key) {
-
-			case KeyEvent.VK_LEFT:
-				fireKeyPressed(SokobanUtilities.KEY_LEFT);
-				break;
-
-			case KeyEvent.VK_RIGHT:
-				fireKeyPressed(SokobanUtilities.KEY_RIGHT);
-				break;
-
-			case KeyEvent.VK_UP:
-				fireKeyPressed(SokobanUtilities.KEY_UP);
-				break;
-
-			case KeyEvent.VK_DOWN:
-				fireKeyPressed(SokobanUtilities.KEY_DOWN);
-				break;
-
-			case KeyEvent.VK_R:
-				fireKeyPressed(SokobanUtilities.KEY_R);
-				break;
-
 			case KeyEvent.VK_ESCAPE:
 				frame.changePanel(new Panel_Custom(frame));
 				break;
 
 			default:
-				break;
+				fireKeyPressed(key);
 			}
 			revalidate();
 			repaint();

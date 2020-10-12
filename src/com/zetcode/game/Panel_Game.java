@@ -428,7 +428,7 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 	@Override
 	public void keyPressed(int key) {
 		switch (key) {
-		case SokobanUtilities.KEY_UP:
+		case KeyEvent.VK_UP:
 			if (checkWallCollision(soko, TOP_COLLISION)) {
 				return;
 			}
@@ -439,7 +439,7 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 			fireMoved();
 			break;
 			
-		case SokobanUtilities.KEY_DOWN:
+		case KeyEvent.VK_DOWN:
 			if (checkWallCollision(soko, BOTTOM_COLLISION)) {
 				return;
 			}
@@ -450,7 +450,7 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 			fireMoved();
 			break;
 			
-		case SokobanUtilities.KEY_LEFT:
+		case KeyEvent.VK_LEFT:
 			if (checkWallCollision(soko, LEFT_COLLISION))
 				return;
 			if (checkBagCollision(LEFT_COLLISION))
@@ -459,7 +459,7 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 			fireMoved();
 			break;
 			
-		case SokobanUtilities.KEY_RIGHT:
+		case KeyEvent.VK_RIGHT:
 			if (checkWallCollision(soko, RIGHT_COLLISION)) {
 				return;
 			}
@@ -470,7 +470,7 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 			fireMoved();
 			break;
 			
-		case SokobanUtilities.KEY_R:
+		case KeyEvent.VK_R:
 			restartLevel();
 			fireRestarted();
 			break;

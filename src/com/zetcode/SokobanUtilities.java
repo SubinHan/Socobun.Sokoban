@@ -23,12 +23,6 @@ public class SokobanUtilities {
 	public final static char ACTOR_AREA = '.';
 	public final static char ACTOR_BAGGAGE = '$';
 	public final static char ACTOR_PLAYER = '@';
-	public final static int KEY_UP = 1;
-	public final static int KEY_DOWN = 2;
-	public final static int KEY_LEFT = 3;
-	public final static int KEY_RIGHT = 4;
-	public final static int KEY_ESCAPE = 5;
-	public final static int KEY_R = 6;
 	public final static int PANEL_MAIN = 0;
 	public final static int PANEL_NORMAL = 1;
 	public final static int PANEL_ENDLESS = 2;
