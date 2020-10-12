@@ -43,10 +43,8 @@ public class Panel_LevelSelector extends JPanel {
 					try {
 						fireLevelSelected(new Level(file));
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-//					fireLevelSelected(SokobanUtilities.fileToCharArray(file));
 				}
 				
 			});
@@ -90,7 +88,6 @@ public class Panel_LevelSelector extends JPanel {
 					try {
 						fireLevelSelected(new Level(file));
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}

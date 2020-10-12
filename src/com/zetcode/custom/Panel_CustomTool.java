@@ -517,7 +517,6 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 
 	@Override
 	public void moved() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -528,7 +527,6 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 
 	@Override
 	public void restarted() {
-		// TODO Auto-generated method stub
 
 	}
 

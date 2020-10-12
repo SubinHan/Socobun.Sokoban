@@ -91,14 +91,6 @@ public class Panel_MainScene extends JPanel{
 		this.add(panelCenter, BorderLayout.CENTER);
 
 		JPanel panelSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonLogin = new JButton("Login");
-		buttonLogin.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-		buttonLogin.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		panelSouth.add(buttonLogin);
 		this.add(panelSouth, BorderLayout.SOUTH);
         setFocusable(true);
 	}

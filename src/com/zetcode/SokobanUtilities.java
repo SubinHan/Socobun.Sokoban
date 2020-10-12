@@ -32,47 +32,6 @@ public class SokobanUtilities {
 	public final static int PANEL_LEVELLIST = 6;
 	public final static int PANEL_LOGIN = 7;
 	public final static int PANEL_SIGNUP = 8;
-
-	/**
-	 * 
-	 * @param levelFile
-	 * @return String으로 변환된 level
-	 */
-	public static String fileToString(File levelFile) {
-		String level = "";
-		try {
-			FileReader fr = new FileReader(levelFile);
-			for (int i = 0; i < MAX_LEVEL_HEIGHT; i++) {
-				for (int j = 0; j < MAX_LEVEL_WIDTH; j++) {
-					char cr = (char) fr.read();
-					level = level.concat(Character.toString(cr));
-				}
-				level = level.concat("\n");
-			}
-			fr.close();
-		} catch (IOException exception) {
-			;
-		}
-		return level;
-	}
-
-	public static char[][] fileToCharArray(File levelFile) {
-		char[][] level = new char[MAX_LEVEL_WIDTH][MAX_LEVEL_HEIGHT];
-		try {
-			FileReader fr = new FileReader(levelFile);
-			for (int i = 0; i < MAX_LEVEL_HEIGHT; i++) {
-				for (int j = 0; j < MAX_LEVEL_WIDTH; j++) {
-					char cr = (char) fr.read();
-					level[j][i] = cr;
-				}
-			}
-			fr.close();
-		} catch (IOException exception) {
-			;
-		}
-		return level;
-	}
-
 	/**
 	 * 
 	 * @param filePath 저장할 파일 경로
@@ -97,19 +56,5 @@ public class SokobanUtilities {
 			e.printStackTrace();
 		}
 
-	}
-
-	public static Level fileToLevel(File file) throws IOException {
-		char[][] level = new char[MAX_LEVEL_WIDTH][MAX_LEVEL_HEIGHT];
-		FileReader fr = new FileReader(file);
-		for (int i = 0; i < MAX_LEVEL_HEIGHT; i++) {
-			for (int j = 0; j < MAX_LEVEL_WIDTH; j++) {
-				char cr = (char) fr.read();
-				level[j][i] = cr;
-			}
-		}
-		fr.close();		
-
-		return null;
 	}
 }

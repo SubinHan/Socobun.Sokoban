@@ -10,14 +10,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.zetcode.Frame_Sokoban;
-import com.zetcode.SokobanUtilities;
 import com.zetcode.levelSelect.FileSearcher;
 import com.zetcode.model.Highscore;
 import com.zetcode.model.Level;
@@ -49,12 +48,11 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	private Level level;
 
 	private JLabel labelStatus;
-	private JPanel panelNorth, panelWest, panelCenter, panelCenterInner, panelEast, panelSouth;
+	private JPanel panelNorth, panelWest, panelCenter, panelEast;
 	private JPanel parent;
 	private JButton buttonBack;
-	private ArrayList sokobanKeyListeners;
 	private int score, numOfMove, numOfUndo, elapsedTime;
-	private long startedTime;
+	private Timer timer;
 
 	private JLabel labelScore;
 	private JLabel labelMove;
@@ -72,11 +70,22 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	}
 
 	private void resetScore() {
+		if (timer == null) {
+			timer = new Timer(1000, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					elapsedTime++;
+					updateScores();
+				}
+			});
+			timer.start();
+		} else
+			timer.restart();
 		score = 1000;
 		numOfMove = 0;
 		numOfUndo = 0;
 		elapsedTime = 0;
-		startedTime = System.currentTimeMillis();
+		updateScores();
 	}
 
 	private void initPanelCenter() {
@@ -95,7 +104,6 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		labelUndo = new JLabel();
 		labelTime = new JLabel();
 		resetScore();
-		updateScores();
 		labelScore.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		labelMove.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
 		labelUndo.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
@@ -150,6 +158,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	}
 
 	private void backToParent() {
+		timer.stop();
 		frame.changePanel(parent);
 	}
 
@@ -176,14 +185,18 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	@Override
 	public void restarted() {
 		resetScore();
+		updateScores();
+		revalidate();
+		repaint();
 	}
 
 	@Override
 	public void completed() {
 		labelStatus.setText("Completed!");
+		timer.stop();
 		Highscore newScore = new Highscore(score, numOfMove + 1, numOfUndo, elapsedTime);
 		Highscore oldScore;
-		if(FileSearcher.getFile("src/highscores", level.getFile().getName()).exists()) {
+		if (FileSearcher.getFile("src/highscores", level.getFile().getName()).exists()) {
 			oldScore = new Highscore(level.getFile().getName());
 			if (oldScore.compareTo(newScore) > 0) {
 				;
@@ -194,8 +207,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		}
-		else
+		} else
 			try {
 				newScore.writeHighscoreToFile(level.getFile().getName());
 			} catch (IOException e) {
