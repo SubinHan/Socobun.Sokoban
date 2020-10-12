@@ -1,7 +1,8 @@
 package unitTest;
 
-import java.io.File; 
-import com.zetcode.FileSearcher;
+import java.io.File;
+
+import com.zetcode.levelSelect.FileSearcher;
 
 import junit.framework.TestCase;
 

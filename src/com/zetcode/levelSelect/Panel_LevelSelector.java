@@ -1,16 +1,21 @@
-package com.zetcode;
+package com.zetcode.levelSelect;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import com.zetcode.Frame_Sokoban;
+import com.zetcode.model.ILevelSelectorListener;
+import com.zetcode.model.Level;
 
 public class Panel_LevelSelector extends JPanel {
 
@@ -36,21 +41,21 @@ public class Panel_LevelSelector extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					fireLevelSelected(SokobanUtilities.fileToCharArray(file));
+					try {
+						fireLevelSelected(new Level(file));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+//					fireLevelSelected(SokobanUtilities.fileToCharArray(file));
 				}
 				
 			});
 			button.setPreferredSize(new Dimension(400, 100));
 			panelGrid.add(button);
 		}
-//		for(int i = 0; i < 11; i++) {
-//			JButton button = new JButton();
-//			button.setPreferredSize(new Dimension(400, 100));
-//			panelFlow.add(button);
-//		}
 		
 		panelScroll = new JScrollPane(panelGrid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		this.setLayout(new FlowLayout());
 		panelScroll.setPreferredSize(new Dimension(600, 600));
 		this.add(panelScroll);
 	}
@@ -61,7 +66,7 @@ public class Panel_LevelSelector extends JPanel {
 		listeners.add(listener);
 	}
 	
-	private void fireLevelSelected(char[][] level) {
+	private void fireLevelSelected(Level level) {
 		Iterator iter = listeners.iterator();
 		while(iter.hasNext()) {
 			ILevelSelectorListener listener = (ILevelSelectorListener)iter.next();
@@ -83,21 +88,20 @@ public class Panel_LevelSelector extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					fireLevelSelected(SokobanUtilities.fileToCharArray(file));
+					try {
+						fireLevelSelected(new Level(file));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				
 			});
 			button.setPreferredSize(new Dimension(400, 100));
 			panelGrid.add(button);
 		}
-//		for(int i = 0; i < 11; i++) {
-//			JButton button = new JButton();
-//			button.setPreferredSize(new Dimension(400, 100));
-//			panelFlow.add(button);
-//		}
 		
 		panelScroll = new JScrollPane(panelGrid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//		this.setLayout(new FlowLayout());
 		panelScroll.setPreferredSize(new Dimension(600, 600));
 		this.add(panelScroll);
 		revalidate();

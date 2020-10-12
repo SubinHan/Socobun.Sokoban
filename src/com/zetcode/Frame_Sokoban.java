@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 
 import com.zetcode.Login.Panel_Login;
 import com.zetcode.Login.Panel_SignUp;
+import com.zetcode.custom.Panel_CustomTool;
+import com.zetcode.game.Panel_GameOuter;
+import com.zetcode.levelSelect.Panel_Custom;
+import com.zetcode.levelSelect.Panel_Normal;
 
 public class Frame_Sokoban extends JFrame {
 
@@ -25,12 +29,12 @@ public class Frame_Sokoban extends JFrame {
 	private final int PANEL_SIGNUP = SokobanUtilities.PANEL_SIGNUP;
 	
 	Panel_MainScene mainScene = null; // 0 : 메인
-	Panel_Board board_normal = null; // 1 : 일반모드
+	Panel_GameOuter board_normal = null; // 1 : 일반모드
 	Panel_Endless board_endless = null; // 2 : 무한모드
 	Panel_Custom board_custom = null; // 3 : 커스텀
 	Panel_Ranking rankingScene = null; // 4 : 랭킹
 	Panel_CustomTool board_customTool = null; // 5 커스텀 툴
-	Panel_LevelList board_levelList = null;
+	Panel_Normal board_levelList = null;
 	Panel_Login loginScene = null;
 	Panel_SignUp signupScene = null;
 	
@@ -43,14 +47,14 @@ public class Frame_Sokoban extends JFrame {
     private void initUI() {
         
     	mainScene = new Panel_MainScene(this);
-    	board_normal = new Panel_Board(this);
+//    	board_normal = new Panel_Nro(this);
     	board_custom = new Panel_Custom(this);
     	board_customTool = new Panel_CustomTool(this);
-    	board_levelList = new Panel_LevelList(this);
+    	board_levelList = new Panel_Normal(this);
     	loginScene = new Panel_Login(this);
     	signupScene = new Panel_SignUp(this);
     	
-        add(board_levelList);
+        add(loginScene);
         setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT);
         setTitle("Sokoban");
         

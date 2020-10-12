@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.zetcode.custom;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,13 +14,24 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Panel_CustomTool extends JPanel {
+import com.zetcode.Frame_Sokoban;
+import com.zetcode.SokobanUtilities;
+import com.zetcode.game.Panel_Game;
+import com.zetcode.levelSelect.FileSearcher;
+import com.zetcode.levelSelect.Panel_Custom;
+import com.zetcode.model.IGameListener;
+import com.zetcode.model.ISokobanKeyListener;
+import com.zetcode.model.Level;
+
+public class Panel_CustomTool extends JPanel implements IGameListener {
 
 	/**
 	 * 
@@ -35,6 +46,26 @@ public class Panel_CustomTool extends JPanel {
 			int key = e.getKeyCode();
 
 			switch (key) {
+
+			case KeyEvent.VK_LEFT:
+				fireKeyPressed(SokobanUtilities.KEY_LEFT);
+				break;
+
+			case KeyEvent.VK_RIGHT:
+				fireKeyPressed(SokobanUtilities.KEY_RIGHT);
+				break;
+
+			case KeyEvent.VK_UP:
+				fireKeyPressed(SokobanUtilities.KEY_UP);
+				break;
+
+			case KeyEvent.VK_DOWN:
+				fireKeyPressed(SokobanUtilities.KEY_DOWN);
+				break;
+
+			case KeyEvent.VK_R:
+				fireKeyPressed(SokobanUtilities.KEY_R);
+				break;
 
 			case KeyEvent.VK_ESCAPE:
 				frame.changePanel(new Panel_Custom(frame));
@@ -67,7 +98,8 @@ public class Panel_CustomTool extends JPanel {
 	private boolean isChanged;
 	private boolean isConfirmed;
 	private boolean isPlaying;
-	private char level[][];
+	private char levelArray[][];
+	private Level level;
 
 	private JLabel levelImages[][], labelStatus;
 	private JPanel panelNorth, panelWest, panelCenter, panelCenterInner, panelEast, panelSouth;
@@ -75,6 +107,7 @@ public class Panel_CustomTool extends JPanel {
 	private GridBagConstraints gbcs[][];
 
 	private char brush;
+	private ArrayList sokobanKeyListeners;
 
 	/**
 	 * 새로운 맵 만들기.
@@ -86,10 +119,10 @@ public class Panel_CustomTool extends JPanel {
 
 		this.addKeyListener(new KeyListener());
 
-		level = new char[MAX_LEVEL_WIDTH][MAX_LEVEL_HEIGHT];
+		levelArray = new char[MAX_LEVEL_WIDTH][MAX_LEVEL_HEIGHT];
 		for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {
 			for (int j = 0; j < MAX_LEVEL_HEIGHT; j++) {
-				level[i][j] = ACTOR_WALL;
+				levelArray[i][j] = ACTOR_WALL;
 			}
 		}
 		levelImages = new JLabel[MAX_LEVEL_WIDTH][MAX_LEVEL_HEIGHT];
@@ -374,16 +407,19 @@ public class Panel_CustomTool extends JPanel {
 						labelStatus.setText("is not valid map.");
 						return;
 					}
-					panelCenter.removeAll();
-					Panel_CustomPlay panelCustomPlay = new Panel_CustomPlay(frame, Panel_CustomTool.this, level);
-					panelCenter.add(panelCustomPlay);
-					labelStatus.setText(" ");
-					buttonPlay.setText("Back to Custom Mode");
-					panelCustomPlay.requestFocusInWindow();
-					isPlaying = true;
+					
+					Panel_Game panelGame = new Panel_Game(frame, Panel_CustomTool.this, new Level(levelArray));
+					if (panelGame instanceof ISokobanKeyListener) {
+						addSokobanKeyListener((ISokobanKeyListener) panelGame);
+						panelCenter.removeAll();
+						panelCenter.add(panelGame);
+						labelStatus.setText(" ");
+						buttonPlay.setText("Back to Custom Mode");
+						Panel_CustomTool.this.requestFocusInWindow();
+						isPlaying = true;
+					}
 				} else {
 					backToCustomMode();
-
 				}
 				revalidate();
 				repaint();
@@ -402,7 +438,8 @@ public class Panel_CustomTool extends JPanel {
 	 * 맵을 file로 저장.
 	 */
 	protected void saveMap() {
-		SokobanUtilities.charArrayToFile("src/CustomMaps/Custom Map " + (FileSearcher.getFiles("src/customMaps").length + 1), level);
+		SokobanUtilities.charArrayToFile(
+				"src/CustomMaps/Custom Map " + (FileSearcher.getFiles("src/customMaps").length + 1), levelArray);
 
 		isChanged = false;
 	}
@@ -421,7 +458,7 @@ public class Panel_CustomTool extends JPanel {
 
 		for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {
 			for (int j = 0; j < MAX_LEVEL_HEIGHT; j++) {
-				switch (level[i][j]) {
+				switch (levelArray[i][j]) {
 				case ACTOR_AREA:
 					hasArea = true;
 					numOfArea++;
@@ -465,9 +502,10 @@ public class Panel_CustomTool extends JPanel {
 
 	/**
 	 * 마우스 클릭을 통해 맵을 수정할 시 호출.
-	 * @param x		x좌표
-	 * @param y		y좌표
-	 * @param brush	brush의 종류
+	 * 
+	 * @param x     x좌표
+	 * @param y     y좌표
+	 * @param brush brush의 종류
 	 */
 	protected void updateLevelImage(int x, int y, char brush) {
 		if (x >= MAX_LEVEL_WIDTH || x < 0 || y >= MAX_LEVEL_HEIGHT || y < 0) {
@@ -477,15 +515,15 @@ public class Panel_CustomTool extends JPanel {
 			System.out.println("Player");
 			for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {
 				for (int j = 0; j < MAX_LEVEL_HEIGHT; j++) {
-					if (level[i][j] == ACTOR_PLAYER) {
-						level[i][j] = ACTOR_GROUND;
+					if (levelArray[i][j] == ACTOR_PLAYER) {
+						levelArray[i][j] = ACTOR_GROUND;
 						levelImages[i][j] = new JLabel(parseImage(ACTOR_GROUND));
 						levelImages[x][y] = new JLabel(parseImage(brush));
 					}
 				}
 			}
 		}
-		level[x][y] = brush;
+		levelArray[x][y] = brush;
 		System.out.println(brush);
 		levelImages[x][y] = new JLabel(parseImage(brush));
 
@@ -497,8 +535,48 @@ public class Panel_CustomTool extends JPanel {
 	private void updateLevelImages() {
 		for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {
 			for (int j = 0; j < MAX_LEVEL_HEIGHT; j++) {
-				levelImages[i][j] = new JLabel(parseImage(level[i][j]));
+				levelImages[i][j] = new JLabel(parseImage(levelArray[i][j]));
 			}
 		}
+	}
+
+	@Override
+	public void moved() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	@Override
+	public void undid() {
+		
+	}
+
+	@Override
+	public void restarted() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void completed() {
+		isConfirmed = true;
+		labelStatus.setForeground(Color.GREEN);
+		labelStatus.setText("Confirmed!");
+		backToCustomMode();
+	}
+
+	public void fireKeyPressed(int key) {
+		Iterator iter = sokobanKeyListeners.iterator();
+		while (iter.hasNext()) {
+			ISokobanKeyListener listener = (ISokobanKeyListener) iter.next();
+			listener.keyPressed(key);
+		}
+
+	}
+
+	private void addSokobanKeyListener(ISokobanKeyListener listener) {
+		if (sokobanKeyListeners == null)
+			sokobanKeyListeners = new ArrayList();
+		sokobanKeyListeners.add(listener);
 	}
 }

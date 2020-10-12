@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.zetcode.levelSelect;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,6 +16,12 @@ import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.zetcode.Frame_Sokoban;
+import com.zetcode.SokobanUtilities;
+import com.zetcode.game.Panel_GameOuter;
+import com.zetcode.model.ILevelSelectorListener;
+import com.zetcode.model.Level;
 
 /**
  * Custom Mode ¡¯¿‘ Ω√ √π »≠∏È.
@@ -70,44 +76,7 @@ public class Panel_Custom extends JPanel implements ILevelSelectorListener {
 		JPanel panelList;
 		panelList = new Panel_LevelSelector(frame, this, directory);
 		panelCenter.add(panelList, BorderLayout.CENTER);
-		
-//		JPanel panelCenter = new JPanel(new GridLayout(10, 1));
-//		JButton buttonNew = new JButton("New Custom Map..");
-//		buttonNew.setFont(new Font("∏º¿∫ ∞ÌµÒ", Font.PLAIN, 20));
-//		buttonNew.addActionListener(new ActionListener() {
-//
-//			public void actionPerformed(ActionEvent e) {
-//				frame.changePanel(5);
-//			}
-//		});
-//		panelCenter.add(buttonNew);
-//		File file = new File("Sample");
-//		if(file.exists()) {
-//			JButton buttonCustomMap = new JButton(file.getName());
-//			buttonCustomMap.addActionListener(new ActionListener() {
-//				
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					String level = "";
-//					
-//					level = SokobanUtilities.fileToString(file);
-//					if(frame.getContentPane() == null) return;
-//
-//					// ¿”Ω√∑Œ ∏∏µÍ.
-//			    	frame.getContentPane().removeAll();
-//					Panel_Board board = new Panel_Board(frame, level);
-//					frame.add(board);
-//		    		frame.setSize(1600, 900);
-//		            frame.setLocationRelativeTo(null);
-//		            board.requestFocusInWindow();
-//		            revalidate();
-//		            repaint();
-//				}
-//				
-//			});
-//			panelCenter.add(buttonCustomMap);
-//		}
-//		
+	
 		this.add(panelCenter, BorderLayout.CENTER);
 
 		JPanel panelSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -116,7 +85,7 @@ public class Panel_Custom extends JPanel implements ILevelSelectorListener {
 		buttonBack.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				frame.changePanel(0);
+				frame.changePanel(SokobanUtilities.PANEL_MAIN);
 			}
 		});
 		panelSouth.add(buttonBack);
@@ -145,8 +114,8 @@ public class Panel_Custom extends JPanel implements ILevelSelectorListener {
 	}
 
 	@Override
-	public void levelSelected(char[][] level) {
-		frame.changePanel(new Panel_Normal(frame, this, level));
+	public void levelSelected(Level level) {
+		frame.changePanel(new Panel_GameOuter(frame, this, level));
 	}
 
 }

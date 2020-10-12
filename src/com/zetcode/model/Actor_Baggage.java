@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.zetcode.model;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;

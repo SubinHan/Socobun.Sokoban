@@ -1,4 +1,4 @@
-package com.zetcode;
+package com.zetcode.game;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,96 +6,25 @@ import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-/**
- * Panel_Board의 내용을 때려박았음. Panel_Board를 재사용 하고 싶은데, 아직 코드 구성 상 힘들 것 같아서 일단 코드
- * 그대로 때려박고 고쳐서 사용 하였음. Panel_CustomPlay는 Panel_CustomTool.PanelCenter을 채우고 있는
- * Panel임.
- */
-public class Panel_CustomPlay extends JPanel {
+import com.zetcode.Frame_Sokoban;
+import com.zetcode.SokobanUtilities;
+import com.zetcode.model.Actor;
+import com.zetcode.model.Actor_Area;
+import com.zetcode.model.Actor_Baggage;
+import com.zetcode.model.Actor_Ground;
+import com.zetcode.model.Actor_Player;
+import com.zetcode.model.Actor_Wall;
+import com.zetcode.model.IGameListener;
+import com.zetcode.model.ISokobanKeyListener;
+import com.zetcode.model.Level;
 
-	private static final long serialVersionUID = 1679415530039064054L;
-
-	private class TAdapter extends KeyAdapter {
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-//
-//            if (isCompleted) {
-//                return;
-//            }
-
-			int key = e.getKeyCode();
-
-			switch (key) {
-
-			case KeyEvent.VK_LEFT:
-
-				if (checkWallCollision(soko, LEFT_COLLISION))
-					return;
-
-				if (checkBagCollision(LEFT_COLLISION))
-					return;
-
-				soko.move(-SIZE_OF_CELLS, 0);
-
-				break;
-
-			case KeyEvent.VK_RIGHT:
-
-				if (checkWallCollision(soko, RIGHT_COLLISION)) {
-					return;
-				}
-
-				if (checkBagCollision(RIGHT_COLLISION)) {
-					return;
-				}
-
-				soko.move(SIZE_OF_CELLS, 0);
-
-				break;
-
-			case KeyEvent.VK_UP:
-
-				if (checkWallCollision(soko, TOP_COLLISION)) {
-					return;
-				}
-
-				if (checkBagCollision(TOP_COLLISION)) {
-					return;
-				}
-
-				soko.move(0, -SIZE_OF_CELLS);
-
-				break;
-
-			case KeyEvent.VK_DOWN:
-
-				if (checkWallCollision(soko, BOTTOM_COLLISION)) {
-					return;
-				}
-
-				if (checkBagCollision(BOTTOM_COLLISION)) {
-					return;
-				}
-
-				soko.move(0, SIZE_OF_CELLS);
-
-				break;
-
-			default:
-				break;
-			}
-
-			repaint();
-		}
-	}
+public class Panel_Game extends JPanel implements ISokobanKeyListener {
 
 	Frame_Sokoban frame = null;
-
-	Panel_CustomTool parent;
 
 	private final int MAX_LEVEL_WIDTH = SokobanUtilities.MAX_LEVEL_WIDTH;
 	private final int MAX_LEVEL_HEIGHT = SokobanUtilities.MAX_LEVEL_HEIGHT;
@@ -113,38 +42,29 @@ public class Panel_CustomPlay extends JPanel {
 	private ArrayList<Actor_Wall> walls;
 	private ArrayList<Actor_Baggage> baggs;
 	private ArrayList<Actor_Area> areas;
-
 	private ArrayList<Actor_Ground> grounds;
 	private Actor_Player soko;
-	private char level[][];
+	private Level level;
+	private char levelArray[][];
+	ArrayList listeners;
 
-	/**
-	 * 
-	 * @param f				
-	 * @param parent		이 클래스는 Panel_CustomTool.panelCenter 내부에 있는 Panel임. 따라서 Panel_CustomTool을 인자로 받음.
-	 * @param givenLevel	Panel_CustomTool에서 넘겨주는 level을 이용해 맵을 구성하고 플레이함.
-	 */
-	public Panel_CustomPlay(Frame_Sokoban f, Panel_CustomTool parent, char[][] givenLevel) {
+	public Panel_Game(Frame_Sokoban f, IGameListener listener, Level givenLevel) {
 		frame = f;
-		this.parent = parent;
-
-		this.addKeyListener(new TAdapter());
-
+		addGameListener(listener);
+		
 		if (givenLevel == null)
 			return;
-		if (givenLevel.length < MAX_LEVEL_WIDTH)
-			return;
-		if (givenLevel[0].length < MAX_LEVEL_HEIGHT)
-			return;
-
-		level = new char[MAX_LEVEL_WIDTH][MAX_LEVEL_HEIGHT];
-		for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {
-			for (int j = 0; j < MAX_LEVEL_HEIGHT; j++) {
-				level[i][j] = givenLevel[i][j];
-			}
-		}
+		level = givenLevel;
+		levelArray = level.getCharArray();
 
 		InitUI();
+	}
+
+	private void addGameListener(IGameListener listener) {
+		if (listeners == null) {
+			listeners = new ArrayList();
+		}
+		listeners.add(listener);
 	}
 
 	private void buildLevel(Graphics g) {
@@ -369,7 +289,30 @@ public class Panel_CustomPlay extends JPanel {
 		return false;
 	}
 
-	
+	private void fireCompleted() {
+		Iterator iter = listeners.iterator();
+		while (iter.hasNext()) {
+			IGameListener listener = (IGameListener) iter.next();
+			listener.completed();
+		}
+	}
+
+	public void fireMoved() {
+		Iterator iter = listeners.iterator();
+		while (iter.hasNext()) {
+			IGameListener listener = (IGameListener) iter.next();
+			listener.moved();
+		}
+	}
+
+	public void fireRestarted() {
+		Iterator iter = listeners.iterator();
+		while (iter.hasNext()) {
+			IGameListener listener = (IGameListener) iter.next();
+			listener.restarted();
+		}
+	}
+
 	private void InitUI() {
 		this.setPreferredSize(new Dimension(SIZE_OF_CELLS * MAX_LEVEL_WIDTH, SIZE_OF_CELLS * MAX_LEVEL_HEIGHT));
 		initWorld();
@@ -392,7 +335,7 @@ public class Panel_CustomPlay extends JPanel {
 		for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {
 			for (int j = 0; j < MAX_LEVEL_HEIGHT; j++) {
 
-				char item = level[i][j];
+				char item = levelArray[i][j];
 
 				switch (item) {
 				case ACTOR_WALL:
@@ -445,12 +388,10 @@ public class Panel_CustomPlay extends JPanel {
 		for (int i = 0; i < nOfBags; i++) {
 
 			Actor_Baggage bag = baggs.get(i);
-			System.out.println(bag.x() + ", " + bag.y());
 
 			for (int j = 0; j < nOfBags; j++) {
 
 				Actor_Area area = areas.get(j);
-				System.out.println(area.x() + ", " + area.y());
 				if (bag.x() == area.x() && bag.y() == area.y()) {
 
 					finishedBags += 1;
@@ -459,8 +400,7 @@ public class Panel_CustomPlay extends JPanel {
 		}
 
 		if (finishedBags == nOfBags) {
-			parent.backToCustomMode();
-			parent.confirm();
+			fireCompleted();
 		}
 	}
 
@@ -474,6 +414,72 @@ public class Panel_CustomPlay extends JPanel {
 	@Override
 	public void repaint() {
 		super.repaint();
+	}
+
+	private void restartLevel() {
+
+		areas.clear();
+		baggs.clear();
+		walls.clear();
+
+		initWorld();
+	}
+
+	@Override
+	public void keyPressed(int key) {
+		switch (key) {
+		case SokobanUtilities.KEY_UP:
+			if (checkWallCollision(soko, TOP_COLLISION)) {
+				return;
+			}
+			if (checkBagCollision(TOP_COLLISION)) {
+				return;
+			}
+			soko.move(0, -SIZE_OF_CELLS);
+			fireMoved();
+			break;
+			
+		case SokobanUtilities.KEY_DOWN:
+			if (checkWallCollision(soko, BOTTOM_COLLISION)) {
+				return;
+			}
+			if (checkBagCollision(BOTTOM_COLLISION)) {
+				return;
+			}
+			soko.move(0, SIZE_OF_CELLS);
+			fireMoved();
+			break;
+			
+		case SokobanUtilities.KEY_LEFT:
+			if (checkWallCollision(soko, LEFT_COLLISION))
+				return;
+			if (checkBagCollision(LEFT_COLLISION))
+				return;
+			soko.move(-SIZE_OF_CELLS, 0);
+			fireMoved();
+			break;
+			
+		case SokobanUtilities.KEY_RIGHT:
+			if (checkWallCollision(soko, RIGHT_COLLISION)) {
+				return;
+			}
+			if (checkBagCollision(RIGHT_COLLISION)) {
+				return;
+			}
+			soko.move(SIZE_OF_CELLS, 0);
+			fireMoved();
+			break;
+			
+		case SokobanUtilities.KEY_R:
+			restartLevel();
+			fireRestarted();
+			break;
+			
+		default:
+			break;
+		}
+
+		repaint();
 	}
 
 }
