@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Acl.User;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -60,6 +61,7 @@ public class FirebaseClass {
 		});
 	}
 
+	// 로그인할때 아이디 있는건지 확인
 	public static void checkLoginForm(String searchingCat, String fieldText, Panel_Login pane) {
 		
 		rootReference.child("users").orderByChild(searchingCat).equalTo(fieldText).addValueEventListener(new ValueEventListener() {
@@ -79,22 +81,17 @@ public class FirebaseClass {
 		});
 	}
 
+	// 로그인할때 아이디-패스워드 맞는지 확인
 	public static void checkIDPW(String inputID, String inputPW, Panel_Login pane) {
 		
-		rootReference.child("users").orderByChild("id").equalTo(inputID).addValueEventListener(new ValueEventListener() {
+		rootReference.child("users").child(inputID).addValueEventListener(new ValueEventListener() {
 
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
-				pane.setPWAvailabilityLabel(getPasswordOnDB(snapshot).contentEquals(inputPW)); // PW 맞는지 아닌지 반환
+				UserInfo info = snapshot.getValue(UserInfo.class);
+				System.out.println(info);
+				pane.setPWAvailabilityLabel(info.pw.contentEquals(inputPW)); // PW 맞는지 아닌지 반환
 			}
-			
-			private String getPasswordOnDB(DataSnapshot snapshot) { // 파이어베이스 DB 스냅샷에서 비번 추출
-				String json = snapshot.toString();
-				int pwStartIndex = json.indexOf("={pw=") + 5;
-				int pwEndIndex = json.indexOf(", nickname=");
-				return json.substring(pwStartIndex, pwEndIndex);
-			}
-			
 			@Override
 			public void onCancelled(DatabaseError error) {
 				System.out.println("cancelled");

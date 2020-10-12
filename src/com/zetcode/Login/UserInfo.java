@@ -29,4 +29,7 @@ public class UserInfo {
 		this.score = newscore;
 	}
 	
+	public String toString() {
+		return id + ", " + nickname + ", " + pw;
+	}
 }

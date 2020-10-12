@@ -1,6 +1,8 @@
 package com.zetcode;
 import java.awt.EventQueue;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import com.zetcode.Login.FirebaseClass;
 
 public class MAIN {
