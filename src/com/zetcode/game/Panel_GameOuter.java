@@ -20,8 +20,6 @@ import com.zetcode.Frame_Sokoban;
 import com.zetcode.SokobanUtilities;
 import com.zetcode.levelSelect.FileSearcher;
 import com.zetcode.model.Highscore;
-import com.zetcode.model.IGameListener;
-import com.zetcode.model.ISokobanKeyListener;
 import com.zetcode.model.Level;
 
 public class Panel_GameOuter extends JPanel implements IGameListener {
@@ -40,7 +38,6 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 				break;
 
 			default:
-				fireKeyPressed(key);
 				break;
 			}
 			revalidate();
@@ -72,9 +69,6 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		this.addKeyListener(new KeyListener());
 
 		InitUI();
-
-		if (panelCenter instanceof ISokobanKeyListener)
-			addSokobanKeyListener((ISokobanKeyListener) panelCenter);
 	}
 
 	private void resetScore() {
@@ -83,21 +77,6 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		numOfUndo = 0;
 		elapsedTime = 0;
 		startedTime = System.currentTimeMillis();
-	}
-
-	public void fireKeyPressed(int key) {
-		Iterator iter = sokobanKeyListeners.iterator();
-		while (iter.hasNext()) {
-			ISokobanKeyListener listener = (ISokobanKeyListener) iter.next();
-			listener.keyPressed(key);
-		}
-
-	}
-
-	private void addSokobanKeyListener(ISokobanKeyListener listener) {
-		if (sokobanKeyListeners == null)
-			sokobanKeyListeners = new ArrayList();
-		sokobanKeyListeners.add(listener);
 	}
 
 	private void initPanelCenter() {

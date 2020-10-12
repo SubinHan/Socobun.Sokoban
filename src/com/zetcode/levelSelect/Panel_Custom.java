@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import com.zetcode.Frame_Sokoban;
 import com.zetcode.SokobanUtilities;
 import com.zetcode.game.Panel_GameOuter;
-import com.zetcode.model.ILevelSelectorListener;
 import com.zetcode.model.Level;
 
 /**

@@ -1,4 +1,4 @@
-package com.zetcode.model;
+package com.zetcode.game;
 
 public interface IGameListener {
 	public void moved();

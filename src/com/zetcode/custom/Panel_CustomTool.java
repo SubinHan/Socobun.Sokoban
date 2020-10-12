@@ -24,11 +24,10 @@ import javax.swing.JPanel;
 
 import com.zetcode.Frame_Sokoban;
 import com.zetcode.SokobanUtilities;
+import com.zetcode.game.IGameListener;
 import com.zetcode.game.Panel_Game;
 import com.zetcode.levelSelect.FileSearcher;
 import com.zetcode.levelSelect.Panel_Custom;
-import com.zetcode.model.IGameListener;
-import com.zetcode.model.ISokobanKeyListener;
 import com.zetcode.model.Level;
 
 public class Panel_CustomTool extends JPanel implements IGameListener {
@@ -51,7 +50,7 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 				break;
 
 			default:
-				fireKeyPressed(key);
+				break;
 			}
 			revalidate();
 			repaint();
@@ -386,17 +385,14 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 						labelStatus.setText("is not valid map.");
 						return;
 					}
-					
+
 					Panel_Game panelGame = new Panel_Game(frame, Panel_CustomTool.this, new Level(levelArray));
-					if (panelGame instanceof ISokobanKeyListener) {
-						addSokobanKeyListener((ISokobanKeyListener) panelGame);
-						panelCenter.removeAll();
-						panelCenter.add(panelGame);
-						labelStatus.setText(" ");
-						buttonPlay.setText("Back to Custom Mode");
-						Panel_CustomTool.this.requestFocusInWindow();
-						isPlaying = true;
-					}
+					panelCenter.removeAll();
+					panelCenter.add(panelGame);
+					labelStatus.setText(" ");
+					buttonPlay.setText("Back to Custom Mode");
+					Panel_CustomTool.this.requestFocusInWindow();
+					isPlaying = true;
 				} else {
 					backToCustomMode();
 				}
@@ -524,10 +520,10 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void undid() {
-		
+
 	}
 
 	@Override
@@ -544,18 +540,4 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 		backToCustomMode();
 	}
 
-	public void fireKeyPressed(int key) {
-		Iterator iter = sokobanKeyListeners.iterator();
-		while (iter.hasNext()) {
-			ISokobanKeyListener listener = (ISokobanKeyListener) iter.next();
-			listener.keyPressed(key);
-		}
-
-	}
-
-	private void addSokobanKeyListener(ISokobanKeyListener listener) {
-		if (sokobanKeyListeners == null)
-			sokobanKeyListeners = new ArrayList();
-		sokobanKeyListeners.add(listener);
-	}
 }

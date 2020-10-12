@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.zetcode.Frame_Sokoban;
-import com.zetcode.model.ILevelSelectorListener;
 import com.zetcode.model.Level;
 
 public class Panel_LevelSelector extends JPanel {

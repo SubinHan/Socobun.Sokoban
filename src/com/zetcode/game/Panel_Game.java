@@ -18,12 +18,73 @@ import com.zetcode.model.Actor_Baggage;
 import com.zetcode.model.Actor_Ground;
 import com.zetcode.model.Actor_Player;
 import com.zetcode.model.Actor_Wall;
-import com.zetcode.model.IGameListener;
-import com.zetcode.model.ISokobanKeyListener;
 import com.zetcode.model.Level;
 
-public class Panel_Game extends JPanel implements ISokobanKeyListener {
+public class Panel_Game extends JPanel{
+	
+	private class KeyListener extends KeyAdapter {
 
+		@Override
+		public void keyPressed(KeyEvent e) {
+
+			int key = e.getKeyCode();
+
+			switch (key) {
+			case KeyEvent.VK_UP:
+				if (checkWallCollision(soko, TOP_COLLISION)) {
+					return;
+				}
+				if (checkBagCollision(TOP_COLLISION)) {
+					return;
+				}
+				soko.move(0, -SIZE_OF_CELLS);
+				fireMoved();
+				break;
+				
+			case KeyEvent.VK_DOWN:
+				if (checkWallCollision(soko, BOTTOM_COLLISION)) {
+					return;
+				}
+				if (checkBagCollision(BOTTOM_COLLISION)) {
+					return;
+				}
+				soko.move(0, SIZE_OF_CELLS);
+				fireMoved();
+				break;
+				
+			case KeyEvent.VK_LEFT:
+				if (checkWallCollision(soko, LEFT_COLLISION))
+					return;
+				if (checkBagCollision(LEFT_COLLISION))
+					return;
+				soko.move(-SIZE_OF_CELLS, 0);
+				fireMoved();
+				break;
+				
+			case KeyEvent.VK_RIGHT:
+				if (checkWallCollision(soko, RIGHT_COLLISION)) {
+					return;
+				}
+				if (checkBagCollision(RIGHT_COLLISION)) {
+					return;
+				}
+				soko.move(SIZE_OF_CELLS, 0);
+				fireMoved();
+				break;
+				
+			case KeyEvent.VK_R:
+				restartLevel();
+				fireRestarted();
+				break;
+				
+			default:
+				break;
+			}
+			revalidate();
+			repaint();
+		}
+	}
+	
 	Frame_Sokoban frame = null;
 
 	private final int MAX_LEVEL_WIDTH = SokobanUtilities.MAX_LEVEL_WIDTH;
@@ -51,6 +112,10 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 	public Panel_Game(Frame_Sokoban f, IGameListener listener, Level givenLevel) {
 		frame = f;
 		addGameListener(listener);
+		
+		if(listener instanceof JPanel) {
+			((JPanel) listener).addKeyListener(new KeyListener());
+		}
 		
 		if (givenLevel == null)
 			return;
@@ -425,61 +490,61 @@ public class Panel_Game extends JPanel implements ISokobanKeyListener {
 		initWorld();
 	}
 
-	@Override
-	public void keyPressed(int key) {
-		switch (key) {
-		case KeyEvent.VK_UP:
-			if (checkWallCollision(soko, TOP_COLLISION)) {
-				return;
-			}
-			if (checkBagCollision(TOP_COLLISION)) {
-				return;
-			}
-			soko.move(0, -SIZE_OF_CELLS);
-			fireMoved();
-			break;
-			
-		case KeyEvent.VK_DOWN:
-			if (checkWallCollision(soko, BOTTOM_COLLISION)) {
-				return;
-			}
-			if (checkBagCollision(BOTTOM_COLLISION)) {
-				return;
-			}
-			soko.move(0, SIZE_OF_CELLS);
-			fireMoved();
-			break;
-			
-		case KeyEvent.VK_LEFT:
-			if (checkWallCollision(soko, LEFT_COLLISION))
-				return;
-			if (checkBagCollision(LEFT_COLLISION))
-				return;
-			soko.move(-SIZE_OF_CELLS, 0);
-			fireMoved();
-			break;
-			
-		case KeyEvent.VK_RIGHT:
-			if (checkWallCollision(soko, RIGHT_COLLISION)) {
-				return;
-			}
-			if (checkBagCollision(RIGHT_COLLISION)) {
-				return;
-			}
-			soko.move(SIZE_OF_CELLS, 0);
-			fireMoved();
-			break;
-			
-		case KeyEvent.VK_R:
-			restartLevel();
-			fireRestarted();
-			break;
-			
-		default:
-			break;
-		}
-
-		repaint();
-	}
+//	@Override
+//	public void keyPressed(int key) {
+//		switch (key) {
+//		case KeyEvent.VK_UP:
+//			if (checkWallCollision(soko, TOP_COLLISION)) {
+//				return;
+//			}
+//			if (checkBagCollision(TOP_COLLISION)) {
+//				return;
+//			}
+//			soko.move(0, -SIZE_OF_CELLS);
+//			fireMoved();
+//			break;
+//			
+//		case KeyEvent.VK_DOWN:
+//			if (checkWallCollision(soko, BOTTOM_COLLISION)) {
+//				return;
+//			}
+//			if (checkBagCollision(BOTTOM_COLLISION)) {
+//				return;
+//			}
+//			soko.move(0, SIZE_OF_CELLS);
+//			fireMoved();
+//			break;
+//			
+//		case KeyEvent.VK_LEFT:
+//			if (checkWallCollision(soko, LEFT_COLLISION))
+//				return;
+//			if (checkBagCollision(LEFT_COLLISION))
+//				return;
+//			soko.move(-SIZE_OF_CELLS, 0);
+//			fireMoved();
+//			break;
+//			
+//		case KeyEvent.VK_RIGHT:
+//			if (checkWallCollision(soko, RIGHT_COLLISION)) {
+//				return;
+//			}
+//			if (checkBagCollision(RIGHT_COLLISION)) {
+//				return;
+//			}
+//			soko.move(SIZE_OF_CELLS, 0);
+//			fireMoved();
+//			break;
+//			
+//		case KeyEvent.VK_R:
+//			restartLevel();
+//			fireRestarted();
+//			break;
+//			
+//		default:
+//			break;
+//		}
+//
+//		repaint();
+//	}
 
 }
