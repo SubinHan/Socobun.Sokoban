@@ -10,6 +10,7 @@ import com.zetcode.custom.Panel_CustomTool;
 import com.zetcode.game.Panel_GameOuter;
 import com.zetcode.levelSelect.Panel_Custom;
 import com.zetcode.levelSelect.Panel_Normal;
+import com.zetcode.model.UserInfo;
 
 public class Frame_Sokoban extends JFrame {
 
@@ -27,6 +28,8 @@ public class Frame_Sokoban extends JFrame {
 	private final int PANEL_LEVELLIST = SokobanUtilities.PANEL_LEVELLIST;
 	private final int PANEL_LOGIN = SokobanUtilities.PANEL_LOGIN;
 	private final int PANEL_SIGNUP = SokobanUtilities.PANEL_SIGNUP;
+	
+	public UserInfo userinfo = null;
 	
 	Panel_MainScene mainScene = null; // 0 : 메인
 	Panel_GameOuter board_normal = null; // 1 : 일반모드

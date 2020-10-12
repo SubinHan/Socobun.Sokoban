@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.zetcode.model.UserInfo;
 
 public class FirebaseClass {
 
@@ -89,8 +90,7 @@ public class FirebaseClass {
 			@Override
 			public void onDataChange(DataSnapshot snapshot) {
 				UserInfo info = snapshot.getValue(UserInfo.class);
-				System.out.println(info);
-				pane.setPWAvailabilityLabel(info.pw.contentEquals(inputPW)); // PW 맞는지 아닌지 반환
+				pane.setPWAvailabilityLabel(info.pw.contentEquals(inputPW), info); // PW 맞는지 아닌지 반환
 			}
 			@Override
 			public void onCancelled(DatabaseError error) {

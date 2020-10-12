@@ -27,10 +27,8 @@ public class Highscore implements Serializable, Comparable {
 		try {
 			getHighscoreFromFile(levelName);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

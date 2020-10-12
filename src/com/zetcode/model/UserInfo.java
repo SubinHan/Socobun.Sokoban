@@ -1,11 +1,12 @@
-package com.zetcode.Login;
+package com.zetcode.model;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class UserInfo {
 	
 	public String id, nickname, pw;
-	int score;
+	public int score;
+	
 	
 	public UserInfo() {
     }
@@ -25,11 +26,11 @@ public class UserInfo {
 		return result;
 	}
 	
-	public void setScore(int newscore) {
-		this.score = newscore;
+	public void addScore(int sc) {
+		this.score += sc;
 	}
 	
 	public String toString() {
-		return id + ", " + nickname + ", " + pw;
+		return id + ", " + nickname + ", " + pw + ", " + score;
 	}
 }

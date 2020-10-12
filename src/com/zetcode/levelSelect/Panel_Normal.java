@@ -20,6 +20,8 @@ import com.zetcode.model.Level;
 
 public class Panel_Normal extends JPanel implements ILevelSelectorListener {
 	
+	private static final long serialVersionUID = -2066833025416219742L;
+	
 	private Frame_Sokoban frame = null;
 	private final String stagePath = "src/stages";
 	private Level selectedLevel;
@@ -41,6 +43,7 @@ public class Panel_Normal extends JPanel implements ILevelSelectorListener {
 		addKeyListener(new KeyListener());
 
 		JLabel title = new JLabel("Select Level");
+		title.setPreferredSize(new Dimension(0,250));
 		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
 		title.setHorizontalAlignment(JLabel.CENTER);
 		this.add(title, BorderLayout.NORTH);

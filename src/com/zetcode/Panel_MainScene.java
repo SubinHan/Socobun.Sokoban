@@ -35,6 +35,7 @@ public class Panel_MainScene extends JPanel{
 		setLayout(new BorderLayout());
         
         JLabel title = new JLabel("SOKOBAN");
+        title.setPreferredSize(new Dimension(0, 250));
 		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
 		title.setHorizontalAlignment(JLabel.CENTER);
 		this.add(title, BorderLayout.NORTH);

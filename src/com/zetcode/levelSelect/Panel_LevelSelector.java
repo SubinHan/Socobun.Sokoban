@@ -28,33 +28,11 @@ public class Panel_LevelSelector extends JPanel {
 	
 	public Panel_LevelSelector(Frame_Sokoban frame, ILevelSelectorListener listener, String directory) {
 		super();
+		this.directory = directory;
 		this.frame = frame;
 		addLevelSelectorListener(listener);
-		files = FileSearcher.getFiles(directory);
-		panelGrid = new JPanel();
-		panelGrid.setLayout(new GridLayout(files.length, 1));
-		for(int i = 0; i < files.length; i++) {
-			JButton button = new JButton(files[i].getName());
-			File file = files[i];
-			button.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					try {
-						fireLevelSelected(new Level(file));
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-				
-			});
-			button.setPreferredSize(new Dimension(400, 100));
-			panelGrid.add(button);
-		}
 		
-		panelScroll = new JScrollPane(panelGrid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		panelScroll.setPreferredSize(new Dimension(600, 600));
-		this.add(panelScroll);
+		setFileSelector();
 	}
 
 	private void addLevelSelectorListener(ILevelSelectorListener listener) {
@@ -75,6 +53,13 @@ public class Panel_LevelSelector extends JPanel {
 		panelGrid.removeAll();
 		panelScroll.removeAll();
 		this.removeAll();
+		
+		revalidate();
+		repaint();
+	}
+	
+	private void setFileSelector() {
+		
 		files = FileSearcher.getFiles(directory);
 		panelGrid = new JPanel();
 		panelGrid.setLayout(new GridLayout(files.length, 1));
@@ -93,15 +78,16 @@ public class Panel_LevelSelector extends JPanel {
 				}
 				
 			});
-			button.setPreferredSize(new Dimension(400, 100));
+			button.setPreferredSize(new Dimension(570, 100));
 			panelGrid.add(button);
 		}
 		
 		panelScroll = new JScrollPane(panelGrid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		panelScroll.setPreferredSize(new Dimension(600, 600));
+		panelScroll.getVerticalScrollBar().setUnitIncrement(15);
+		panelScroll.setBorder(null);
+		panelScroll.setPreferredSize(new Dimension(580, 350));
 		this.add(panelScroll);
-		revalidate();
-		repaint();
+		
 	}
 
 }

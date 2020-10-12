@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 
 import com.zetcode.Frame_Sokoban;
 import com.zetcode.SokobanUtilities;
+import com.zetcode.model.UserInfo;
 
 public class Panel_Login extends JPanel {
 	
@@ -121,9 +122,7 @@ public class Panel_Login extends JPanel {
 		 * 엔터키로 다음 필드로 커서 이동
 		 */
 		EnterListener enterListener = new EnterListener();
-
 		field_ID.addActionListener(enterListener);
-		field_PW.addActionListener(enterListener);
 		
 		
 	}
@@ -156,9 +155,10 @@ public class Panel_Login extends JPanel {
 		}
 	}
 
-	public void setPWAvailabilityLabel(boolean rightPassword) {
+	public void setPWAvailabilityLabel(boolean rightPassword, UserInfo info) {
 		if(rightPassword) {
 			available_PW.setText("");
+			frame.userinfo = info;
 			frame.changePanel(SokobanUtilities.PANEL_MAIN);
 		} else {
 			field_PW.requestFocus();

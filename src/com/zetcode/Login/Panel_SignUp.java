@@ -21,6 +21,7 @@ import javax.swing.event.DocumentListener;
 
 import com.zetcode.Frame_Sokoban;
 import com.zetcode.SokobanUtilities;
+import com.zetcode.model.UserInfo;
 
 public class Panel_SignUp extends JPanel {
 	
@@ -278,7 +279,6 @@ public class Panel_SignUp extends JPanel {
 		field_PWconfirm.addActionListener(enterListener);
 		field_Nickname.addActionListener(enterListener);
 		field_ID.addActionListener(enterListener);
-		field_PW.addActionListener(enterListener);
 		
 		
 	}

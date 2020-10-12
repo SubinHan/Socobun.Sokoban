@@ -51,20 +51,22 @@ public class Panel_Custom extends JPanel implements ILevelSelectorListener {
 		setLayout(new BorderLayout());
 
 		JLabel title = new JLabel("Map Customizing");
+        title.setPreferredSize(new Dimension(0, 250));
 		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
 		title.setHorizontalAlignment(JLabel.CENTER);
 		this.add(title, BorderLayout.NORTH);
 
 		JPanel panelWest = new JPanel();
-		panelWest.setPreferredSize(new Dimension(400, 0));
+		panelWest.setPreferredSize(new Dimension(500, 0));
 		this.add(panelWest, BorderLayout.WEST);
 		JPanel panelEast = new JPanel();
-		panelEast.setPreferredSize(new Dimension(400, 0));
+		panelEast.setPreferredSize(new Dimension(500, 0));
 		this.add(panelEast, BorderLayout.EAST);
 		
 		JPanel panelCenter;
 		panelCenter = new JPanel(new BorderLayout());
 		JButton buttonNew = new JButton("New Custom Map..");
+		buttonNew.setPreferredSize(new Dimension(600, 100));
 		buttonNew.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		buttonNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

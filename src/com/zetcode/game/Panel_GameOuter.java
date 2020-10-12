@@ -195,9 +195,8 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		labelStatus.setText("Completed!");
 		timer.stop();
 		Highscore newScore = new Highscore(score, numOfMove + 1, numOfUndo, elapsedTime);
-		Highscore oldScore;
 		if (FileSearcher.getFile("src/highscores", level.getFile().getName()).exists()) {
-			oldScore = new Highscore(level.getFile().getName());
+			Highscore oldScore = new Highscore(level.getFile().getName());
 			if (oldScore.compareTo(newScore) > 0) {
 				;
 			} else
