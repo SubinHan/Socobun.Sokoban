@@ -29,7 +29,7 @@ public class Frame_Sokoban extends JFrame {
 	private final int PANEL_LOGIN = SokobanUtilities.PANEL_LOGIN;
 	private final int PANEL_SIGNUP = SokobanUtilities.PANEL_SIGNUP;
 	
-	public UserInfo userinfo = null;
+	public static UserInfo userinfo = null;
 	
 	Panel_MainScene mainScene = null; // 0 : 메인
 	Panel_GameOuter board_normal = null; // 1 : 일반모드

@@ -21,12 +21,12 @@ import com.zetcode.SokobanUtilities;
 import com.zetcode.model.UserInfo;
 
 public class Panel_Login extends JPanel {
-	
+
 	private static final long serialVersionUID = -6842563827077598904L;
 
 	boolean idAvailable = false;
 	boolean pwAvailable = false;
-	
+
 	Panel_Login panel = this;
 
 	JLabel label_ID = null;
@@ -36,22 +36,20 @@ public class Panel_Login extends JPanel {
 	JLabel label_PW = null;
 	JPasswordField field_PW = null;
 	JLabel available_PW = null;
-	
+
 	JButton okBtn = null;
 	JButton signUpBtn = null;
-	
-	
-	
+
 	Frame_Sokoban frame;
-	
+
 	public Panel_Login(Frame_Sokoban f) {
 
 		frame = f;
 		initUI();
 	}
-	
+
 	private void initUI() {
-		
+
 		setLayout(new BorderLayout());
 
 		JLabel title = new JLabel("LOG IN");
@@ -60,7 +58,7 @@ public class Panel_Login extends JPanel {
 		title.setPreferredSize(new Dimension(0, 300));
 
 		JPanel panelCenter = new JPanel();
-		
+
 		JPanel southMargin = new JPanel();
 		southMargin.setPreferredSize(new Dimension(0, 300));
 		JPanel westMargin = new JPanel();
@@ -88,7 +86,7 @@ public class Panel_Login extends JPanel {
 		label_PW.setHorizontalAlignment(SwingConstants.RIGHT);
 		field_PW.setEchoChar('◆');
 		available_PW.setForeground(new Color(255, 0, 0));
-		
+
 		okBtn = new JButton("LOGIN");
 		signUpBtn = new JButton("SIGN IN");
 		IDPW_InputListener inputListener = new IDPW_InputListener();
@@ -100,7 +98,6 @@ public class Panel_Login extends JPanel {
 				frame.changePanel(SokobanUtilities.PANEL_SIGNUP);
 			}
 		});
-		
 
 		panelCenter.add(label_ID);
 		panelCenter.add(field_ID);
@@ -109,11 +106,11 @@ public class Panel_Login extends JPanel {
 		panelCenter.add(label_PW);
 		panelCenter.add(field_PW);
 		panelCenter.add(available_PW);
-		
+
 		panelCenter.add(new JLabel(""));
 		panelCenter.add(okBtn);
 		panelCenter.add(new JLabel(""));
-		
+
 		panelCenter.add(new JLabel(""));
 		panelCenter.add(signUpBtn);
 		panelCenter.add(new JLabel(""));
@@ -123,47 +120,39 @@ public class Panel_Login extends JPanel {
 		 */
 		EnterListener enterListener = new EnterListener();
 		field_ID.addActionListener(enterListener);
-		
-		
+
 	}
-	
+
 	private class EnterListener implements ActionListener { // 엔터누르면 커서 다음으로 이동
 		public void actionPerformed(ActionEvent e) {
 			KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-	        manager.getFocusOwner().transferFocus();
+			manager.getFocusOwner().transferFocus();
 		}
 	}
-	
+
 	private class IDPW_InputListener implements ActionListener { // PW Field와 OK Button에다가 넣어주자.
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			FirebaseClass.checkLoginForm("id", field_ID.getText(), panel);
-			FirebaseClass.checkIDPW(field_ID.getText(), UserInfo.passwordToString(field_PW.getPassword()), panel );
-		}
-		
-	}
-
-	public void setIDAvailabilityLabel(boolean exists) {
-		if(exists) {
-			available_ID.setText("");
-			available_PW.setText("");
-		} else {
-			field_ID.requestFocus();
-			field_ID.selectAll();
-			available_ID.setText("없는 아이디입니다.");
-		}
-	}
-
-	public void setPWAvailabilityLabel(boolean rightPassword, UserInfo info) {
-		if(rightPassword) {
-			available_PW.setText("");
-			frame.userinfo = info;
-			frame.changePanel(SokobanUtilities.PANEL_MAIN);
-		} else {
-			field_PW.requestFocus();
-			field_PW.selectAll();
-			available_PW.setText("비밀번호가 틀립니다.");
+			UserInfo info = FirebaseClass.getUser(field_ID.getText());
+			if(info != null) { // 아이디 있으면
+				available_ID.setText("");
+				available_PW.setText("");
+				if(info.pw.contentEquals(UserInfo.passwordToString(field_PW.getPassword()))) { // 비번 맞으면
+					available_PW.setText("");
+					frame.userinfo = info;
+					frame.changePanel(SokobanUtilities.PANEL_MAIN);
+				}
+				else {
+					field_PW.requestFocus();
+					field_PW.selectAll();
+					available_PW.setText("비밀번호가 틀립니다.");
+				}
+			} else {
+				field_ID.requestFocus();
+				field_ID.selectAll();
+				available_ID.setText("없는 아이디입니다.");
+			}
 		}
 	}
 }

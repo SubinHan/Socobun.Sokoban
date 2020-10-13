@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Acl.User;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +15,8 @@ import com.zetcode.model.UserInfo;
 
 public class FirebaseClass {
 
+	private static DataSnapshot dataSnapshot = null;
+	
 	public static FirebaseDatabase database = null;
 	public static DatabaseReference rootReference = null;
 
@@ -38,8 +39,25 @@ public class FirebaseClass {
 
 		database = FirebaseDatabase.getInstance(app);
 		rootReference = database.getReference();
+		
+		DBListener dblistener = new DBListener();
+		rootReference.addValueEventListener(dblistener);
 	}
+	
+	private static class DBListener implements ValueEventListener{
 
+		@Override
+		public void onDataChange(DataSnapshot snapshot) {
+			dataSnapshot = snapshot;
+		}
+
+		@Override
+		public void onCancelled(DatabaseError error) {
+			
+		}
+		
+	}
+	
 	static boolean exists = false;
 	
 	public static void checkSignupForm(String searchingCat, String fieldText, Panel_SignUp pane) {
@@ -62,42 +80,18 @@ public class FirebaseClass {
 		});
 	}
 
-	// 로그인할때 아이디 있는건지 확인
-	public static void checkLoginForm(String searchingCat, String fieldText, Panel_Login pane) {
-		
-		rootReference.child("users").orderByChild(searchingCat).equalTo(fieldText).addValueEventListener(new ValueEventListener() {
-
-			@Override
-			public void onDataChange(DataSnapshot snapshot) {
-				if(searchingCat.contentEquals("id")) {
-					pane.setIDAvailabilityLabel(snapshot.exists());
-				}
-			}
-			
-			@Override
-			public void onCancelled(DatabaseError error) {
-				System.out.println("cancelled");
-			}
-
-		});
-	}
-
 	// 로그인할때 아이디-패스워드 맞는지 확인
-	public static void checkIDPW(String inputID, String inputPW, Panel_Login pane) {
+	public static UserInfo getUser(String inputID) {
+		DataSnapshot ds = dataSnapshot.child("users").child(inputID);
+		if( ds.exists() ) {
+			System.out.println(((UserInfo)ds.getValue(UserInfo.class)).clearedStagesInfo);
+			return ds.getValue(UserInfo.class);
+		}
+		return null;
+	}
+	
+	public static void readStage() {
 		
-		rootReference.child("users").child(inputID).addValueEventListener(new ValueEventListener() {
-
-			@Override
-			public void onDataChange(DataSnapshot snapshot) {
-				UserInfo info = snapshot.getValue(UserInfo.class);
-				pane.setPWAvailabilityLabel(info.pw.contentEquals(inputPW), info); // PW 맞는지 아닌지 반환
-			}
-			@Override
-			public void onCancelled(DatabaseError error) {
-				System.out.println("cancelled");
-			}
-
-		});
 	}
 	
 	public static void putUser(UserInfo info) {

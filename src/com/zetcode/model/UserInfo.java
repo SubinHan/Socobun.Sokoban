@@ -1,12 +1,13 @@
 package com.zetcode.model;
+import java.util.HashMap;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class UserInfo {
 	
 	public String id, nickname, pw;
-	public int score;
-	
+	public HashMap<String, Highscore> clearedStagesInfo = new HashMap<>();
 	
 	public UserInfo() {
     }
@@ -26,11 +27,8 @@ public class UserInfo {
 		return result;
 	}
 	
-	public void addScore(int sc) {
-		this.score += sc;
+	public String toString() {
+		return id + ", " + nickname + ", " + pw + ", " + this.clearedStagesInfo;
 	}
 	
-	public String toString() {
-		return id + ", " + nickname + ", " + pw + ", " + score;
-	}
 }

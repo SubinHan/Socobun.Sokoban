@@ -1,12 +1,11 @@
 package com.zetcode.model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
+
+import com.zetcode.Frame_Sokoban;
+import com.zetcode.Login.FirebaseClass;
 
 public class Highscore implements Serializable, Comparable {
 	/**
@@ -16,6 +15,8 @@ public class Highscore implements Serializable, Comparable {
 
 	private int score, numOfMove, numOfUndo, elapsedTime;
 
+	public Highscore() {}
+	
 	public Highscore(int score, int numOfMove, int numOfUndo, int elapsedTime) {
 		this.score = score;
 		this.numOfMove = numOfMove;
@@ -24,13 +25,7 @@ public class Highscore implements Serializable, Comparable {
 	}
 	
 	public Highscore(String levelName) {
-		try {
-			getHighscoreFromFile(levelName);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			getHighscore(levelName);
 	}
 
 	public int getScore() {
@@ -65,25 +60,23 @@ public class Highscore implements Serializable, Comparable {
 		this.elapsedTime = elapsedTime;
 	}
 
-	public void writeHighscoreToFile(String levelName) throws IOException {
-		FileOutputStream f = new FileOutputStream(new File("src/highscores/" + levelName));
-		ObjectOutputStream o = new ObjectOutputStream(f);
-
-		o.writeObject(this);
-		o.close();
-		f.close();
+	public void writeHighscoreToFirebase(String levelName) {
+		UserInfo info = Frame_Sokoban.userinfo;
+		
+		info.clearedStagesInfo.put(levelName, this);
+		FirebaseClass.rootReference.child("users").child(info.id).setValueAsync(info);
 	}
 
-	private void getHighscoreFromFile(String levelName) throws IOException, ClassNotFoundException {
-		FileInputStream fi = new FileInputStream(new File("src/highscores/" + levelName));
-		ObjectInputStream oi = new ObjectInputStream(fi);
+	private void getHighscore(String levelName){
 		
-		Highscore highscore = (Highscore) oi.readObject();
+		HashMap<String, Highscore> clearedStages = Frame_Sokoban.userinfo.clearedStagesInfo; 
+		if(clearedStages.get(levelName) == null)
+			return;
 		
-		this.score = highscore.score;
-		this.numOfMove = highscore.numOfMove;
-		this.numOfUndo = highscore.numOfUndo;
-		this.elapsedTime = highscore.elapsedTime;
+		this.score = clearedStages.get(levelName).score;
+		this.numOfMove = clearedStages.get(levelName).numOfMove;
+		this.numOfUndo = clearedStages.get(levelName).numOfUndo;
+		this.elapsedTime = clearedStages.get(levelName).elapsedTime;
 	}
 
 	@Override

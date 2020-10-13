@@ -195,24 +195,14 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		labelStatus.setText("Completed!");
 		timer.stop();
 		Highscore newScore = new Highscore(score, numOfMove + 1, numOfUndo, elapsedTime);
-		if (FileSearcher.getFile("src/highscores", level.getFile().getName()).exists()) {
-			Highscore oldScore = new Highscore(level.getFile().getName());
+		if (Frame_Sokoban.userinfo.clearedStagesInfo.get(level.getFile().getName()) != null) {
+			Highscore oldScore = Frame_Sokoban.userinfo.clearedStagesInfo.get(level.getFile().getName());
 			if (oldScore.compareTo(newScore) > 0) {
 				;
 			} else
-				try {
-					newScore.writeHighscoreToFile(level.getFile().getName());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				newScore.writeHighscoreToFirebase(level.getFile().getName());
 		} else
-			try {
-				newScore.writeHighscoreToFile(level.getFile().getName());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			newScore.writeHighscoreToFirebase(level.getFile().getName());
 	}
 
 }
