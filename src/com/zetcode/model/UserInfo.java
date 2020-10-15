@@ -28,7 +28,7 @@ public class UserInfo {
 	}
 	
 	public String toString() {
-		return id + ", " + nickname + ", " + pw + ", " + this.clearedStagesInfo;
+		return id + ", " + nickname + ", " + pw;
 	}
 	
 }
