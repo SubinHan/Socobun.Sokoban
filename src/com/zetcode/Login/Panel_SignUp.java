@@ -136,7 +136,10 @@ public class Panel_SignUp extends JPanel {
 		panelCenter.add(new JLabel(""));
 
 		/**
-		 * 회원가입 폼 유효성 검증 1. 아이디 : DB에 없어야 함. 공백이 아닌 한 자 이상 2. 패스워드 : 네 자 이상 4. 닉네임 : DB에
+		 * 회원가입 폼 유효성 검증
+		 * 1. 아이디 : DB에 없어야 함. 공백이 아닌 두 자 이상
+		 * 2. 패스워드 : 네 자 이상
+		 * 4. 닉네임 : DB에
 		 * 없어야 함.
 		 * 
 		 * 위 번호의 합을 반환. 합이 1:아이디 문제, 2:패스워드 문제, 4:닉네임문제 3:아이디랑패스워드문제, 6:패스워드랑닉네임문제 7:다문제
@@ -201,7 +204,7 @@ public class Panel_SignUp extends JPanel {
 			private void whenChanged() {
 
 				if (field_ID.getText().length() < 2) {
-					available_Nickname.setForeground(new Color(255, 0, 0));
+					available_ID.setForeground(new Color(255, 0, 0));
 					available_ID.setText("두 자 이상 입력해주세요.");
 				} else {
 					UserInfo info = FirebaseClass.findUserByID(field_ID.getText());
