@@ -23,32 +23,6 @@ import com.zetcode.model.Level;
 
 public class Panel_Game extends JPanel{
 	
-	//for undo
-	Stack<UndoSnapshot> undoStack;
-	
-	private void undo() {
-		UndoSnapshot popped = undoStack.pop();
-		switch(popped.dir) {
-			case "UP" :
-				soko.undo(0, SIZE_OF_CELLS); // 아래로
-				if(popped.bag != null) popped.bag.move(0, SIZE_OF_CELLS); // 아래로
-				break;
-			case "DOWN" :
-				soko.undo(0, -SIZE_OF_CELLS); // 위로
-				if(popped.bag != null) popped.bag.move(0, -SIZE_OF_CELLS); // 위로
-				break;
-			case "LEFT" :
-				soko.undo(SIZE_OF_CELLS, 0); // 오른쪽으로
-				if(popped.bag != null) popped.bag.move(SIZE_OF_CELLS, 0); // 오른쪽으로
-				break;
-			case "RIGHT" :
-				soko.undo(-SIZE_OF_CELLS, 0); // 왼쪽으로
-				if(popped.bag != null) popped.bag.move(-SIZE_OF_CELLS, 0); // 왼쪽으로
-				break;
-			
-		}
-	}
-	
 	private class KeyListener extends KeyAdapter {
 
 		@Override
@@ -394,6 +368,42 @@ public class Panel_Game extends JPanel{
 		return false;
 	}
 
+	
+	//for undo
+	Stack<UndoSnapshot> undoStack;
+	
+	private void undo() {
+		
+		if(undoStack.size() < 1) return;
+		
+		UndoSnapshot popped = undoStack.pop();
+		switch(popped.dir) {
+			case "UP" :
+				soko.undo(0, SIZE_OF_CELLS); // 아래로
+				if(popped.bag != null) popped.bag.move(0, SIZE_OF_CELLS); // 아래로
+				break;
+			case "DOWN" :
+				soko.undo(0, -SIZE_OF_CELLS); // 위로
+				if(popped.bag != null) popped.bag.move(0, -SIZE_OF_CELLS); // 위로
+				break;
+			case "LEFT" :
+				soko.undo(SIZE_OF_CELLS, 0); // 오른쪽으로
+				if(popped.bag != null) popped.bag.move(SIZE_OF_CELLS, 0); // 오른쪽으로
+				break;
+			case "RIGHT" :
+				soko.undo(-SIZE_OF_CELLS, 0); // 왼쪽으로
+				if(popped.bag != null) popped.bag.move(-SIZE_OF_CELLS, 0); // 왼쪽으로
+				break;
+			
+		}
+		
+		Iterator iter = listeners.iterator();
+		while (iter.hasNext()) {
+			IGameListener listener = (IGameListener) iter.next();
+			listener.undid();
+		}
+	}
+	
 	private void fireCompleted() {
 		Iterator iter = listeners.iterator();
 		while (iter.hasNext()) {

@@ -163,7 +163,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	}
 
 	private void updateScores() {
-		score = 1000 - numOfMove - numOfUndo - elapsedTime;
+		score = 1000 - numOfMove - (numOfUndo*10) - elapsedTime;
 		labelScore.setText("Score: " + score);
 		labelMove.setText("Move: " + numOfMove);
 		labelUndo.setText("Undo: " + numOfUndo);
