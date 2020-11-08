@@ -45,5 +45,23 @@ public class Actor_Player extends Actor {
         setX(dx);
         setY(dy);
     }
+
+    public void undo(int x, int y) {
+
+    	if(y < 0)
+    		setImage(downImage.getImage());
+    	else if(y > 0)
+    		setImage(upImage.getImage());
+    	else if(x < 0)
+    		setImage(rightImage.getImage());
+    	else if(x > 0)
+    		setImage(leftImage.getImage());
+    	
+        int dx = x() + x;
+        int dy = y() + y;
+        
+        setX(dx);
+        setY(dy);
+    }
     
 }

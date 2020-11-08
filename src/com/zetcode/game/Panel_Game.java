@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 import javax.swing.JPanel;
 
@@ -21,6 +22,32 @@ import com.zetcode.model.Actor_Wall;
 import com.zetcode.model.Level;
 
 public class Panel_Game extends JPanel{
+	
+	//for undo
+	Stack<UndoSnapshot> undoStack;
+	
+	private void undo() {
+		UndoSnapshot popped = undoStack.pop();
+		switch(popped.dir) {
+			case "UP" :
+				soko.undo(0, SIZE_OF_CELLS); // 아래로
+				if(popped.bag != null) popped.bag.move(0, SIZE_OF_CELLS); // 아래로
+				break;
+			case "DOWN" :
+				soko.undo(0, -SIZE_OF_CELLS); // 위로
+				if(popped.bag != null) popped.bag.move(0, -SIZE_OF_CELLS); // 위로
+				break;
+			case "LEFT" :
+				soko.undo(SIZE_OF_CELLS, 0); // 오른쪽으로
+				if(popped.bag != null) popped.bag.move(SIZE_OF_CELLS, 0); // 오른쪽으로
+				break;
+			case "RIGHT" :
+				soko.undo(-SIZE_OF_CELLS, 0); // 왼쪽으로
+				if(popped.bag != null) popped.bag.move(-SIZE_OF_CELLS, 0); // 왼쪽으로
+				break;
+			
+		}
+	}
 	
 	private class KeyListener extends KeyAdapter {
 
@@ -53,10 +80,12 @@ public class Panel_Game extends JPanel{
 				break;
 				
 			case KeyEvent.VK_LEFT:
-				if (checkWallCollision(soko, LEFT_COLLISION))
+				if (checkWallCollision(soko, LEFT_COLLISION)) {
 					return;
-				if (checkBagCollision(LEFT_COLLISION))
+				}
+				if (checkBagCollision(LEFT_COLLISION)) {
 					return;
+				}
 				soko.move(-SIZE_OF_CELLS, 0);
 				fireMoved();
 				break;
@@ -75,6 +104,10 @@ public class Panel_Game extends JPanel{
 			case KeyEvent.VK_R:
 				restartLevel();
 				fireRestarted();
+				break;
+				
+			case KeyEvent.VK_Z:
+				undo();
 				break;
 				
 			default:
@@ -112,6 +145,7 @@ public class Panel_Game extends JPanel{
 	public Panel_Game(Frame_Sokoban f, IGameListener listener, Level givenLevel) {
 		frame = f;
 		addGameListener(listener);
+		undoStack = new Stack<>();
 		
 		if(listener instanceof JPanel) {
 			((JPanel) listener).addKeyListener(new KeyListener());
@@ -181,11 +215,13 @@ public class Panel_Game extends JPanel{
 							return true;
 						}
 					}
+					undoStack.add(new UndoSnapshot("LEFT", bag));
 					bag.move(-SIZE_OF_CELLS, 0);
 					isCompleted();
+					return false;
 				}
 			}
-
+			undoStack.add(new UndoSnapshot("LEFT", null));
 			return false;
 
 		case RIGHT_COLLISION:
@@ -211,11 +247,13 @@ public class Panel_Game extends JPanel{
 							return true;
 						}
 					}
-
+					undoStack.add(new UndoSnapshot("RIGHT", bag));
 					bag.move(SIZE_OF_CELLS, 0);
 					isCompleted();
+					return false;
 				}
 			}
+			undoStack.add(new UndoSnapshot("RIGHT", null));
 			return false;
 
 		case TOP_COLLISION:
@@ -241,12 +279,13 @@ public class Panel_Game extends JPanel{
 							return true;
 						}
 					}
-
+					undoStack.add(new UndoSnapshot("UP", bag));
 					bag.move(0, -SIZE_OF_CELLS);
 					isCompleted();
+					return false;
 				}
 			}
-
+			undoStack.add(new UndoSnapshot("UP", null));
 			return false;
 
 		case BOTTOM_COLLISION:
@@ -273,12 +312,13 @@ public class Panel_Game extends JPanel{
 							return true;
 						}
 					}
-
+					undoStack.add(new UndoSnapshot("DOWN", bag));
 					bag.move(0, SIZE_OF_CELLS);
 					isCompleted();
+					return false;
 				}
 			}
-
+			undoStack.add(new UndoSnapshot("DOWN", null));
 			break;
 
 		default:

@@ -2,7 +2,7 @@ package com.zetcode.model;
 
 import java.awt.Image;
 
-public class Actor {
+public class Actor implements Cloneable{
 
     private final int SPACE = 64;
 

@@ -8,10 +8,9 @@ public class UndoSnapshot {
 	public Actor_Baggage bag;
 	
 	public UndoSnapshot(String d, Actor_Baggage b) {
-		dir = d;
 		
-		if(b != null) bag = (Actor_Baggage)b.clone();
-		else bag = b;
+		dir = d;
+		bag = b;
 		
 		System.out.println(b);
 		if(bag != null) System.out.println(bag.x() + ", " + bag.y());
