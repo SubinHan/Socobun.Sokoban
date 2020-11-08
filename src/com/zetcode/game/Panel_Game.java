@@ -11,6 +11,7 @@ import java.util.Stack;
 
 import javax.swing.JPanel;
 
+import com.zetcode.AudioPlayer;
 import com.zetcode.Frame_Sokoban;
 import com.zetcode.SokobanUtilities;
 import com.zetcode.model.Actor;
@@ -33,45 +34,57 @@ public class Panel_Game extends JPanel{
 			switch (key) {
 			case KeyEvent.VK_UP:
 				if (checkWallCollision(soko, TOP_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				if (checkBagCollision(TOP_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				soko.move(0, -SIZE_OF_CELLS);
+				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
 				
 			case KeyEvent.VK_DOWN:
 				if (checkWallCollision(soko, BOTTOM_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				if (checkBagCollision(BOTTOM_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				soko.move(0, SIZE_OF_CELLS);
+				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
 				
 			case KeyEvent.VK_LEFT:
 				if (checkWallCollision(soko, LEFT_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				if (checkBagCollision(LEFT_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				soko.move(-SIZE_OF_CELLS, 0);
+				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
 				
 			case KeyEvent.VK_RIGHT:
 				if (checkWallCollision(soko, RIGHT_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				if (checkBagCollision(RIGHT_COLLISION)) {
+					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
 					return;
 				}
 				soko.move(SIZE_OF_CELLS, 0);
+				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
 				
@@ -120,6 +133,8 @@ public class Panel_Game extends JPanel{
 		frame = f;
 		addGameListener(listener);
 		undoStack = new Stack<>();
+		
+		
 		
 		if(listener instanceof JPanel) {
 			((JPanel) listener).addKeyListener(new KeyListener());

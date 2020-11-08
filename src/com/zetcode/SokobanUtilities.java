@@ -32,6 +32,11 @@ public class SokobanUtilities {
 	public final static int PANEL_LEVELLIST = 6;
 	public final static int PANEL_LOGIN = 7;
 	public final static int PANEL_SIGNUP = 8;
+	public final static String AUDIO_FOOTSTEP = "src/sounds/sfx_movement_footstep.wav";
+	public final static String AUDIO_BUMPED = "src/sounds/sfx_movement_bumped.wav";
+	public final static String AUDIO_BUTTON = "src/sounds/sfx_sounds_button.wav";
+	public final static String AUDIO_BGM = "src/sounds/bgm_game.wav";
+	
 	/**
 	 * 
 	 * @param filePath 저장할 파일 경로

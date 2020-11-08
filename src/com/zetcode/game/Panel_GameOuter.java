@@ -8,16 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.zetcode.AudioPlayer;
 import com.zetcode.Frame_Sokoban;
-import com.zetcode.levelSelect.FileSearcher;
+import com.zetcode.SokobanUtilities;
 import com.zetcode.model.Highscore;
 import com.zetcode.model.Level;
 
@@ -53,6 +53,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	private JButton buttonBack;
 	private int score, numOfMove, numOfUndo, elapsedTime;
 	private Timer timer;
+	private Clip backgroundClip;
 
 	private JLabel labelScore;
 	private JLabel labelMove;
@@ -63,6 +64,8 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		frame = f;
 		this.parent = parent;
 		level = givenLevel;
+		
+		backgroundClip = AudioPlayer.playSoundLoop(SokobanUtilities.AUDIO_BGM);
 
 		this.addKeyListener(new KeyListener());
 
@@ -159,6 +162,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 
 	private void backToParent() {
 		timer.stop();
+		backgroundClip.stop();
 		frame.changePanel(parent);
 	}
 

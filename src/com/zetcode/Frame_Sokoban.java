@@ -142,6 +142,7 @@ public class Frame_Sokoban extends JFrame {
 	    		break;
 	    		
     	}
+    	AudioPlayer.playSound(SokobanUtilities.AUDIO_BUTTON);
     	revalidate();
 		repaint();
     }
