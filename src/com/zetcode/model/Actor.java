@@ -63,4 +63,14 @@ public class Actor {
         
         return y() + SPACE == actor.y() && x() == actor.x();
     }
+    
+    public Actor clone() {
+    	Actor vo = null;
+		try {
+			vo = (Actor) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return vo;	
+    }
 }
