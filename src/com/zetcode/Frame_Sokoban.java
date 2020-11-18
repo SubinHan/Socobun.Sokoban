@@ -56,6 +56,7 @@ public class Frame_Sokoban extends JFrame {
     	board_levelList = new Panel_Normal(this);
     	loginScene = new Panel_Login(this);
     	signupScene = new Panel_SignUp(this);
+    	rankingScene = new Panel_Ranking(this);
     	
         add(loginScene);
         setSize(MAX_RESOLUTION_WIDTH, MAX_RESOLUTION_HEIGHT);

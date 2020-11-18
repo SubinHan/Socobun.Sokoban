@@ -169,7 +169,7 @@ public class Panel_SignUp extends JPanel {
 					available_Nickname.setForeground(new Color(255, 0, 0));
 					available_Nickname.setText("두 자 이상 입력해주세요.");
 				} else {
-					UserInfo info = FirebaseClass.findUserByNickname(field_Nickname.getText());
+					UserInfo info = FindUser.findUserByNickname(field_Nickname.getText());
 					if (info != null) { // 닉네임 있으면
 						available_Nickname.setForeground(new Color(255, 0, 0));
 						available_Nickname.setText("이미 있는 닉네임입니다.");
@@ -207,7 +207,7 @@ public class Panel_SignUp extends JPanel {
 					available_ID.setForeground(new Color(255, 0, 0));
 					available_ID.setText("두 자 이상 입력해주세요.");
 				} else {
-					UserInfo info = FirebaseClass.findUserByID(field_ID.getText());
+					UserInfo info = FindUser.findUserByID(field_ID.getText());
 					if (info != null) { // 아이디 있으면
 						available_ID.setForeground(new Color(255, 0, 0));
 						available_ID.setText("이미 있는 아이디입니다.");

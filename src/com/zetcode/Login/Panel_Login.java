@@ -134,7 +134,7 @@ public class Panel_Login extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			UserInfo info = FirebaseClass.findUserByID(field_ID.getText());
+			UserInfo info = FindUser.findUserByID(field_ID.getText());
 			if(info != null) { // 아이디 있으면
 				available_ID.setText("");
 				available_PW.setText("");

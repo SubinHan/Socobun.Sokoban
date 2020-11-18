@@ -22,8 +22,8 @@ import com.zetcode.model.Actor_Player;
 import com.zetcode.model.Actor_Wall;
 import com.zetcode.model.Level;
 
-public class Panel_Game extends JPanel{
-	
+public class Panel_Game extends JPanel {
+
 	private class KeyListener extends KeyAdapter {
 
 		@Override
@@ -45,7 +45,7 @@ public class Panel_Game extends JPanel{
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
-				
+
 			case KeyEvent.VK_DOWN:
 				if (checkWallCollision(soko, BOTTOM_COLLISION)) {
 					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
@@ -59,7 +59,7 @@ public class Panel_Game extends JPanel{
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
-				
+
 			case KeyEvent.VK_LEFT:
 				if (checkWallCollision(soko, LEFT_COLLISION)) {
 					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
@@ -73,7 +73,7 @@ public class Panel_Game extends JPanel{
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
-				
+
 			case KeyEvent.VK_RIGHT:
 				if (checkWallCollision(soko, RIGHT_COLLISION)) {
 					AudioPlayer.playSound(SokobanUtilities.AUDIO_BUMPED);
@@ -87,16 +87,16 @@ public class Panel_Game extends JPanel{
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				fireMoved();
 				break;
-				
+
 			case KeyEvent.VK_R:
 				restartLevel();
 				fireRestarted();
 				break;
-				
+
 			case KeyEvent.VK_Z:
 				undo();
 				break;
-				
+
 			default:
 				break;
 			}
@@ -104,7 +104,7 @@ public class Panel_Game extends JPanel{
 			repaint();
 		}
 	}
-	
+
 	Frame_Sokoban frame = null;
 
 	private final int MAX_LEVEL_WIDTH = SokobanUtilities.MAX_LEVEL_WIDTH;
@@ -133,13 +133,11 @@ public class Panel_Game extends JPanel{
 		frame = f;
 		addGameListener(listener);
 		undoStack = new Stack<>();
-		
-		
-		
-		if(listener instanceof JPanel) {
+
+		if (listener instanceof JPanel) {
 			((JPanel) listener).addKeyListener(new KeyListener());
 		}
-		
+
 		if (givenLevel == null)
 			return;
 		level = givenLevel;
@@ -383,42 +381,46 @@ public class Panel_Game extends JPanel{
 		return false;
 	}
 
-	
-	//for undo
+	// for undo
 	Stack<UndoSnapshot> undoStack;
-	
+
 	private void undo() {
-		
-		if(undoStack.size() < 1) return;
-		
+
+		if (undoStack.size() < 1)
+			return;
+
 		UndoSnapshot popped = undoStack.pop();
-		switch(popped.dir) {
-			case "UP" :
-				soko.undo(0, SIZE_OF_CELLS); // 아래로
-				if(popped.bag != null) popped.bag.move(0, SIZE_OF_CELLS); // 아래로
-				break;
-			case "DOWN" :
-				soko.undo(0, -SIZE_OF_CELLS); // 위로
-				if(popped.bag != null) popped.bag.move(0, -SIZE_OF_CELLS); // 위로
-				break;
-			case "LEFT" :
-				soko.undo(SIZE_OF_CELLS, 0); // 오른쪽으로
-				if(popped.bag != null) popped.bag.move(SIZE_OF_CELLS, 0); // 오른쪽으로
-				break;
-			case "RIGHT" :
-				soko.undo(-SIZE_OF_CELLS, 0); // 왼쪽으로
-				if(popped.bag != null) popped.bag.move(-SIZE_OF_CELLS, 0); // 왼쪽으로
-				break;
-			
+		switch (popped.dir) {
+		case "UP":
+			soko.undo(0, SIZE_OF_CELLS); // 아래로
+			if (popped.bag != null)
+				popped.bag.move(0, SIZE_OF_CELLS); // 아래로
+			break;
+		case "DOWN":
+			soko.undo(0, -SIZE_OF_CELLS); // 위로
+			if (popped.bag != null)
+				popped.bag.move(0, -SIZE_OF_CELLS); // 위로
+			break;
+		case "LEFT":
+			soko.undo(SIZE_OF_CELLS, 0); // 오른쪽으로
+			if (popped.bag != null)
+				popped.bag.move(SIZE_OF_CELLS, 0); // 오른쪽으로
+			break;
+		case "RIGHT":
+			soko.undo(-SIZE_OF_CELLS, 0); // 왼쪽으로
+			if (popped.bag != null)
+				popped.bag.move(-SIZE_OF_CELLS, 0); // 왼쪽으로
+			break;
+
 		}
-		
+
 		Iterator iter = listeners.iterator();
 		while (iter.hasNext()) {
 			IGameListener listener = (IGameListener) iter.next();
 			listener.undid();
 		}
 	}
-	
+
 	private void fireCompleted() {
 		Iterator iter = listeners.iterator();
 		while (iter.hasNext()) {

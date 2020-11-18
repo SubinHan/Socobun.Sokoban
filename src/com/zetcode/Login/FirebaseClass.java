@@ -16,7 +16,7 @@ import com.zetcode.model.UserInfo;
 
 public class FirebaseClass {
 
-	private static DataSnapshot dataSnapshot = null;
+	public static DataSnapshot dataSnapshot = null;
 
 	public static FirebaseDatabase database = null;
 	public static DatabaseReference rootReference = null;
@@ -57,38 +57,6 @@ public class FirebaseClass {
 
 		}
 
-	}
-
-	public static UserInfo findUserByNickname(String inputNickname) {
-		Iterable<DataSnapshot> infoIterable = null;
-		// null pointer exception 에러가 종종 생겨서 다음 if문 추가
-		if (dataSnapshot != null)
-			infoIterable = dataSnapshot.child("users").getChildren();
-		Iterator<DataSnapshot> infoIterator = null;
-		if (infoIterable != null) {
-			infoIterator = infoIterable.iterator();
-			while (infoIterator.hasNext()) {
-				DataSnapshot ds = infoIterator.next();
-				UserInfo info = ds.getValue(UserInfo.class);
-				if (info.nickname.contentEquals(inputNickname)) {
-					return ds.getValue(UserInfo.class);
-				}
-			}
-		}
-		return null;
-	}
-
-	// 로그인할때 아이디-패스워드 맞는지 확인
-	public static UserInfo findUserByID(String inputID) {
-		DataSnapshot infoDS = null;
-		// null pointer exception 에러가 종종 생겨서 다음 if문 추가
-		if (dataSnapshot != null)
-			infoDS = dataSnapshot.child("users").child(inputID);
-		if (infoDS.exists()) {
-			System.out.println(((UserInfo) infoDS.getValue(UserInfo.class)).clearedStagesInfo);
-			return infoDS.getValue(UserInfo.class);
-		}
-		return null;
 	}
 
 	public static void putUser(UserInfo info) {
