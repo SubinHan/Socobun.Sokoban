@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.BorderLayout;
 import java.util.Stack;
 
 import javax.swing.JPanel;
@@ -18,6 +19,7 @@ public class PanelChanger {
     	prePanelStack.push(prePanel);
     	
     	frame.getContentPane().removeAll();
+    	reAddUserInfo();
     	frame.add(panel);
 		frame.setSize(SokobanUtilities.MAX_RESOLUTION_WIDTH, SokobanUtilities.MAX_RESOLUTION_HEIGHT); // 사이즈
         frame.setLocationRelativeTo(null); // 중앙으로
@@ -35,6 +37,7 @@ public class PanelChanger {
 		JPanel previousPanel = prePanelStack.pop();
 
     	frame.getContentPane().removeAll();
+    	reAddUserInfo();
     	frame.add(previousPanel);
 		frame.setSize(SokobanUtilities.MAX_RESOLUTION_WIDTH, SokobanUtilities.MAX_RESOLUTION_HEIGHT); // 사이즈
         frame.setLocationRelativeTo(null); // 중앙으로
@@ -42,6 +45,10 @@ public class PanelChanger {
         frame.revalidate();
         frame.repaint();
 		
+	}
+	
+	public static void reAddUserInfo() {
+        frame.add(new Panel_UserInfo(), BorderLayout.NORTH);
 	}
 	
 }
