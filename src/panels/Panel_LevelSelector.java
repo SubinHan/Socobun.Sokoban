@@ -14,7 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import model.Level;
-import utils.FileSearcher;
+import utils.IFileSearcher;
+import utils.LevelFileSearcher;
 
 public class Panel_LevelSelector extends JPanel {
 
@@ -60,7 +61,8 @@ public class Panel_LevelSelector extends JPanel {
 	
 	private void setFileSelector() {
 		
-		files = FileSearcher.getFiles(directory);
+		IFileSearcher fileSearcher = new LevelFileSearcher();
+		files = fileSearcher.getFiles(directory);
 		panelGrid = new JPanel();
 		panelGrid.setLayout(new GridLayout(files.length, 1));
 		for(int i = 0; i < files.length; i++) {

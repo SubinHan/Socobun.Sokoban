@@ -90,7 +90,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	}
 
 	private void initPanelCenter() {
-		panelCenter = new Panel_Game(frame, this, level);
+		panelCenter = new Panel_Game(this, level);
 
 		this.add(panelCenter, BorderLayout.CENTER);
 

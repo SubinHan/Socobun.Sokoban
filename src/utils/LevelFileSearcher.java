@@ -2,15 +2,15 @@ package utils;
 
 import java.io.File;
 
-public abstract class FileSearcher {
+public class LevelFileSearcher implements IFileSearcher{
 
-	public static File[] getFiles(String path) {
+	public File[] getFiles(String path) {
 		File directory = new File(path);
 		File[] fileList = directory.listFiles();
 		return fileList;
 	}
 	
-	public static File getFile(String path, String name) {
+	public File getFile(String path, String name) {
 		File file = new File(path + "/" + name);
 		return file;
 	}

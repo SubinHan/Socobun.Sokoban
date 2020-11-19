@@ -3,19 +3,22 @@ package unitTest;
 import java.io.File;
 
 import junit.framework.TestCase;
-import utils.FileSearcher;
+import utils.IFileSearcher;
+import utils.LevelFileSearcher;
 
 public class FileSearchTest extends TestCase {
 	
-	FileSearcher searcher;
+	LevelFileSearcher searcher;
 	final String path = "src/test/testFileSearch";
 	public void setUp() {
-	//	searcher = new FileSearcher();
+		IFileSearcher searcher = new LevelFileSearcher();
 	}
 	
 	public void testFileSearch() {
+		
+		
 		File[] files;
-		files = FileSearcher.getFiles(path);
+		files = searcher.getFiles(path);
 		for(int i = 0; i < files.length; i++) {
 			assertTrue(files[i].getName().equals(String.valueOf(i)));
 		}

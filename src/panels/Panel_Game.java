@@ -97,8 +97,8 @@ public class Panel_Game extends JPanel {
 
 	ActorManager actorManager;
 	
-	public Panel_Game(Frame_Sokoban f, IGameListener listener, Level givenLevel) {
-		frame = f;
+	public Panel_Game(IGameListener listener, Level givenLevel) {
+		frame = Frame_Sokoban.getInstance();
 		addGameListener(listener);
 
 		if (listener instanceof JPanel) {
@@ -233,6 +233,13 @@ public class Panel_Game extends JPanel {
 
 		actorManager = new ActorManager(level);
 		revalidate();
+		repaint();
+	}
+
+	public void setLevel(Level givenLevel) {
+		level = givenLevel;
+		levelArray = givenLevel.getCharArray();
+		actorManager = new ActorManager(givenLevel);
 		repaint();
 	}
 
