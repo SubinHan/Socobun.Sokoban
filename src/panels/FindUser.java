@@ -1,9 +1,11 @@
-package com.zetcode.Login;
+package panels;
 
 import java.util.Iterator;
 
 import com.google.firebase.database.DataSnapshot;
-import com.zetcode.model.UserInfo;
+
+import login.FirebaseClass;
+import model.UserInfo;
 
 public class FindUser {
 
