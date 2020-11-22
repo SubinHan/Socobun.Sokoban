@@ -34,11 +34,7 @@ public class Panel_MainScene extends JPanel{
 		
 		setLayout(new BorderLayout());
         
-        JLabel title = new JLabel("SOKOBAN");
-        title.setPreferredSize(new Dimension(0, 250));
-		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
-		title.setHorizontalAlignment(JLabel.CENTER);
-		this.add(title, BorderLayout.NORTH);
+        initTitle();
 
 		JPanel panelWest = new JPanel();
 		panelWest.setPreferredSize(new Dimension(400, 0));
@@ -47,42 +43,30 @@ public class Panel_MainScene extends JPanel{
 		panelEast.setPreferredSize(new Dimension(400, 0));
 		this.add(panelEast, BorderLayout.EAST);
 
+		initCenter();
+
+		JPanel panelSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		this.add(panelSouth, BorderLayout.SOUTH);
+        setFocusable(true);
+	}
+
+	private void initCenter() {
 		JPanel panelCenter = new JPanel(new GridLayout(5, 1));
 		buttonStartNormal = new JButton("Start Game");
 		buttonStartNormal.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-		buttonStartNormal.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				PanelChanger.changePanel(Panel_MainScene.this, new Panel_Normal());
-			}
-		});
+		buttonStartNormal.addActionListener(createAction(new Panel_Normal()));
 		
 		
 		buttonStartEndless = new JButton("Start Endless");
 		buttonStartEndless.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-		buttonStartEndless.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				PanelChanger.changePanel(Panel_MainScene.this, null);
-			}
-		});
+		buttonStartEndless.addActionListener(createAction(new Panel_Endless()));
 		buttonCustom = new JButton("Custom Mode");
 		buttonCustom.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-		buttonCustom.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				PanelChanger.changePanel(Panel_MainScene.this, new Panel_Custom());
-			}
-		});
+		buttonCustom.addActionListener(createAction(new Panel_Custom()));
 		
 		buttonHighscore = new JButton("Highscores");
 		buttonHighscore.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
-		buttonHighscore.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				PanelChanger.changePanel(Panel_MainScene.this, new Panel_Ranking());
-			}
-		});
+		buttonHighscore.addActionListener(createAction(new Panel_Ranking()));
 	
 		panelCenter.add(buttonStartNormal);
 		panelCenter.add(buttonStartEndless);
@@ -90,10 +74,23 @@ public class Panel_MainScene extends JPanel{
 		panelCenter.add(buttonHighscore);
 		
 		this.add(panelCenter, BorderLayout.CENTER);
+	}
+	
+	private ActionListener createAction(JPanel panelToChange) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PanelChanger.changePanel(Panel_MainScene.this, panelToChange);
+			}
+		};
+	}
 
-		JPanel panelSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		this.add(panelSouth, BorderLayout.SOUTH);
-        setFocusable(true);
+	private void initTitle() {
+		JLabel title = new JLabel("SOKOBAN");
+        title.setPreferredSize(new Dimension(0, 250));
+		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
+		title.setHorizontalAlignment(JLabel.CENTER);
+		this.add(title, BorderLayout.NORTH);
 	}
 	
 }
