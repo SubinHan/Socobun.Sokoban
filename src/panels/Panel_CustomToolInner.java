@@ -84,10 +84,6 @@ public class Panel_CustomToolInner extends JPanel {
 		this.add(panelInner);
 	}
 	
-	
-	/**
-	 * 각 격자의 ImageLabel들을 update함.
-	 */
 	private void buildLevel() {
 		panelInner.removeAll();
 		for (int i = 0; i < MAX_LEVEL_WIDTH; i++) {

@@ -50,6 +50,45 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 		}
 	}
 
+	private class SaveActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (isConfirmed)
+				saveMap();
+			else {
+				labelStatus.setForeground(Color.RED);
+				labelStatus.setText("need to play and clear once.");
+			}
+		}
+		
+	}
+	
+	private class PlayActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!isPlaying) {
+				if (!panelCustomToolInner.isValidMap()) {
+					labelStatus.setForeground(Color.RED);
+					labelStatus.setText("is not valid map.");
+					return;
+				}
+				panelGame.setLevel(new Level(panelCustomToolInner.getLevel()));
+				panelCenter.removeAll();
+				panelCenter.add(panelGame);
+				labelStatus.setText(" ");
+				buttonPlay.setText("Back to Custom Mode");
+				Panel_CustomTool.this.requestFocusInWindow();
+				isPlaying = true;
+				repaint();
+			} else {
+				backToCustomMode();
+			}
+		}
+		
+	}
+	
 	private ActionListener createActionListener(char brushInfo) {
 		return new ActionListener() {
 
@@ -72,8 +111,9 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 	private boolean isPlaying;
 
 	private JLabel labelStatus;
-	private JPanel panelNorth, panelWest, panelCenter, panelCenterInner, panelEast;
+	private JPanel panelNorth, panelWest, panelCenter, panelEast;
 	private Panel_Game panelGame;
+	private Panel_CustomToolInner panelCustomToolInner;
 	private JButton buttonPlay;
 
 	private char brush;
@@ -87,6 +127,7 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 	public Panel_CustomTool() {
 		frame = Frame_Sokoban.getInstance();
 		panelGame = new Panel_Game(Panel_CustomTool.this, new Level());
+		panelCustomToolInner = new Panel_CustomToolInner();
 		this.addKeyListener(new KeyListener());
 		brush = SokobanUtilities.ACTOR_GROUND;
 		InitUI();
@@ -98,9 +139,9 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 	 * @param f
 	 * @param level 수정할 level.
 	 */
-	public Panel_CustomTool(Frame_Sokoban f, char level[][]) {
-		// TODO load map.
-	}
+//	public Panel_CustomTool(Frame_Sokoban f, char level[][]) {
+//		// TODO load map.
+//	}
 
 	/**
 	 * Custom Map을 Confirm하기 위해 최소한 한 번 Play로 진입해서 클리어 해야 하는데, Play에서 다시 수정 모드로
@@ -108,7 +149,7 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 	 */
 	public void backToCustomMode() {
 		panelCenter.removeAll();
-		panelCenter.add(panelCenterInner);
+		panelCenter.add(panelCustomToolInner);
 		buttonPlay.setText("Play");
 		isPlaying = false;
 		repaint();
@@ -128,10 +169,9 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 	 * MAX_LEVEL_WIDTH*MAX_LEVEL_HEIGHT 크기의 GridBagLayout으로 구성함.
 	 */
 	private void initPanelCenter() {
-		panelCenter = new Panel_CustomToolInner();
-		panelCenterInner = ((Panel_CustomToolInner) panelCenter).getInnerPanel();
+		panelCenter = new JPanel();
 
-		panelCenterInner.addMouseListener(new MouseListener() {
+		panelCustomToolInner.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -147,34 +187,18 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println("Mouse Pressed");
-				int x, y;
-				x = e.getX() / SokobanUtilities.SIZE_OF_CELLS;
-				y = e.getY() / SokobanUtilities.SIZE_OF_CELLS;
-
-				((Panel_CustomToolInner) panelCenter).updateLevelImage(x, y, brush);
-
-				isConfirmed = false;
-				revalidate();
-				repaint();
+				updateLevelImage(e.getX() / SokobanUtilities.SIZE_OF_CELLS, e.getY() / SokobanUtilities.SIZE_OF_CELLS);
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
-		panelCenterInner.addMouseMotionListener(new MouseMotionListener() {
+		panelCustomToolInner.addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				int x, y;
-				x = e.getX() / SokobanUtilities.SIZE_OF_CELLS;
-				y = e.getY() / SokobanUtilities.SIZE_OF_CELLS;
-
-				((Panel_CustomToolInner) panelCenter).updateLevelImage(x, y, brush);
-				isConfirmed = false;
-				revalidate();
-				repaint();
+				updateLevelImage(e.getX() / SokobanUtilities.SIZE_OF_CELLS, e.getY() / SokobanUtilities.SIZE_OF_CELLS);
 			}
 
 			@Override
@@ -184,9 +208,16 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 
 		});
 
-		panelCenter.add(panelCenterInner);
+		panelCenter.add(panelCustomToolInner);
 		this.add(panelCenter, BorderLayout.CENTER);
 
+	}
+	
+	private void updateLevelImage(int x, int y) {
+		panelCustomToolInner.updateLevelImage(x, y, brush);
+		isConfirmed = false;
+		revalidate();
+		repaint();
 	}
 
 	private void initPanelEast() {
@@ -248,18 +279,7 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 		JButton buttonBack;
 		buttonSave = new JButton("Save");
 		buttonSave.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		buttonSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (isConfirmed) {
-					labelStatus.setForeground(Color.GREEN);
-					labelStatus.setText("Saved!");
-					saveMap();
-				} else {
-					labelStatus.setForeground(Color.RED);
-					labelStatus.setText("need to play and clear once.");
-				}
-			}
-		});
+		buttonSave.addActionListener(new SaveActionListener());
 		buttonBack = new JButton("Back (esc)");
 		buttonBack.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		buttonBack.addActionListener(new ActionListener() {
@@ -271,23 +291,7 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 		labelStatus.setFont(new Font("맑은 고딕", Font.ITALIC, 20));
 		buttonPlay = new JButton("Play");
 		buttonPlay.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-		buttonPlay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (!isPlaying) {
-					if (!((Panel_CustomToolInner) panelCenter).isValidMap()) {
-						labelStatus.setForeground(Color.RED);
-						labelStatus.setText("is not valid map.");
-						return;
-					}
-					enterPlayMode();
-				} else {
-					backToCustomMode();
-				}
-				repaint();
-			}
-
-		});
+		buttonPlay.addActionListener(new PlayActionListener());
 
 		panelSouth.add(labelStatus);
 		panelSouth.add(buttonPlay);
@@ -300,12 +304,15 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 	 * 맵을 file로 저장.
 	 */
 	protected void saveMap() {
+		labelStatus.setForeground(Color.GREEN);
+		labelStatus.setText("Saved!");
+		
 		IFileSearcher fileSearcher;
 		fileSearcher = new LevelFileSearcher();
 
 		SokobanUtilities.charArrayToFile(
 				"src/CustomMaps/Custom Map " + (fileSearcher.getFiles("src/customMaps").length + 1),
-				((Panel_CustomToolInner) panelCenter).getLevel());
+				panelCustomToolInner.getLevel());
 	}
 
 	@Override
@@ -329,16 +336,6 @@ public class Panel_CustomTool extends JPanel implements IGameListener {
 		labelStatus.setForeground(Color.GREEN);
 		labelStatus.setText("Confirmed!");
 		backToCustomMode();
-	}
-
-	private void enterPlayMode() {
-		panelGame.setLevel(new Level(((Panel_CustomToolInner) panelCenter).getLevel()));
-		panelCenter.removeAll();
-		panelCenter.add(panelGame);
-		labelStatus.setText(" ");
-		buttonPlay.setText("Back to Custom Mode");
-		Panel_CustomTool.this.requestFocusInWindow();
-		isPlaying = true;
 	}
 
 }
