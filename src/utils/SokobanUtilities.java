@@ -23,15 +23,6 @@ public abstract class SokobanUtilities {
 	public final static char ACTOR_AREA = '.';
 	public final static char ACTOR_BAGGAGE = '$';
 	public final static char ACTOR_PLAYER = '@';
-	public final static int PANEL_MAIN = 0;
-	public final static int PANEL_NORMAL = 1;
-	public final static int PANEL_ENDLESS = 2;
-	public final static int PANEL_CUSTOM = 3;
-	public final static int PANEL_RANKING = 4;
-	public final static int PANEL_CUSTOMTOOL = 5;
-	public final static int PANEL_LEVELLIST = 6;
-	public final static int PANEL_LOGIN = 7;
-	public final static int PANEL_SIGNUP = 8;
 	public final static String AUDIO_FOOTSTEP = "src/sounds/sfx_movement_footstep.wav";
 	public final static String AUDIO_BUMPED = "src/sounds/sfx_movement_bumped.wav";
 	public final static String AUDIO_BUTTON = "src/sounds/sfx_sounds_button.wav";
