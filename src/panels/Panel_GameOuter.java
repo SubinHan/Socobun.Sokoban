@@ -15,8 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import login.FirebaseClass;
 import model.Highscore;
 import model.Level;
+import model.UserInfo;
 import utils.AudioPlayer;
 import utils.SokobanUtilities;
 
@@ -196,15 +198,20 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	public void completed() {
 		labelStatus.setText("Completed!");
 		timer.stop();
+		UserInfo userInfo = frame.getUserinfo();
 		Highscore newScore = new Highscore(score, numOfMove + 1, numOfUndo, elapsedTime);
-		if (Frame_Sokoban.userinfo.clearedStagesInfo.get(level.getFile().getName()) != null) {
-			Highscore oldScore = Frame_Sokoban.userinfo.clearedStagesInfo.get(level.getFile().getName());
+		if (userInfo.clearedStagesInfo.get(level.getFile().getName()) != null) {
+			Highscore oldScore = userInfo.clearedStagesInfo.get(level.getFile().getName());
 			if (oldScore.compareTo(newScore) > 0) {
 				;
-			} else
-				newScore.writeHighscoreToFirebase(level.getFile().getName());
-		} else
-			newScore.writeHighscoreToFirebase(level.getFile().getName());
+			} else {
+				userInfo.clearedStagesInfo.put(level.getFile().getName(), newScore);
+				FirebaseClass.rootReference.child("users").child(userInfo.id).setValueAsync(userInfo);
+			}
+		} else {
+			userInfo.clearedStagesInfo.put(level.getFile().getName(), newScore);
+			FirebaseClass.rootReference.child("users").child(userInfo.id).setValueAsync(userInfo);
+		}
 	}
 
 }

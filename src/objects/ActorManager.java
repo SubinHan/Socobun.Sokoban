@@ -1,9 +1,10 @@
-package model;
+package objects;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import model.Level;
 import utils.SokobanUtilities;
 
 public class ActorManager {
@@ -20,33 +21,33 @@ public class ActorManager {
 
 	private Stack<UndoSnapshot> undoStack;
 	
-	Actor_Player player = null;
-	ArrayList<Actor_Baggage> baggages;
+	IPlayer player = null;
+	ArrayList<IObject> baggages;
 
-	public Actor_Player getPlayer() {
+	public IPlayer getPlayer() {
 		return player;
 	}
 
-	public ArrayList<Actor_Baggage> getBaggages() {
+	public ArrayList<IObject> getBaggages() {
 		return baggages;
 	}
 
-	public ArrayList<Actor_Wall> getWalls() {
+	public ArrayList<IObject> getWalls() {
 		return walls;
 	}
 
-	public ArrayList<Actor_Ground> getGrounds() {
+	public ArrayList<IObject> getGrounds() {
 		return grounds;
 	}
 
-	public ArrayList<Actor_Area> getAreas() {
+	public ArrayList<IObject> getAreas() {
 		return areas;
 	}
 
-	ArrayList<Actor_Wall> walls;
-	ArrayList<Actor_Ground> grounds;
-	ArrayList<Actor_Area> areas;
-	ArrayList<Actor> collisionObjects;
+	ArrayList<IObject> walls;
+	ArrayList<IObject> grounds;
+	ArrayList<IObject> areas;
+	ArrayList<ICollidable> collidableObjects;
 
 	
 	public ActorManager(Level level) {
@@ -61,12 +62,7 @@ public class ActorManager {
 		baggages = new ArrayList<>();
 		areas = new ArrayList<>();
 		grounds = new ArrayList<>();
-		collisionObjects = new ArrayList<>();
-
-		Actor_Wall wall;
-		Actor_Baggage b;
-		Actor_Area a;
-		Actor_Ground g;
+		collidableObjects = new ArrayList<>();
 
 		char[][] levelArray = level.getCharArray();
 
@@ -132,7 +128,7 @@ public class ActorManager {
 		addGround(i, j);
 		b = new Actor_Baggage(i * SIZE_OF_CELLS, j * SIZE_OF_CELLS);
 		baggages.add(b);
-		collisionObjects.add(b);
+		collidableObjects.add(b);
 	}
 
 	private void addWall(int i, int j) {
@@ -141,44 +137,44 @@ public class ActorManager {
 		addGround(i, j);
 		wall = new Actor_Wall(i * SIZE_OF_CELLS, j * SIZE_OF_CELLS);
 		walls.add(wall);
-		collisionObjects.add(wall);
+		collidableObjects.add(wall);
 	}
 
-	private Actor getActor(int x, int y) {
-		for (int i = 0; i < collisionObjects.size(); i++) {
-			Actor actor = collisionObjects.get(i);
-			if (actor.x() == x && actor.y() == y)
-				return actor;
+	private ICollidable getCollidableActor(int x, int y) {
+		for (int i = 0; i < collidableObjects.size(); i++) {
+			ICollidable collidable = collidableObjects.get(i);
+			if (collidable.getX() == x && collidable.getY() == y)
+				return collidable;
 		}
 		return null;
 	}
 
 	public boolean canMove(int xDelta, int yDelta) {
-		Actor actor = getActor(player.x() + xDelta, player.y() + yDelta);
+		ICollidable collidable = getCollidableActor(player.getX() + xDelta, player.getY() + yDelta);
 
-		if (actor == null)
+		if (collidable == null)
 			return true;
-		if (actor.getType() == "baggage") {
-			if (getActor(player.x() + 2 * xDelta, player.y() + 2 * yDelta) == null)
+		if (collidable instanceof IMovable) {
+			if (getCollidableActor(player.getX() + 2 * xDelta, player.getY() + 2 * yDelta) == null)
 				return true;
 		}
 		return false;
 
 	}
 
-	public void move(int xDelta, int yDelta) {
-		int playerX = player.x();
-		int playerY = player.y();
+	public void movePlayer(int xDelta, int yDelta) {
+		int playerX = player.getX();
+		int playerY = player.getY();
 
 		if (!canMove(xDelta, yDelta))
 			return;
-		Actor actor = getActor(playerX + xDelta, playerY + yDelta);
-		if (actor != null)
-			if (actor.getType() == "baggage") {
-				((Actor_Baggage) actor).move(xDelta, yDelta);
+		ICollidable collidable = getCollidableActor(playerX + xDelta, playerY + yDelta);
+		if (collidable != null)
+			if (collidable.getType() == "baggage") {
+				((Actor_Baggage) collidable).move(xDelta, yDelta);
 			}
 		player.move(xDelta, yDelta);
-		undoStack.add(new UndoSnapshot(xDelta, yDelta, (Actor_Baggage)actor));
+		undoStack.add(new UndoSnapshot(xDelta, yDelta, (Actor_Baggage)collidable));
 		
 	}
 	

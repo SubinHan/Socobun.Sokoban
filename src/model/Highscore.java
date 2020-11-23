@@ -24,9 +24,9 @@ public class Highscore implements Serializable, Comparable {
 		this.elapsedTime = elapsedTime;
 	}
 	
-	public Highscore(String levelName) {
-			getHighscore(levelName);
-	}
+//	public Highscore(UserInfo userInfo, String levelName) {
+//			getHighscore(userInfo, levelName);
+//	}
 
 	public int getScore() {
 		return score;
@@ -60,24 +60,22 @@ public class Highscore implements Serializable, Comparable {
 		this.elapsedTime = elapsedTime;
 	}
 
-	public void writeHighscoreToFirebase(String levelName) {
-		UserInfo info = Frame_Sokoban.userinfo;
-		
-		info.clearedStagesInfo.put(levelName, this);
-		FirebaseClass.rootReference.child("users").child(info.id).setValueAsync(info);
-	}
-
-	private void getHighscore(String levelName){
-		
-		HashMap<String, Highscore> clearedStages = Frame_Sokoban.userinfo.clearedStagesInfo; 
-		if(clearedStages.get(levelName) == null)
-			return;
-		
-		this.score = clearedStages.get(levelName).score;
-		this.numOfMove = clearedStages.get(levelName).numOfMove;
-		this.numOfUndo = clearedStages.get(levelName).numOfUndo;
-		this.elapsedTime = clearedStages.get(levelName).elapsedTime;
-	}
+//	public void writeHighscoreToFirebase(UserInfo info, String levelName) {
+//		info.clearedStagesInfo.put(levelName, this);
+//		FirebaseClass.rootReference.child("users").child(info.id).setValueAsync(info);
+//	}
+//
+//	private void getHighscore(UserInfo userInfo, String levelName){
+//		
+//		HashMap<String, Highscore> clearedStages = Frame_Sokoban.getInstance().getUserinfo().clearedStagesInfo; 
+//		if(clearedStages.get(levelName) == null)
+//			return;
+//		
+//		this.score = clearedStages.get(levelName).score;
+//		this.numOfMove = clearedStages.get(levelName).numOfMove;
+//		this.numOfUndo = clearedStages.get(levelName).numOfUndo;
+//		this.elapsedTime = clearedStages.get(levelName).elapsedTime;
+//	}
 
 	@Override
 	public int compareTo(Object arg0) {

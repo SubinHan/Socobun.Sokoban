@@ -1,9 +1,9 @@
-package model;
+package objects;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Actor_Player extends Actor {
+public class Actor_Player extends Actor implements IPlayer {
 	
 	ImageIcon upImage, downImage, leftImage, rightImage;
 
@@ -39,8 +39,8 @@ public class Actor_Player extends Actor {
     	else if(x > 0)
     		setImage(rightImage.getImage());
     	
-        int dx = x() + x;
-        int dy = y() + y;
+        int dx = getX() + x;
+        int dy = getY() + y;
         
         setX(dx);
         setY(dy);
@@ -57,8 +57,8 @@ public class Actor_Player extends Actor {
     	else if(x > 0)
     		setImage(leftImage.getImage());
     	
-        int dx = x() + x;
-        int dy = y() + y;
+        int dx = getX() + x;
+        int dy = getY() + y;
         
         setX(dx);
         setY(dy);

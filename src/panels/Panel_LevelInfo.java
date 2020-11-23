@@ -34,8 +34,8 @@ public class Panel_LevelInfo extends JPanel {
 		labelUndo.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		labelTime.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 20));
 		
-		if(Frame_Sokoban.userinfo.clearedStagesInfo.get(level.getFile().getName()) != null) {
-			highscore = Frame_Sokoban.userinfo.clearedStagesInfo.get(level.getFile().getName());
+		if(frame.getUserinfo().clearedStagesInfo.get(level.getFile().getName()) != null) {
+			highscore = frame.getUserinfo().clearedStagesInfo.get(level.getFile().getName());
 
 			labelScore.setText("Highscore: " + highscore.getScore());
 			labelMove.setText("Move: " + highscore.getNumOfMove());

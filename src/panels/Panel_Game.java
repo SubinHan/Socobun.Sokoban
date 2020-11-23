@@ -10,14 +10,10 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import model.Actor;
-import model.ActorManager;
-import model.Actor_Area;
-import model.Actor_Baggage;
-import model.Actor_Ground;
-import model.Actor_Player;
-import model.Actor_Wall;
 import model.Level;
+import objects.ActorManager;
+import objects.IObject;
+import objects.IPlayer;
 import utils.AudioPlayer;
 import utils.SokobanUtilities;
 
@@ -32,28 +28,28 @@ public class Panel_Game extends JPanel {
 
 			switch (key) {
 			case KeyEvent.VK_UP:
-				actorManager.move(0, -SIZE_OF_CELLS);
+				actorManager.movePlayer(0, -SIZE_OF_CELLS);
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				isCompleted();
 				fireMoved();
 				break;
 
 			case KeyEvent.VK_DOWN:
-				actorManager.move(0, SIZE_OF_CELLS);
+				actorManager.movePlayer(0, SIZE_OF_CELLS);
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				isCompleted();
 				fireMoved();
 				break;
 
 			case KeyEvent.VK_LEFT:
-				actorManager.move(-SIZE_OF_CELLS, 0);
+				actorManager.movePlayer(-SIZE_OF_CELLS, 0);
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				isCompleted();
 				fireMoved();
 				break;
 
 			case KeyEvent.VK_RIGHT:
-				actorManager.move(SIZE_OF_CELLS, 0);
+				actorManager.movePlayer(SIZE_OF_CELLS, 0);
 				AudioPlayer.playSound(SokobanUtilities.AUDIO_FOOTSTEP);
 				isCompleted();
 				fireMoved();
@@ -81,16 +77,12 @@ public class Panel_Game extends JPanel {
 	private final int MAX_LEVEL_WIDTH = SokobanUtilities.MAX_LEVEL_WIDTH;
 	private final int MAX_LEVEL_HEIGHT = SokobanUtilities.MAX_LEVEL_HEIGHT;
 	private final int SIZE_OF_CELLS = SokobanUtilities.SIZE_OF_CELLS;
-	
-	private final int LEFT_COLLISION = 1;
-	private final int RIGHT_COLLISION = 2;
-	private final int TOP_COLLISION = 3;
-	private final int BOTTOM_COLLISION = 4;
-	private ArrayList<Actor_Wall> walls;
-	private ArrayList<Actor_Baggage> baggs;
-	private ArrayList<Actor_Area> areas;
-	private ArrayList<Actor_Ground> grounds;
-	private Actor_Player player;
+
+	private ArrayList<IObject> walls;
+	private ArrayList<IObject> baggs;
+	private ArrayList<IObject> areas;
+	private ArrayList<IObject> grounds;
+	private IPlayer player;
 	private Level level;
 	private char levelArray[][];
 	ArrayList listeners;
@@ -127,7 +119,7 @@ public class Panel_Game extends JPanel {
 		g.setColor(new Color(85, 85, 85));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-		ArrayList<Actor> world = new ArrayList<>();
+		ArrayList<IObject> world = new ArrayList<>();
 		
 		grounds = actorManager.getGrounds();
 		baggs = actorManager.getBaggages();
@@ -144,9 +136,9 @@ public class Panel_Game extends JPanel {
 
 		for (int i = 0; i < world.size(); i++) {
 
-			Actor item = world.get(i);
+			IObject item = world.get(i);
 
-			g.drawImage(item.getImage(), item.x(), item.y(), this);
+			g.drawImage(item.getImage(), item.getX(), item.getY(), this);
 		}
 
 	}
@@ -200,12 +192,12 @@ public class Panel_Game extends JPanel {
 
 		for (int i = 0; i < nOfBags; i++) {
 
-			Actor_Baggage bag = baggs.get(i);
+			IObject bag = baggs.get(i);
 
 			for (int j = 0; j < nOfBags; j++) {
 
-				Actor_Area area = areas.get(j);
-				if (bag.x() == area.x() && bag.y() == area.y()) {
+				IObject area = areas.get(j);
+				if (bag.getX() == area.getX() && bag.getY() == area.getY()) {
 
 					finishedBags += 1;
 				}

@@ -14,8 +14,16 @@ public class Frame_Sokoban extends JFrame {
 	private final int MAX_RESOLUTION_WIDTH = SokobanUtilities.MAX_RESOLUTION_WIDTH;
 	private final int MAX_RESOLUTION_HEIGHT = SokobanUtilities.MAX_RESOLUTION_HEIGHT;
 	
-	public static UserInfo userinfo = null;
+	private UserInfo userinfo = null;
 	
+	public UserInfo getUserinfo() {
+		return userinfo;
+	}
+
+	public void setUserinfo(UserInfo userinfo) {
+		this.userinfo = userinfo;
+	}
+
 	private static Frame_Sokoban instance = null;
 	
     private Frame_Sokoban() {

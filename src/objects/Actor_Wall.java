@@ -1,9 +1,9 @@
-package model;
+package objects;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Actor_Wall extends Actor {
+public class Actor_Wall extends Actor implements ICollidable {
 
     private Image image;
 

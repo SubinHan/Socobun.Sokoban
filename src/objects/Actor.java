@@ -1,8 +1,8 @@
-package model;
+package objects;
 
 import java.awt.Image;
 
-public class Actor implements Cloneable{
+public class Actor implements Cloneable, IObject{
 
     private final int SPACE = 64;
 
@@ -25,12 +25,12 @@ public class Actor implements Cloneable{
         image = img;
     }
 
-    public int x() {
+    public int getX() {
         
         return x;
     }
 
-    public int y() {
+    public int getY() {
         
         return y;
     }

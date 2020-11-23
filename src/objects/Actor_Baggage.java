@@ -1,9 +1,9 @@
-package model;
+package objects;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Actor_Baggage extends Actor {
+public class Actor_Baggage extends Actor implements ICollidable, IMovable {
 
     public Actor_Baggage(int x, int y) {
         super(x, y);
@@ -20,8 +20,8 @@ public class Actor_Baggage extends Actor {
 
     public void move(int x, int y) {
         
-        int dx = x() + x;
-        int dy = y() + y;
+        int dx = getX() + x;
+        int dy = getY() + y;
         
         setX(dx);
         setY(dy);

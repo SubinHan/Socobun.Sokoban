@@ -140,7 +140,7 @@ public class Panel_Login extends JPanel {
 				available_PW.setText("");
 				if(info.pw.contentEquals(UserInfo.passwordToString(field_PW.getPassword()))) { // 비번 맞으면
 					available_PW.setText("");
-					frame.userinfo = info;
+					frame.setUserinfo(info);
 					PanelChanger.changePanel(Panel_Login.this, new Panel_MainScene());
 				}
 				else {
