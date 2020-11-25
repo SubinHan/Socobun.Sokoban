@@ -2,7 +2,6 @@ package login;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Iterator;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -13,9 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import model.UserInfo;
-
-public class FirebaseClass {
+public abstract class FirebaseClass {
 
 	public static DataSnapshot dataSnapshot = null;
 
@@ -59,9 +56,5 @@ public class FirebaseClass {
 		}
 
 	}
-
-	public static void putUser(UserInfo info) {
-		rootReference.child("users").child(info.id).setValueAsync(info);
-	}
-
+	
 }

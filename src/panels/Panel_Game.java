@@ -90,6 +90,7 @@ public class Panel_Game extends JPanel {
 	ActorManager actorManager;
 	
 	public Panel_Game(IGameListener listener, Level givenLevel) {
+		
 		frame = Frame_Sokoban.getInstance();
 		addGameListener(listener);
 

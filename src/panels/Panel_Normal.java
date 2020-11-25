@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Level;
-import utils.SokobanUtilities;
 
 public class Panel_Normal extends JPanel implements ILevelSelectorListener {
 	

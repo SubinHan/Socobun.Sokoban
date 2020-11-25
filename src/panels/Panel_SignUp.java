@@ -25,49 +25,43 @@ import model.UserInfo;
 
 public class Panel_SignUp extends JPanel {
 
-	private static final long serialVersionUID = -6842563827077598904L;
-
 	boolean nicknameAvailable = false;
 	boolean idAvailable = false;
 	boolean pwAvailable = false;
 	boolean pwconfirmAvailable = false;
+	
+	//Center
+	JPanel panelCenter = new JPanel();
+		//Nickname
+		JLabel label_Nickname = new JLabel("Nickname");
+		JTextField field_Nickname = new JTextField(20);
+		JLabel available_Nickname = new JLabel("두 자 이상 입력해주세요.");
+		//ID
+		JLabel label_ID = new JLabel("ID");
+		JTextField field_ID = new JTextField(20);
+		JLabel available_ID = new JLabel("두 자 이상 입력해주세요.");
+		//PW
+		JLabel label_PW = new JLabel("Password");
+		JPasswordField field_PW = new JPasswordField(20);
+		JLabel available_PW = new JLabel("네 자 이상 입력해주세요.");
+		//PW Confirm
+		JLabel label_PWconfirm = new JLabel("Password Confirm");
+		JPasswordField field_PWconfirm = new JPasswordField(20);
+		JLabel available_PWconfirm = new JLabel("네 자 이상 입력해주세요.");
+		//Buttons
+		JButton okBtn = new JButton("OK");
+		JButton cancelBtn = new JButton("Cancel");
 
-	Panel_SignUp panel = this;
-
-	JLabel label_Nickname = null;
-	JTextField field_Nickname = null;
-	JLabel available_Nickname = null;
-
-	JLabel label_ID = null;
-	JTextField field_ID = null;
-	JLabel available_ID = null;
-
-	JLabel label_PW = null;
-	JPasswordField field_PW = null;
-	JLabel available_PW = null;
-
-	JLabel label_PWconfirm = null;
-	JPasswordField field_PWconfirm = null;
-	JLabel available_PWconfirm = null;
-
-	Frame_Sokoban frame;
 
 	public Panel_SignUp() {
 
-		frame = Frame_Sokoban.getInstance();
 		initUI();
 	}
-
-	private void initUI() {
+	
+	//Layout
+	private void initLayout() {
 
 		setLayout(new BorderLayout());
-
-		JLabel title = new JLabel("SIGN UP");
-		title.setFont(new Font("맑은 고딕", Font.BOLD, 40));
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setPreferredSize(new Dimension(0, 300));
-
-		JPanel panelCenter = new JPanel();
 
 		JPanel southMargin = new JPanel();
 		southMargin.setPreferredSize(new Dimension(0, 300));
@@ -76,44 +70,50 @@ public class Panel_SignUp extends JPanel {
 		JPanel eastMargin = new JPanel();
 		eastMargin.setPreferredSize(new Dimension(300, 0));
 
-		this.add(title, BorderLayout.NORTH);
 		this.add(southMargin, BorderLayout.SOUTH);
 		this.add(westMargin, BorderLayout.WEST);
 		this.add(eastMargin, BorderLayout.EAST);
-		this.add(panelCenter, BorderLayout.CENTER);
+		
+	}
+	
+	//Title(North)
+	private void initTitle() {
 
+		JLabel title = new JLabel("SIGN UP");
+		title.setFont(new Font("맑은 고딕", Font.BOLD, 40));
+		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setPreferredSize(new Dimension(0, 300));
+
+		this.add(title, BorderLayout.NORTH);
+		
+	}
+	
+	
+	//Center
+	private void initCenter() {
+		
 		panelCenter.setLayout(new GridLayout(6, 3, 10, 10));
 
-		label_Nickname = new JLabel("Nickname");
-		field_Nickname = new JTextField(20);
-		available_Nickname = new JLabel("");
+		//Nickname
 		label_Nickname.setHorizontalAlignment(SwingConstants.RIGHT);
 		available_Nickname.setForeground(new Color(255, 0, 0));
 
-		label_ID = new JLabel("ID");
-		field_ID = new JTextField(20);
-		available_ID = new JLabel("");
+		//ID
 		label_ID.setHorizontalAlignment(SwingConstants.RIGHT);
 		available_ID.setForeground(new Color(255, 0, 0));
 
-		label_PW = new JLabel("Password");
-		field_PW = new JPasswordField(20);
-		available_PW = new JLabel("");
+		//PW
 		label_PW.setHorizontalAlignment(SwingConstants.RIGHT);
 		field_PW.setEchoChar('◆');
 		available_PW.setForeground(new Color(255, 0, 0));
 
-		label_PWconfirm = new JLabel("Password Confirm");
-		field_PWconfirm = new JPasswordField(20);
-		available_PWconfirm = new JLabel("");
+		//PW Confirm
 		label_PWconfirm.setHorizontalAlignment(SwingConstants.RIGHT);
 		field_PWconfirm.setEchoChar('◆');
 		available_PWconfirm.setForeground(new Color(255, 0, 0));
 
-		InputListener inputListener = new InputListener();
-		JButton okBtn = new JButton("OK");
-		okBtn.addActionListener(inputListener);
-		field_PWconfirm.addActionListener(inputListener);
+
+		//Buttons
 
 		panelCenter.add(label_Nickname);
 		panelCenter.add(field_Nickname);
@@ -134,188 +134,54 @@ public class Panel_SignUp extends JPanel {
 		panelCenter.add(new JLabel(""));
 		panelCenter.add(okBtn);
 		panelCenter.add(new JLabel(""));
+		
+		panelCenter.add(new JLabel(""));
+		panelCenter.add(cancelBtn);
+		panelCenter.add(new JLabel(""));
 
-		/**
-		 * 회원가입 폼 유효성 검증
-		 * 1. 아이디 : DB에 없어야 함. 공백이 아닌 두 자 이상
-		 * 2. 패스워드 : 네 자 이상
-		 * 4. 닉네임 : DB에
-		 * 없어야 함.
-		 * 
-		 * 위 번호의 합을 반환. 합이 1:아이디 문제, 2:패스워드 문제, 4:닉네임문제 3:아이디랑패스워드문제, 6:패스워드랑닉네임문제 7:다문제
-		 * 0:문제 없음.
-		 */
+		this.add(panelCenter, BorderLayout.CENTER);
+	}
+	
+	private void addListeners() {
 
-		field_Nickname.getDocument().addDocumentListener(new DocumentListener() { // 닉네임 입력할 때
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			private void whenChanged() {
-
-				if (field_Nickname.getText().length() < 2) {
-					available_Nickname.setForeground(new Color(255, 0, 0));
-					available_Nickname.setText("두 자 이상 입력해주세요.");
-				} else {
-					UserInfo info = FindUser.findUserByNickname(field_Nickname.getText());
-					if (info != null) { // 닉네임 있으면
-						available_Nickname.setForeground(new Color(255, 0, 0));
-						available_Nickname.setText("이미 있는 닉네임입니다.");
-						nicknameAvailable = false;
-					} else {
-						available_Nickname.setForeground(new Color(0, 255, 0));
-						available_Nickname.setText("○");
-						nicknameAvailable = true;
-					}
-				}
-			}
-
-		});
-
-		field_ID.getDocument().addDocumentListener(new DocumentListener() { // 아이디 입력할 때
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			private void whenChanged() {
-
-				if (field_ID.getText().length() < 2) {
-					available_ID.setForeground(new Color(255, 0, 0));
-					available_ID.setText("두 자 이상 입력해주세요.");
-				} else {
-					UserInfo info = FindUser.findUserByID(field_ID.getText());
-					if (info != null) { // 아이디 있으면
-						available_ID.setForeground(new Color(255, 0, 0));
-						available_ID.setText("이미 있는 아이디입니다.");
-						idAvailable = false;
-					} else {
-						available_ID.setForeground(new Color(0, 255, 0));
-						available_ID.setText("○");
-						idAvailable = true;
-					}
-				}
-			}
-
-		});
-
-		field_PW.getDocument().addDocumentListener(new DocumentListener() { // 비번 입력할 때
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			private void whenChanged() {
-				int pw_minLength = 4;
-				if (field_PW.getPassword().length >= pw_minLength) {
-					available_PW.setForeground(new Color(0, 255, 0));
-					available_PW.setText("○");
-					pwAvailable = true;
-				} else {
-					available_PW.setForeground(new Color(255, 0, 0));
-					available_PW.setText("네 자 이상 입력해주세요.");
-					pwAvailable = false;
-				}
-
+		InputListener inputListener = new InputListener();
+		field_PWconfirm.addActionListener(inputListener);
+		okBtn.addActionListener(inputListener);
+		cancelBtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				PanelChanger.changePanel(Panel_SignUp.this, new Panel_Login());
 			}
 		});
-
-		field_PWconfirm.getDocument().addDocumentListener(new DocumentListener() { // 비번확인 입력할 때
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				whenChanged();
-			}
-
-			private void whenChanged() {
-				if (field_PWconfirm.getPassword().length < 4) {
-					available_PWconfirm.setForeground(new Color(255, 0, 0));
-					available_PWconfirm.setText("네 자 이상 입력해주세요.");
-					pwconfirmAvailable = false;
-				} else if (Arrays.equals(field_PWconfirm.getPassword(), field_PW.getPassword())) {
-					available_PWconfirm.setForeground(new Color(0, 255, 0));
-					available_PWconfirm.setText("○");
-					pwconfirmAvailable = true;
-				} else {
-					available_PWconfirm.setForeground(new Color(255, 0, 0));
-					available_PWconfirm.setText("위에 입력한 비밀번호와 다릅니다.");
-					pwconfirmAvailable = false;
-				}
-			}
-		});
-
-		/*
-		 * 엔터키로 다음 필드로 커서 이동
-		 */
+		
 		EnterListener enterListener = new EnterListener();
-
 		field_PWconfirm.addActionListener(enterListener);
-		field_Nickname.addActionListener(enterListener);
 		field_ID.addActionListener(enterListener);
+		field_Nickname.addActionListener(enterListener);
+		
+		ValidityChecker validityChecker = new ValidityChecker();
+		field_Nickname.getDocument().addDocumentListener(validityChecker);
+		field_ID.getDocument().addDocumentListener(validityChecker);
+		field_PW.getDocument().addDocumentListener(validityChecker);
+		field_PWconfirm.getDocument().addDocumentListener(validityChecker);
+		
+	}
+	
+	/////
+	private void initUI() {
+
+		initLayout();
+		initTitle();
+		initCenter();
+		
+		addListeners();
 
 	}
-
+	
 	private class InputListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (nicknameAvailable && idAvailable && pwAvailable && pwconfirmAvailable) {
-				FirebaseClass
-						.putUser(new UserInfo(field_Nickname.getText(), field_ID.getText(), field_PW.getPassword()));
-				field_Nickname.setText("");
-				field_ID.setText("");
-				field_PW.setText("");
-				field_PWconfirm.setText("");
-				nicknameAvailable = false;
-				idAvailable = false;
-				pwAvailable = false;
-				pwconfirmAvailable = false;
-				available_Nickname.setText("");
-				available_ID.setText("");
-				available_PW.setText("");
-				available_PWconfirm.setText("");
+				UserInfo info = new UserInfo(field_Nickname.getText(), field_ID.getText(), field_PW.getPassword());
+				FirebaseClass.rootReference.child("users").child(info.id).setValueAsync(info);
 				PanelChanger.changePanel(Panel_SignUp.this, new Panel_Login());
 			}
 		}
@@ -328,4 +194,103 @@ public class Panel_SignUp extends JPanel {
 		}
 	}
 
+
+	private class ValidityChecker implements DocumentListener {
+
+		@Override
+		public void changedUpdate(DocumentEvent arg0) { whenChanged(arg0); }
+
+		@Override
+		public void removeUpdate(DocumentEvent arg0) { whenChanged(arg0); }
+
+		@Override
+		public void insertUpdate(DocumentEvent arg0) { whenChanged(arg0); }
+
+		private void whenChanged(DocumentEvent arg) {
+			
+			checkNickname();
+			checkID();
+			checkPW();
+			checkPWConfirm();
+		}
+		
+		private void checkNickname() {
+			
+			available_Nickname.setForeground(new Color(255, 0, 0));
+			
+			if (field_Nickname.getText().length() < 2) {
+				
+				available_Nickname.setText("두 자 이상 입력해주세요.");
+				
+			} else {
+				
+				UserInfo info = FindUser.findUserByNickname(field_Nickname.getText());
+				if (info != null) { // 닉네임 있으면
+					available_Nickname.setForeground(new Color(255, 0, 0));
+					available_Nickname.setText("이미 있는 닉네임입니다.");
+					nicknameAvailable = false;
+				} else {
+					available_Nickname.setForeground(new Color(0, 255, 0));
+					available_Nickname.setText("○");
+					nicknameAvailable = true;
+				}
+			}
+			
+		}
+
+		private void checkID() {
+
+			available_ID.setForeground(new Color(255, 0, 0));
+			
+			if (field_ID.getText().length() < 2) {
+				
+				available_ID.setText("두 자 이상 입력해주세요.");
+				
+			} else {
+				
+				UserInfo info = FindUser.findUserByID(field_ID.getText());
+				if (info != null) { // 아이디 있으면
+					available_ID.setText("이미 있는 아이디입니다.");
+					idAvailable = false;
+				} else {
+					available_ID.setForeground(new Color(0, 255, 0));
+					available_ID.setText("○");
+					idAvailable = true;
+				}
+			}
+		}
+
+		private void checkPW() {
+			
+			available_PW.setForeground(new Color(255, 0, 0));
+			
+			if (field_PW.getPassword().length >= 4) {
+				available_PW.setForeground(new Color(0, 255, 0));
+				available_PW.setText("○");
+				pwAvailable = true;
+			} else {
+				available_PW.setText("네 자 이상 입력해주세요.");
+				pwAvailable = false;
+			}
+			
+		}
+
+		private void checkPWConfirm() {
+			
+			available_PWconfirm.setForeground(new Color(255, 0, 0));
+			
+			if (field_PWconfirm.getPassword().length < 4) {
+				available_PWconfirm.setText("네 자 이상 입력해주세요.");
+				pwconfirmAvailable = false;
+			} else if (Arrays.equals(field_PWconfirm.getPassword(), field_PW.getPassword())) {
+				available_PWconfirm.setForeground(new Color(0, 255, 0));
+				available_PWconfirm.setText("○");
+				pwconfirmAvailable = true;
+			} else {
+				available_PWconfirm.setText("위에 입력한 비밀번호와 다릅니다.");
+				pwconfirmAvailable = false;
+			}
+		}
+		
+	}
 }

@@ -21,43 +21,36 @@ import model.UserInfo;
 
 public class Panel_Login extends JPanel {
 
-	private static final long serialVersionUID = -6842563827077598904L;
-
 	boolean idAvailable = false;
 	boolean pwAvailable = false;
-
-	Panel_Login panel = this;
-
-	JLabel label_ID = null;
-	JTextField field_ID = null;
-	JLabel available_ID = null;
-
-	JLabel label_PW = null;
-	JPasswordField field_PW = null;
-	JLabel available_PW = null;
-
-	JButton okBtn = null;
-	JButton signUpBtn = null;
-
+	
 	Frame_Sokoban frame;
+	
+	//Center
+	JPanel panelCenter; // Center 내용 담을 큰 틀
+		//ID
+		JLabel label_ID = new JLabel("ID");
+		JTextField field_ID = new JTextField(20);
+		JLabel available_ID = new JLabel("");
+		//PW
+		JLabel label_PW = new JLabel("Password");
+		JPasswordField field_PW = new JPasswordField(20);
+		JLabel available_PW = new JLabel("");
+		//Button
+		JButton okBtn = new JButton("LOGIN");
+		JButton signUpBtn = new JButton("SIGN UP");
 
 	public Panel_Login() {
 		
 		frame = Frame_Sokoban.getInstance();
-		System.out.println(frame);
 		initUI();
+		
 	}
 
-	private void initUI() {
-
+	//Layout//
+	private void initLayout() {
+		
 		setLayout(new BorderLayout());
-
-		JLabel title = new JLabel("LOG IN");
-		title.setFont(new Font("맑은 고딕", Font.BOLD, 40));
-		title.setHorizontalAlignment(JLabel.CENTER);
-		title.setPreferredSize(new Dimension(0, 300));
-
-		JPanel panelCenter = new JPanel();
 
 		JPanel southMargin = new JPanel();
 		southMargin.setPreferredSize(new Dimension(0, 300));
@@ -66,38 +59,59 @@ public class Panel_Login extends JPanel {
 		JPanel eastMargin = new JPanel();
 		eastMargin.setPreferredSize(new Dimension(300, 0));
 
-		this.add(title, BorderLayout.NORTH);
 		this.add(southMargin, BorderLayout.SOUTH);
 		this.add(westMargin, BorderLayout.WEST);
 		this.add(eastMargin, BorderLayout.EAST);
-		this.add(panelCenter, BorderLayout.CENTER);
+		
+	}
+	
+	//Title(North)//
+	private void initTitle() {
+		
+		JLabel title = new JLabel("LOG IN");
+		title.setFont(new Font("맑은 고딕", Font.BOLD, 40));
+		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setPreferredSize(new Dimension(0, 300));
 
+		this.add(title, BorderLayout.NORTH);
+		
+	}
+	
+	//Center
+	private void initCenter() {
+
+		panelCenter = new JPanel();
 		panelCenter.setLayout(new GridLayout(5, 3, 10, 10));
 
-		label_ID = new JLabel("ID");
-		field_ID = new JTextField(20);
-		available_ID = new JLabel("");
+		IDPW_InputListener inputListener = new IDPW_InputListener();
+		EnterListener enterListener = new EnterListener();
+		
+		//ID
 		label_ID.setHorizontalAlignment(SwingConstants.RIGHT);
+		field_ID.addActionListener(enterListener);
 		available_ID.setForeground(new Color(255, 0, 0));
 
-		label_PW = new JLabel("Password");
-		field_PW = new JPasswordField(20);
-		available_PW = new JLabel("");
+		//PW
 		label_PW.setHorizontalAlignment(SwingConstants.RIGHT);
 		field_PW.setEchoChar('◆');
-		available_PW.setForeground(new Color(255, 0, 0));
-
-		okBtn = new JButton("LOGIN");
-		signUpBtn = new JButton("SIGN UP");
-		IDPW_InputListener inputListener = new IDPW_InputListener();
-		okBtn.addActionListener(inputListener);
 		field_PW.addActionListener(inputListener);
+		available_PW.setForeground(new Color(255, 0, 0));
+		
+		//Button_Login
+		okBtn.addActionListener(inputListener);
+		
+		//Button_SignUP
 		signUpBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PanelChanger.changePanel(Panel_Login.this, new Panel_SignUp());
 			}
 		});
+		
+		addPanelCenter();
+	}
+	
+	private void addPanelCenter() {
 
 		panelCenter.add(label_ID);
 		panelCenter.add(field_ID);
@@ -115,12 +129,17 @@ public class Panel_Login extends JPanel {
 		panelCenter.add(signUpBtn);
 		panelCenter.add(new JLabel(""));
 
-		/*
-		 * 엔터키로 다음 필드로 커서 이동
-		 */
-		EnterListener enterListener = new EnterListener();
-		field_ID.addActionListener(enterListener);
+		this.add(panelCenter, BorderLayout.CENTER);
+		
+	}
+	
+	/////
+	private void initUI() {
 
+		initLayout();
+		initTitle();
+		initCenter();
+		
 	}
 
 	private class EnterListener implements ActionListener { // 엔터누르면 커서 다음으로 이동
@@ -134,12 +153,11 @@ public class Panel_Login extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			System.out.println(field_PW.getPassword().toString());
+			if(field_PW.getPassword() == null) return;
 			UserInfo info = FindUser.findUserByID(field_ID.getText());
 			if(info != null) { // 아이디 있으면
-				available_ID.setText("");
-				available_PW.setText("");
 				if(info.pw.contentEquals(UserInfo.passwordToString(field_PW.getPassword()))) { // 비번 맞으면
-					available_PW.setText("");
 					frame.setUserinfo(info);
 					PanelChanger.changePanel(Panel_Login.this, new Panel_MainScene());
 				}
@@ -155,4 +173,5 @@ public class Panel_Login extends JPanel {
 			}
 		}
 	}
+	
 }

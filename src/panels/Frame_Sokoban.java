@@ -2,7 +2,6 @@ package panels;
 
 // import java.awt.Color;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import model.UserInfo;
 import utils.SokobanUtilities;
