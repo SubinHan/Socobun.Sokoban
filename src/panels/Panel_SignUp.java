@@ -24,44 +24,45 @@ import login.FirebaseClass;
 import model.UserInfo;
 
 public class Panel_SignUp extends JPanel {
-
+	
+	
 	boolean nicknameAvailable = false;
 	boolean idAvailable = false;
 	boolean pwAvailable = false;
 	boolean pwconfirmAvailable = false;
+
 	
 	//Center
-	JPanel panelCenter = new JPanel();
-		//Nickname
-		JLabel label_Nickname = new JLabel("Nickname");
-		JTextField field_Nickname = new JTextField(20);
-		JLabel available_Nickname = new JLabel("두 자 이상 입력해주세요.");
-		//ID
-		JLabel label_ID = new JLabel("ID");
-		JTextField field_ID = new JTextField(20);
-		JLabel available_ID = new JLabel("두 자 이상 입력해주세요.");
-		//PW
-		JLabel label_PW = new JLabel("Password");
-		JPasswordField field_PW = new JPasswordField(20);
-		JLabel available_PW = new JLabel("네 자 이상 입력해주세요.");
-		//PW Confirm
-		JLabel label_PWconfirm = new JLabel("Password Confirm");
-		JPasswordField field_PWconfirm = new JPasswordField(20);
-		JLabel available_PWconfirm = new JLabel("네 자 이상 입력해주세요.");
-		//Buttons
-		JButton okBtn = new JButton("OK");
-		JButton cancelBtn = new JButton("Cancel");
-
+	JPanel panelCenter;
+	// Nickname
+	JLabel label_Nickname = new JLabel("Nickname");
+	JTextField field_Nickname = new JTextField(20);
+	JLabel available_Nickname = new JLabel("두 자 이상 입력해주세요.");
+	// ID
+	JLabel label_ID = new JLabel("ID");
+	JTextField field_ID = new JTextField(20);
+	JLabel available_ID = new JLabel("두 자 이상 입력해주세요.");
+	// PW
+	JLabel label_PW = new JLabel("Password");
+	JPasswordField field_PW = new JPasswordField(20);
+	JLabel available_PW = new JLabel("네 자 이상 입력해주세요.");
+	// PW Confirm
+	JLabel label_PWconfirm = new JLabel("Password Confirm");
+	JPasswordField field_PWconfirm = new JPasswordField(20);
+	JLabel available_PWconfirm = new JLabel("네 자 이상 입력해주세요.");
+	// Buttons
+	JButton okBtn = new JButton("OK");
+	JButton cancelBtn = new JButton("Cancel");
 
 	public Panel_SignUp() {
-
+		System.out.println("aa");
 		initUI();
 	}
 	
 	//Layout
 	private void initLayout() {
 
-		setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout());
 
 		JPanel southMargin = new JPanel();
 		southMargin.setPreferredSize(new Dimension(0, 300));
@@ -92,6 +93,7 @@ public class Panel_SignUp extends JPanel {
 	//Center
 	private void initCenter() {
 		
+		panelCenter = new JPanel();
 		panelCenter.setLayout(new GridLayout(6, 3, 10, 10));
 
 		//Nickname

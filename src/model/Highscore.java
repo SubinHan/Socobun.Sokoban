@@ -1,11 +1,6 @@
 package model;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-
-import login.FirebaseClass;
-import panels.Frame_Sokoban;
 
 public class Highscore implements Serializable, Comparable {
 	/**
