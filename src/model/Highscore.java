@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Highscore implements Serializable, Comparable {
+public class Highscore implements IModel, Serializable, Comparable {
 	/**
 	 * 
 	 */

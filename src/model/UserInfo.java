@@ -4,7 +4,7 @@ import java.util.HashMap;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class UserInfo {
+public class UserInfo implements IModel{
 	
 	public String id, nickname, pw;
 	public HashMap<String, Highscore> clearedStagesInfo = new HashMap<>();

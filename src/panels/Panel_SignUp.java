@@ -25,13 +25,11 @@ import model.UserInfo;
 
 public class Panel_SignUp extends JPanel {
 	
-	
 	boolean nicknameAvailable = false;
 	boolean idAvailable = false;
 	boolean pwAvailable = false;
 	boolean pwconfirmAvailable = false;
 
-	
 	//Center
 	JPanel panelCenter;
 	// Nickname
@@ -55,7 +53,6 @@ public class Panel_SignUp extends JPanel {
 	JButton cancelBtn = new JButton("Cancel");
 
 	public Panel_SignUp() {
-		System.out.println("aa");
 		initUI();
 	}
 	
@@ -63,7 +60,8 @@ public class Panel_SignUp extends JPanel {
 	private void initLayout() {
 
 		this.setLayout(new BorderLayout());
-
+		
+		//Margin
 		JPanel southMargin = new JPanel();
 		southMargin.setPreferredSize(new Dimension(0, 300));
 		JPanel westMargin = new JPanel();
@@ -74,12 +72,8 @@ public class Panel_SignUp extends JPanel {
 		this.add(southMargin, BorderLayout.SOUTH);
 		this.add(westMargin, BorderLayout.WEST);
 		this.add(eastMargin, BorderLayout.EAST);
-		
-	}
-	
-	//Title(North)
-	private void initTitle() {
 
+		//Title
 		JLabel title = new JLabel("SIGN UP");
 		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
 		title.setHorizontalAlignment(JLabel.CENTER);
@@ -89,13 +83,12 @@ public class Panel_SignUp extends JPanel {
 		
 	}
 	
-	
 	//Center
 	private void initCenter() {
-		
+
 		panelCenter = new JPanel();
 		panelCenter.setLayout(new GridLayout(6, 3, 10, 10));
-
+		
 		//Nickname
 		label_Nickname.setHorizontalAlignment(SwingConstants.RIGHT);
 		available_Nickname.setForeground(new Color(255, 0, 0));
@@ -156,9 +149,9 @@ public class Panel_SignUp extends JPanel {
 		});
 		
 		EnterListener enterListener = new EnterListener();
-		field_PWconfirm.addActionListener(enterListener);
-		field_ID.addActionListener(enterListener);
 		field_Nickname.addActionListener(enterListener);
+		field_ID.addActionListener(enterListener);
+		field_PWconfirm.addActionListener(enterListener);
 		
 		ValidityChecker validityChecker = new ValidityChecker();
 		field_Nickname.getDocument().addDocumentListener(validityChecker);
@@ -172,7 +165,6 @@ public class Panel_SignUp extends JPanel {
 	private void initUI() {
 
 		initLayout();
-		initTitle();
 		initCenter();
 		
 		addListeners();
@@ -182,8 +174,8 @@ public class Panel_SignUp extends JPanel {
 	private class InputListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (nicknameAvailable && idAvailable && pwAvailable && pwconfirmAvailable) {
-				UserInfo info = new UserInfo(field_Nickname.getText(), field_ID.getText(), field_PW.getPassword());
-				FirebaseClass.rootReference.child("users").child(info.id).setValueAsync(info);
+				UserInfo inputInfo = new UserInfo(field_Nickname.getText(), field_ID.getText(), field_PW.getPassword());
+				FirebaseClass.rootReference.child("users").child(inputInfo.id).setValueAsync(inputInfo);
 				PanelChanger.changePanel(Panel_SignUp.this, new Panel_Login());
 			}
 		}
@@ -195,8 +187,7 @@ public class Panel_SignUp extends JPanel {
 			manager.getFocusOwner().transferFocus();
 		}
 	}
-
-
+	
 	private class ValidityChecker implements DocumentListener {
 
 		@Override
@@ -215,7 +206,8 @@ public class Panel_SignUp extends JPanel {
 			checkPW();
 			checkPWConfirm();
 		}
-		
+
+
 		private void checkNickname() {
 			
 			available_Nickname.setForeground(new Color(255, 0, 0));
@@ -237,7 +229,6 @@ public class Panel_SignUp extends JPanel {
 					nicknameAvailable = true;
 				}
 			}
-			
 		}
 
 		private void checkID() {
@@ -261,7 +252,7 @@ public class Panel_SignUp extends JPanel {
 				}
 			}
 		}
-
+		
 		private void checkPW() {
 			
 			available_PW.setForeground(new Color(255, 0, 0));
@@ -293,6 +284,5 @@ public class Panel_SignUp extends JPanel {
 				pwconfirmAvailable = false;
 			}
 		}
-		
 	}
 }

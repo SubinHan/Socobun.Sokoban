@@ -52,6 +52,7 @@ public class Panel_Login extends JPanel {
 		
 		setLayout(new BorderLayout());
 
+		//Margin
 		JPanel southMargin = new JPanel();
 		southMargin.setPreferredSize(new Dimension(0, 300));
 		JPanel westMargin = new JPanel();
@@ -63,11 +64,7 @@ public class Panel_Login extends JPanel {
 		this.add(westMargin, BorderLayout.WEST);
 		this.add(eastMargin, BorderLayout.EAST);
 		
-	}
-	
-	//Title(North)//
-	private void initTitle() {
-		
+		//Title
 		JLabel title = new JLabel("LOG IN");
 		title.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 40));
 		title.setHorizontalAlignment(JLabel.CENTER);
@@ -137,7 +134,6 @@ public class Panel_Login extends JPanel {
 	private void initUI() {
 
 		initLayout();
-		initTitle();
 		initCenter();
 		
 	}
