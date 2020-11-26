@@ -1,14 +1,17 @@
 package panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 
 import com.google.firebase.database.DataSnapshot;
 
@@ -17,13 +20,13 @@ import manageUser.UserInfo;
 
 public class Panel_Ranking extends JPanel{
 	
-	private static final long serialVersionUID = 4962034188446655988L;
-	
 	Frame_Sokoban frame = null;
 	
-	JScrollPane rankingListedPanel;
+	//RankingPanel
+	JScrollPane scrollingPanel;
+	JPanel rankingPanelGrid = new JPanel();
 	
-	int usersCount;
+	//UserInfos Sorted by wholeScore
 	LinkedList<UserInfo> rankedUsers;
 	
 	public Panel_Ranking() {
@@ -32,7 +35,6 @@ public class Panel_Ranking extends JPanel{
 		this.makeRanking();
 		
 		initLayout();
-		makeRanking();
 		initCenter();
 		
 	}
@@ -44,7 +46,7 @@ public class Panel_Ranking extends JPanel{
 		
 		//Margin
 		JPanel southMargin = new JPanel();
-		southMargin.setPreferredSize(new Dimension(0, 300));
+		southMargin.setPreferredSize(new Dimension(0, 100));
 		JPanel westMargin = new JPanel();
 		westMargin.setPreferredSize(new Dimension(300, 0));
 		JPanel eastMargin = new JPanel();
@@ -63,11 +65,12 @@ public class Panel_Ranking extends JPanel{
 		this.add(title, BorderLayout.NORTH);
 	}
 	
+	// LinkedLis<UserInfo>를 UserInfo.wholeScore를 기준으로 정렬된 상태로 채우기
 	private void makeRanking() {
 
 		Iterable<DataSnapshot> infoIterable = FirebaseClass.dataSnapshot.child("users").getChildren();
 		Iterator<DataSnapshot> infoIterator = infoIterable.iterator();
-
+		
 		rankedUsers = new LinkedList<>();
 		
 		while( infoIterator.hasNext() ) {
@@ -80,7 +83,6 @@ public class Panel_Ranking extends JPanel{
 				rankedUsers.add(info);
 				
 			} else {
-				
 				for(int i=0 ; i<rankedUsers.size() ; ++i) {
 					
 					if(rankedUsers.get(i).wholeScore < info.wholeScore) {
@@ -99,16 +101,71 @@ public class Panel_Ranking extends JPanel{
 	}
 	
 	private void initCenter() {
+
+		makeRanking();
+		addRankingPanel();
 		
-		for(int i=0 ; i<rankedUsers.size() ; ++i) {
-			System.out.println( rankedUsers.get(i).wholeScore);
+	}
+	
+	private void addRankingPanel() {
+		
+		
+		rankingPanelGrid.setLayout(new GridLayout(rankedUsers.size(),1));
+		
+		// rankingPanelGrid에 랭킹 올리기
+		addRankingContent();
+		
+		scrollingPanel = new JScrollPane(rankingPanelGrid, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollingPanel.getVerticalScrollBar().setUnitIncrement(15);
+		scrollingPanel.setBorder(null);
+		scrollingPanel.setPreferredSize(new Dimension(580, 580));
+		
+		this.add(scrollingPanel);
+	}
+	
+	private void addRankingContent() {
+
+		int userCnt = rankedUsers.size();
+		
+		for(int i=0 ; i<userCnt ; ++i) {
+			
+			LineBorder lb = new LineBorder(Color.black, 1, false);
+			UserInfo user = rankedUsers.get(i);
+			
+			// 랭킹 하나에 대한 틀(mold)
+			JPanel eachRanking = new JPanel();
+			eachRanking.setLayout(new GridLayout(1,3));
+			
+			// 1. 순위
+			JLabel rank = new JLabel((i+1) + "위");
+			rank.setHorizontalAlignment(JLabel.CENTER);
+			rank.setBorder(lb);
+			eachRanking.add(rank);
+			
+			// 2. 닉네임
+			JLabel nickname = new JLabel(user.nickname);
+			nickname.setHorizontalAlignment(JLabel.CENTER);
+			nickname.setBorder(lb);
+			eachRanking.add(nickname);
+
+			// 3. 점수
+			JLabel score = new JLabel(user.wholeScore + " 점");
+			score.setHorizontalAlignment(JLabel.CENTER);
+			score.setBorder(lb);
+			eachRanking.add(score);
+			
+			rankingPanelGrid.add(eachRanking);
+			
 		}
 		
 	}
 	
 	public void refresh() {
 		
+		// 제대로 안만들었음
 		makeRanking();
+		addRankingPanel();
+		
 		revalidate();
 		repaint();
 		
