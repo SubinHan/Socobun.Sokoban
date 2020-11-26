@@ -7,6 +7,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 public class UserInfo{
 	
 	public String id, nickname, pw;
+	public int wholeScore;
 	public HashMap<String, Highscore> clearedStagesInfo = new HashMap<>();
 	
 	public UserInfo() {
@@ -29,6 +30,10 @@ public class UserInfo{
 	
 	public String toString() {
 		return id + ", " + nickname + ", " + pw;
+	}
+	
+	private void refreshHighScore() {
+		
 	}
 	
 }

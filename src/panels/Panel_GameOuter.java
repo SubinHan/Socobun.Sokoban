@@ -199,19 +199,24 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 		labelStatus.setText("Completed!");
 		timer.stop();
 		UserInfo userInfo = frame.getUserinfo();
+		
 		Highscore newScore = new Highscore(score, numOfMove + 1, numOfUndo, elapsedTime);
-		if (userInfo.clearedStagesInfo.get(level.getFile().getName()) != null) {
-			Highscore oldScore = userInfo.clearedStagesInfo.get(level.getFile().getName());
-			if (oldScore.compareTo(newScore) > 0) {
-				;
-			} else {
-				userInfo.clearedStagesInfo.put(level.getFile().getName(), newScore);
-				FirebaseClass.rootReference.child("users").child(userInfo.id).setValueAsync(userInfo);
-			}
-		} else {
-			userInfo.clearedStagesInfo.put(level.getFile().getName(), newScore);
-			FirebaseClass.rootReference.child("users").child(userInfo.id).setValueAsync(userInfo);
+		Highscore oldScore = userInfo.clearedStagesInfo.get(level.getFile().getName());
+		
+		if (oldScore != null) { // 이미 깬 적이 있음.
+			
+			if (oldScore.compareTo(newScore) > 0) return; // 최고기록 경신 못한 경우 : 바로 리턴
+			userInfo.wholeScore += this.score - oldScore.getScore(); // 최고기록 경신했는데 이미 깬 경우 : 전에 있던 최고점수만큼 빼고 새 점수 추가.
+			
+		} else { // 깬 적이 없음?
+			
+			userInfo.wholeScore += this.score; // 무조건 최고기록임. 새 점수 추가.
+			
 		}
+		
+		// 최고기록 경신한 경우 (이미 깼든 말든) : userinfo에 '깬 스테이지 정보' 갱신, wholeScore는 이미 바뀐 상태. 그 상태로 DB에 추가
+		userInfo.clearedStagesInfo.put(level.getFile().getName(), newScore);
+		FirebaseClass.rootReference.child("users").child(userInfo.id).setValueAsync(userInfo);
 	}
 
 }

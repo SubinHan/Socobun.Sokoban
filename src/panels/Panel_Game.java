@@ -187,6 +187,8 @@ public class Panel_Game extends JPanel {
 
 	public void isCompleted() {
 
+		if(baggs == null || areas == null) return;
+		
 		int nOfBags = baggs.size();
 		int finishedBags = 0;
 

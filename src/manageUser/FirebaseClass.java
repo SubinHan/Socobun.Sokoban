@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,13 +16,14 @@ import com.google.firebase.database.ValueEventListener;
 public abstract class FirebaseClass {
 
 	public static DataSnapshot dataSnapshot = null;
-
+	
 	public static FirebaseDatabase database = null;
 	public static DatabaseReference rootReference = null;
 
 	private static FileInputStream serviceAccount = null;
 	private static FirebaseOptions options = null;
 	private static FirebaseApp app = null;
+	
 
 	public static void init() {
 
@@ -44,16 +46,11 @@ public abstract class FirebaseClass {
 	}
 
 	private static class DBListener implements ValueEventListener {
-
-		@Override
+		
 		public void onDataChange(DataSnapshot snapshot) {
 			dataSnapshot = snapshot;
 		}
-
-		@Override
-		public void onCancelled(DatabaseError error) {
-
-		}
+		public void onCancelled(DatabaseError error) { }
 
 	}
 	
