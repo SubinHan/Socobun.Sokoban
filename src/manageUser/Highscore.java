@@ -1,8 +1,8 @@
-package model;
+package manageUser;
 
 import java.io.Serializable;
 
-public class Highscore implements IModel, Serializable, Comparable {
+public class Highscore implements Serializable, Comparable {
 	/**
 	 * 
 	 */

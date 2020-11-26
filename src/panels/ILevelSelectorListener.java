@@ -1,6 +1,6 @@
 package panels;
 
-import model.Level;
+import objects.Level;
 
 public interface ILevelSelectorListener {
 	public void levelSelected(Level level);

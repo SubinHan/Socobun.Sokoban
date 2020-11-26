@@ -10,10 +10,9 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import model.Level;
-import objects.ActorManager;
 import objects.IObject;
 import objects.IPlayer;
+import objects.Level;
 import utils.AudioPlayer;
 import utils.SokobanUtilities;
 

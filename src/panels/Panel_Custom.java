@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Level;
+import objects.Level;
 
 /**
  * Custom Mode 진입 시 첫 화면.

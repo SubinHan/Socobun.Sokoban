@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Level;
+import objects.Level;
 
 public class Panel_Normal extends JPanel implements ILevelSelectorListener {
 	

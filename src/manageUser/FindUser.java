@@ -1,10 +1,8 @@
-package login;
+package manageUser;
 
 import java.util.Iterator;
 
 import com.google.firebase.database.DataSnapshot;
-
-import model.UserInfo;
 
 public abstract class FindUser {
 

@@ -15,10 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import login.FirebaseClass;
-import model.Highscore;
-import model.Level;
-import model.UserInfo;
+import manageUser.FirebaseClass;
+import manageUser.Highscore;
+import manageUser.UserInfo;
+import objects.Level;
 import utils.AudioPlayer;
 import utils.SokobanUtilities;
 

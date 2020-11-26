@@ -1,9 +1,19 @@
-package objects;
+package panels;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-import model.Level;
+import objects.Actor_Area;
+import objects.Actor_Baggage;
+import objects.Actor_Ground;
+import objects.Actor_Player;
+import objects.Actor_Wall;
+import objects.ICollidable;
+import objects.IMovable;
+import objects.IObject;
+import objects.IPlayer;
+import objects.Level;
+import objects.UndoSnapshot;
 import utils.SokobanUtilities;
 
 public class ActorManager {

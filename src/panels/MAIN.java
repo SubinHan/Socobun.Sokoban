@@ -1,7 +1,7 @@
 package panels;
 import java.awt.EventQueue;
 
-import login.FirebaseClass;
+import manageUser.FirebaseClass;
 
 public class MAIN {
 

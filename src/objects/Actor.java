@@ -2,7 +2,7 @@ package objects;
 
 import java.awt.Image;
 
-public class Actor implements Cloneable, IObject{
+public abstract class Actor implements Cloneable, IObject{
 
     private final int SPACE = 64;
 

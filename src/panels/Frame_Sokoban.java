@@ -3,7 +3,7 @@ package panels;
 // import java.awt.Color;
 import javax.swing.JFrame;
 
-import model.UserInfo;
+import manageUser.UserInfo;
 import utils.SokobanUtilities;
 
 public class Frame_Sokoban extends JFrame {

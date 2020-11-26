@@ -6,8 +6,8 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Highscore;
-import model.Level;
+import manageUser.Highscore;
+import objects.Level;
 
 public class Panel_LevelInfo extends JPanel {
 	Frame_Sokoban frame;

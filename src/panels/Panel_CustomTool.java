@@ -18,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.Level;
+import objects.Level;
 import utils.IFileSearcher;
 import utils.LevelFileSearcher;
 import utils.SokobanUtilities;

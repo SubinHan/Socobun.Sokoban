@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import model.Level;
+import objects.Level;
 import utils.IFileSearcher;
 import utils.LevelFileSearcher;
 

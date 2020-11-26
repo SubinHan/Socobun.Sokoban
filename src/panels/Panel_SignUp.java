@@ -19,9 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import login.FindUser;
-import login.FirebaseClass;
-import model.UserInfo;
+import manageUser.FindUser;
+import manageUser.FirebaseClass;
+import manageUser.UserInfo;
 
 public class Panel_SignUp extends JPanel {
 	
@@ -206,83 +206,83 @@ public class Panel_SignUp extends JPanel {
 			checkPW();
 			checkPWConfirm();
 		}
-
-
-		private void checkNickname() {
+	}
+	
+	
+	private void checkNickname() {
+		
+		available_Nickname.setForeground(new Color(255, 0, 0));
+		
+		if (field_Nickname.getText().length() < 2) {
 			
-			available_Nickname.setForeground(new Color(255, 0, 0));
+			available_Nickname.setText("두 자 이상 입력해주세요.");
 			
-			if (field_Nickname.getText().length() < 2) {
-				
-				available_Nickname.setText("두 자 이상 입력해주세요.");
-				
+		} else {
+			
+			UserInfo info = FindUser.findUserByNickname(field_Nickname.getText());
+			if (info != null) { // 닉네임 있으면
+				available_Nickname.setForeground(new Color(255, 0, 0));
+				available_Nickname.setText("이미 있는 닉네임입니다.");
+				nicknameAvailable = false;
 			} else {
-				
-				UserInfo info = FindUser.findUserByNickname(field_Nickname.getText());
-				if (info != null) { // 닉네임 있으면
-					available_Nickname.setForeground(new Color(255, 0, 0));
-					available_Nickname.setText("이미 있는 닉네임입니다.");
-					nicknameAvailable = false;
-				} else {
-					available_Nickname.setForeground(new Color(0, 255, 0));
-					available_Nickname.setText("○");
-					nicknameAvailable = true;
-				}
+				available_Nickname.setForeground(new Color(0, 255, 0));
+				available_Nickname.setText("○");
+				nicknameAvailable = true;
 			}
 		}
+	}
 
-		private void checkID() {
+	private void checkID() {
 
-			available_ID.setForeground(new Color(255, 0, 0));
+		available_ID.setForeground(new Color(255, 0, 0));
+		
+		if (field_ID.getText().length() < 2) {
 			
-			if (field_ID.getText().length() < 2) {
-				
-				available_ID.setText("두 자 이상 입력해주세요.");
-				
+			available_ID.setText("두 자 이상 입력해주세요.");
+			
+		} else {
+			
+			UserInfo info = FindUser.findUserByID(field_ID.getText());
+			if (info != null) { // 아이디 있으면
+				available_ID.setText("이미 있는 아이디입니다.");
+				idAvailable = false;
 			} else {
-				
-				UserInfo info = FindUser.findUserByID(field_ID.getText());
-				if (info != null) { // 아이디 있으면
-					available_ID.setText("이미 있는 아이디입니다.");
-					idAvailable = false;
-				} else {
-					available_ID.setForeground(new Color(0, 255, 0));
-					available_ID.setText("○");
-					idAvailable = true;
-				}
+				available_ID.setForeground(new Color(0, 255, 0));
+				available_ID.setText("○");
+				idAvailable = true;
 			}
+		}
+	}
+	
+	private void checkPW() {
+		
+		available_PW.setForeground(new Color(255, 0, 0));
+		
+		if (field_PW.getPassword().length >= 4) {
+			available_PW.setForeground(new Color(0, 255, 0));
+			available_PW.setText("○");
+			pwAvailable = true;
+		} else {
+			available_PW.setText("네 자 이상 입력해주세요.");
+			pwAvailable = false;
 		}
 		
-		private void checkPW() {
-			
-			available_PW.setForeground(new Color(255, 0, 0));
-			
-			if (field_PW.getPassword().length >= 4) {
-				available_PW.setForeground(new Color(0, 255, 0));
-				available_PW.setText("○");
-				pwAvailable = true;
-			} else {
-				available_PW.setText("네 자 이상 입력해주세요.");
-				pwAvailable = false;
-			}
-			
-		}
+	}
 
-		private void checkPWConfirm() {
-			
-			available_PWconfirm.setForeground(new Color(255, 0, 0));
-			
-			if (field_PWconfirm.getPassword().length < 4) {
-				available_PWconfirm.setText("네 자 이상 입력해주세요.");
-				pwconfirmAvailable = false;
-			} else if (Arrays.equals(field_PWconfirm.getPassword(), field_PW.getPassword())) {
-				available_PWconfirm.setForeground(new Color(0, 255, 0));
-				available_PWconfirm.setText("○");
-				pwconfirmAvailable = true;
-			} else {
-				available_PWconfirm.setText("위에 입력한 비밀번호와 다릅니다.");
-				pwconfirmAvailable = false;
-			}
+	private void checkPWConfirm() {
+		
+		available_PWconfirm.setForeground(new Color(255, 0, 0));
+		
+		if (field_PWconfirm.getPassword().length < 4) {
+			available_PWconfirm.setText("네 자 이상 입력해주세요.");
+			pwconfirmAvailable = false;
+		} else if (Arrays.equals(field_PWconfirm.getPassword(), field_PW.getPassword())) {
+			available_PWconfirm.setForeground(new Color(0, 255, 0));
+			available_PWconfirm.setText("○");
+			pwconfirmAvailable = true;
+		} else {
+			available_PWconfirm.setText("위에 입력한 비밀번호와 다릅니다.");
+			pwconfirmAvailable = false;
 		}
 	}
 }

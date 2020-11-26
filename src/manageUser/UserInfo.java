@@ -1,10 +1,10 @@
-package model;
+package manageUser;
 import java.util.HashMap;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class UserInfo implements IModel{
+public class UserInfo{
 	
 	public String id, nickname, pw;
 	public HashMap<String, Highscore> clearedStagesInfo = new HashMap<>();

@@ -1,4 +1,4 @@
-package login;
+package manageUser;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package model;
+package objects;
 
 import java.io.File;
 import java.io.FileReader;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import utils.SokobanUtilities;
 
 
-public class Level implements IModel {
+public class Level{
 	
 	private final int MAX_LEVEL_WIDTH = SokobanUtilities.MAX_LEVEL_WIDTH;
 	private final int MAX_LEVEL_HEIGHT = SokobanUtilities.MAX_LEVEL_HEIGHT;

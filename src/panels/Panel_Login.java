@@ -16,8 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import login.FindUser;
-import model.UserInfo;
+import manageUser.FindUser;
+import manageUser.UserInfo;
 
 public class Panel_Login extends JPanel {
 
