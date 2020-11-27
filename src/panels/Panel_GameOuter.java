@@ -18,7 +18,7 @@ import javax.swing.Timer;
 import manageUser.FirebaseClass;
 import manageUser.Highscore;
 import manageUser.UserInfo;
-import objects.Level;
+import objects.ILevel;
 import utils.AudioPlayer;
 import utils.SokobanUtilities;
 
@@ -46,7 +46,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	}
 
 	Frame_Sokoban frame = null;
-	private Level level;
+	private ILevel level;
 
 	private JLabel labelStatus;
 	private JPanel panelNorth, panelWest, panelCenter, panelEast;
@@ -60,7 +60,7 @@ public class Panel_GameOuter extends JPanel implements IGameListener {
 	private JLabel labelUndo;
 	private JLabel labelTime;
 
-	public Panel_GameOuter(Level givenLevel) {
+	public Panel_GameOuter(ILevel givenLevel) {
 		
 		frame = Frame_Sokoban.getInstance();
 		level = givenLevel;

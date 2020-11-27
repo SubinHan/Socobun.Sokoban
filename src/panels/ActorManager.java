@@ -9,10 +9,10 @@ import objects.Actor_Ground;
 import objects.Actor_Player;
 import objects.Actor_Wall;
 import objects.ICollidable;
+import objects.ILevel;
 import objects.IMovable;
 import objects.IObject;
 import objects.IPlayer;
-import objects.Level;
 import objects.UndoSnapshot;
 import utils.SokobanUtilities;
 
@@ -59,13 +59,13 @@ public class ActorManager {
 	ArrayList<ICollidable> collidableObjects;
 
 	
-	public ActorManager(Level level) {
+	public ActorManager(ILevel level) {
 		
 		undoStack = new Stack<>();
 		initWorld(level);
 	}
 
-	private void initWorld(Level level) {
+	private void initWorld(ILevel level) {
 
 		walls = new ArrayList<>();
 		baggages = new ArrayList<>();

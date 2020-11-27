@@ -7,18 +7,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import manageUser.Highscore;
-import objects.Level;
+import objects.ILevel;
 
 public class Panel_LevelInfo extends JPanel {
 	Frame_Sokoban frame;
-	Level level;
+	ILevel level;
 	Highscore highscore;
 	JLabel labelScore;
 	JLabel labelMove;
 	JLabel labelUndo;
 	JLabel labelTime;
 
-	public Panel_LevelInfo(Frame_Sokoban f, Level level) {
+	public Panel_LevelInfo(Frame_Sokoban f, ILevel level) {
 		frame = f;
 		this.level = level;
 		

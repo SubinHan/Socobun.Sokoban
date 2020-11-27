@@ -7,7 +7,7 @@ import java.io.IOException;
 import utils.SokobanUtilities;
 
 
-public class Level{
+public class Level implements ILevel {
 	
 	private final int MAX_LEVEL_WIDTH = SokobanUtilities.MAX_LEVEL_WIDTH;
 	private final int MAX_LEVEL_HEIGHT = SokobanUtilities.MAX_LEVEL_HEIGHT;

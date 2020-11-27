@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+import objects.ILevel;
 import objects.IObject;
 import objects.IPlayer;
 import objects.Level;
@@ -82,13 +83,13 @@ public class Panel_Game extends JPanel {
 	private ArrayList<IObject> areas;
 	private ArrayList<IObject> grounds;
 	private IPlayer player;
-	private Level level;
+	private ILevel level;
 	private char levelArray[][];
 	ArrayList listeners;
 
 	ActorManager actorManager;
 	
-	public Panel_Game(IGameListener listener, Level givenLevel) {
+	public Panel_Game(IGameListener listener, ILevel givenLevel) {
 		
 		frame = Frame_Sokoban.getInstance();
 		addGameListener(listener);
@@ -230,7 +231,7 @@ public class Panel_Game extends JPanel {
 		repaint();
 	}
 
-	public void setLevel(Level givenLevel) {
+	public void setLevel(ILevel givenLevel) {
 		level = givenLevel;
 		levelArray = givenLevel.getCharArray();
 		actorManager = new ActorManager(givenLevel);
