@@ -4,7 +4,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Actor_Player extends Actor implements IPlayer {
+public class Actor_Player extends Actor implements IPlayer{
 	
 	ImageIcon upImage, downImage, leftImage, rightImage;
 

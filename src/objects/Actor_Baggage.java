@@ -4,7 +4,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Actor_Baggage extends Actor implements ICollidable, IMovable {
+public class Actor_Baggage extends Actor implements ICollidable, IMovable{
 
     public Actor_Baggage(int x, int y) {
         super(x, y);

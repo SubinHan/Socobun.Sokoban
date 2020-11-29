@@ -4,7 +4,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Actor_Ground extends Actor implements IObject {
+public class Actor_Ground extends Actor{
 
 	public Actor_Ground(int x, int y) {
 		super(x, y);
